@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信奥系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .menu-item {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .menu-item:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .menu-item i {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .menu-item h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        .menu-item p {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        .footer {
+            margin-top: 50px;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-graduation-cap"></i> 信奥系统</h1>
+        <p class="subtitle">信息学奥赛辅助教学平台</p>
+        
+        <div class="menu">
+            <a href="网页主页面.html" class="menu-item">
+                <i class="fas fa-home"></i>
+                <h3>导航主页</h3>
+                <p>系统导航入口</p>
+            </a>
+            <a href="课件a.html" class="menu-item">
+                <i class="fas fa-book"></i>
+                <h3>课程家校</h3>
+                <p>课件与家校互动</p>
+            </a>
+            <a href="预科.html" class="menu-item">
+                <i class="fas fa-seedling"></i>
+                <h3>预科课程</h3>
+                <p>入门基础学习</p>
+            </a>
+            <a href="算法.html" class="menu-item">
+                <i class="fas fa-code"></i>
+                <h3>算法学习</h3>
+                <p>算法知识讲解</p>
+            </a>
+            <a href="进门测试.html" class="menu-item">
+                <i class="fas fa-door-open"></i>
+                <h3>进门测试</h3>
+                <p>课前测试评估</p>
+            </a>
+            <a href="出门测试.html" class="menu-item">
+                <i class="fas fa-check-circle"></i>
+                <h3>出门测试</h3>
+                <p>课后巩固练习</p>
+            </a>
+            <a href="GOC基础版本.html" class="menu-item">
+                <i class="fas fa-cube"></i>
+                <h3>GOC基础</h3>
+                <p>GOC编程入门</p>
+            </a>
+            <a href="import.html" class="menu-item">
+                <i class="fas fa-list-check"></i>
+                <h3>重点梳理</h3>
+                <p>知识点总结</p>
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>© 2026 信奥系统 | 信息学奥赛辅助教学平台</p>
+        </div>
+    </div>
+</body>
+</html>
