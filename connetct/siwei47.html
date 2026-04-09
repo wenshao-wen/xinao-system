@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #fff8e1;
+            border: 1px dashed #ff9800;
+        }
+        
+        .private-feedback .card-icon {
+            color: #ff9800;
+        }
+        
+        .private-feedback .card-title {
+            color: #e65100;
+        }
+        
+        .private-feedback .content-title {
+            color: #ef6c00;
+        }
+        
+        .private-feedback .content-title i {
+            color: #ff9800;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 选择排序详细步骤样式 */
+        .sorting-steps {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #2e7d32;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #ede7f6;
+            color: #4a148c;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #d1c4e9;
+        }
+        
+        .copy-hint:hover {
+            background: #d1c4e9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-hotel header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+                <ul class="nav-links">
+                    <li><a href="../网页主页面.html"><i class="fas fa-home"></i> 主站导航</a></li>
+                </ul>
+                <a href="../预科.html" class="back-to-course">
+                    <i class="fas fa-arrow-left"></i> 思维训练
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>少儿C++编程进阶课</h1>
+            <p>选择排序巧掌握，算法思维更精进！</p>
+        </div>
+        
+        <!-- 群反馈内容（C++---47选择排序） -->
+        <section class="feedback-card">
+          <div class="card-header">
+            <i class="fas fa-users card-icon"></i>
+            <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+          </div>
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-star"></i> 【C++---47选择排序】课堂反馈（第四十七课·选择排序专题）</h3>
+            <div class="wechat-group-feedback" id="wechatGroupFeedback">
+【C++---47选择排序】🌈🌈 本节课重难点来了🌻🌻
+✅ 熟练求最大值和最小值的方法（打擂台PK法）📝
+✅ 理解选择排序的核心思想 📝
+✅ 每一轮找出一个最值进行交换 📝
+
+📚📚 重要的知识点梳理 📚📚
+✅① 确定排序结果，从大到小或者从小到大 ✅
+  - 升序排列：从最小值开始，依次找出剩余元素中的最小值
+  - 降序排列：从最大值开始，依次找出剩余元素中的最大值
+  - 排序方向：根据题目要求确定排序的方向和标准
+  - 比较逻辑：升序用小于号，降序用大于号
+
+✅② 外层循环表示要进行多少轮比较 ✅
+  - 轮次控制：外层循环控制排序的轮数，n个元素需要n-1轮
+  - 位置标记：每轮确定一个元素的最终位置
+  - 边界条件：循环次数为元素总数减1
+  - 进度跟踪：每轮结束后已排序区域扩大一个单位
+
+✅③ 内层循环表示遍历所有未排序的元素找出最值✅
+  - 搜索范围：内层循环在未排序区域内寻找最值
+  - 比较操作：逐一比较未排序元素，找出最值及其位置
+  - 更新记录：实时更新当前轮次的最值和位置信息
+  - 遍历完整：确保未排序区域的所有元素都被检查
+
+✅④ 将最值和未排序元素的第一个元素进行交换✅
+  - 位置交换：将找到的最值与未排序区域首元素交换
+  - 交换方法：使用临时变量实现两个元素的值互换
+  - 区域更新：交换后已排序区域增加一个元素
+  - 状态维护：保持已排序和未排序区域的正确状态
+
+📖 核心知识点总结 & 易错点梳理 📖
+🔹 选择排序的基本原理：
+  - 选择策略：每轮从待排序序列中选出最值元素
+  - 位置固定：将选出的最值放到已排序序列的末尾
+  - 逐步扩展：重复上述过程直到全部元素有序
+  - 稳定性：选择排序不是稳定排序算法
+
+🔹 打擂台PK法找最值：
+  - 初始化：假设第一个元素为最值，记录其值和位置
+  - 遍历比较：逐一与其他元素比较，更新最值信息
+  - 记录位置：不仅要记录最值，还要记录其原始位置
+  - 完整遍历：确保所有元素都被比较过
+
+🔹 循环嵌套的协调：
+  - 外层控制：控制排序轮次，确定已排序区域边界
+  - 内层执行：在未排序区域执行查找最值操作
+  - 边界调整：每轮结束后调整内外层循环的边界
+  - 效率考虑：虽然时间复杂度固定为O(n²)，但交换次数最少
+
+🔹 常见易错点：
+  1. 边界处理：循环边界的设置错误，导致数组越界
+  2. 交换逻辑：忘记在每轮结束后进行元素交换
+  3. 比较条件：升序降序的比较符号使用错误
+  4. 索引管理：混淆数组索引和元素位置的关系
+
+作业练习网址：https://code.xdf.cn/freeIde?type=1
+            </div>
+            <div class="copy-hint" onclick="copyWechatFeedback()">
+              <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+            </div>
+          </div>
+          
+          <!-- 选择排序方法步骤 -->
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-cogs"></i> 选择排序详细步骤详解</h3>
+            <div class="sorting-steps">
+              <p><span class="step-number">1</span>确定排序方向：明确是要升序排列（从小到大）还是降序排列（从大到小）</p>
+              <p><span class="step-number">2</span>初始化外层循环：设置循环变量i从0到n-2（n为数组长度），控制排序轮数</p>
+              <p><span class="step-number">3</span>设定当前最值：将第i个元素设为当前未排序部分的最值，并记录其位置</p>
+              <p><span class="step-number">4</span>内层循环遍历：从i+1位置开始遍历到数组末尾，寻找真正的最值</p>
+              <p><span class="step-number">5</span>更新最值记录：如果找到更符合排序要求的元素，则更新最值及其位置</p>
+              <p><span class="step-number">6</span>执行位置交换：将找到的最值与第i个位置的元素进行交换</p>
+              <p><span class="step-number">7</span>进入下一轮：外层循环继续，i递增，重复步骤3-6直到排序完成</p>
+            </div>
+          </div>
+        </section>
+        
+        <!-- 私信反馈内容（C++---47选择排序） -->
+        <section class="feedback-card private-feedback">
+          <div class="card-header">
+            <i class="fas fa-envelope-open-text card-icon"></i>
+            <h2 class="card-title">私信反馈内容（C++---47选择排序）</h2>
+          </div>
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第四十七课·选择排序专题）</h3>
+            <div class="copyable-content" id="copyContent">
+😊【XX同学家长您好！】
+🌟 C++编程第四十七课【选择排序专题】的反馈来啦～
+
+👍 孩子课堂表现亮点 👍
+孩子在本节课中表现非常出色，学习态度积极，上课认真完成代码，具体亮点如下：
+1. 能够准确理解打擂台PK法找最值的原理，掌握了在数组中查找最大值和最小值的方法
+2. 清晰掌握选择排序的核心思想，理解每一轮找出一个最值进行交换的过程
+3. 熟练掌握选择排序的四个关键步骤，能正确分析外层循环和内层循环的作用
+4. 在排序方向（升序/降序）的控制方面表现出色，能正确设置比较条件
+
+📝 学习提醒与建议 📝
+请重点督促孩子巩固以下核心知识点：
+1. 选择排序的双重循环结构（重中之重）
+   - 牢记外层循环：控制排序的轮数，每轮确定一个元素的最终位置
+   - 练习建议：让孩子画出双重循环的执行流程图，理解内外层循环的关系
+   - 易错点提醒：注意内外层循环的边界条件设置，避免数组越界
+
+2. 打擂台PK法的完整实现
+   - 核心原则：正确初始化最值变量和位置变量，确保遍历完整个未排序区域
+   - 练习方法：给孩子不同的数组，让他手动模拟选择排序的过程
+   - 拓展练习：尝试实现既可以从大到小也可以从小到大的通用排序函数
+
+3. 交换操作的正确实现
+   - 核心思路：使用临时变量正确完成两个元素的值交换
+   - 练习建议：强调交换前后数组状态的变化，帮助孩子理解排序进度
+   - 技巧提升：通过可视化工具展示排序过程中数组的变化过程
+
+❤️【温馨提示】❤️
+选择排序是算法学习中的经典入门算法，它不仅帮助孩子理解排序的基本思想，更重要的是培养孩子的逻辑思维能力。孩子目前学习态度很好，课堂上能认真完成代码，对核心概念的掌握比较扎实。建议通过多做选择排序的练习来巩固知识，既能提高编程能力，又能培养严谨的算法思维。
+
+感谢您的配合与支持，期待孩子在后续的学习中取得更大进步！
+            </div>
+            <div class="copy-hint" onclick="copyContent()">
+              <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+            </div>
+          </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 家校沟通平台 | C++编程进阶版 | 选择排序巧掌握，算法思维更精进</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+

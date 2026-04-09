@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #fff8e1;
+            border: 1px dashed #ff9800;
+        }
+        
+        .private-feedback .card-icon {
+            color: #ff9800;
+        }
+        
+        .private-feedback .card-title {
+            color: #e65100;
+        }
+        
+        .private-feedback .content-title {
+            color: #ef6c00;
+        }
+        
+        .private-feedback .content-title i {
+            color: #ff9800;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #ede7f6;
+            color: #4a148c;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #d1c4e9;
+        }
+        
+        .copy-hint:hover {
+            background: #d1c4e9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-hotel header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+                <ul class="nav-links">
+                    <li><a href="../网页主页面.html"><i class="fas fa-home"></i> 主站导航 </a></li>
+                </ul>
+                <a href="../预科.html" class="back-to-course">
+                    <i class="fas fa-arrow-left"></i> 思维训练
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>少儿C++编程进阶课</h1>
+            <p>学校考试巧备战，逻辑运算解难题！</p>
+        </div>
+        
+        <!-- 群反馈内容（C++---21学校考试了） -->
+        <section class="feedback-card">
+          <div class="card-header">
+            <i class="fas fa-users card-icon"></i>
+            <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+          </div>
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-star"></i> 【C++---21学校考试了】课堂反馈（第21课·逻辑运算与多分支）</h3>
+            <div class="wechat-group-feedback" id="wechatGroupFeedback">
+【C++---21课学校考试了】🌈🌈 本节课重难点来了🌻🌻
+✅  逻辑运算与或非 📝。
+✅  数学公式 ： 数量 = 总价 / 单价 掌握和计算方法   📝
+✅  多分支判断语句  📝
+
+💖 课堂表现评价 💖
+本节课孩子们整体表现非常出色！大部分孩子上课专注认真，积极参与逻辑运算、数学公式应用、多分支语句等核心知识点学习，能熟练掌握逻辑运算"与或非"的使用场景，精准理解"数量=总价/单价"的数学公式及计算方法，还能结合多分支判断语句解决实际编程问题，独立解题能力显著提升。
+
+📚📚 重要的知识点梳理 📚📚
+✅①  与： 多个条件都满足，条件成立 ，2位数的判断，最小的2位数10，最大的2位数99， 双分支语句判断 ✅
+✅②  或： 多个条件满足其中一个，条件成立，  ✅
+✅③  分支和字符类型，整数类型的输入判断， ✅
+
+📖 核心知识点总结 & CSP竞赛习题本采购问题解题思路 📖
+🔹 两位数判断解题思路（逻辑与+双分支）：
+  - 核心逻辑：if(num >= 10 && num <= 99) → 是两位数（逻辑与：同时满足≥10和≤99）
+  - 双分支实现：
+    if(num >= 10 && num <= 99) {
+        cout << "是两位数";
+    } else {
+        cout << "不是两位数";
+    }
+
+🔹 CSP竞赛习题本采购问题完整解题思路：
+【题目描述】：老师买n个习题本，有3种包装（数量/价格不同），只能买同一种且不拆包，求买够至少n个的最小花费。
+
+【解题步骤】：
+1. 输入准备：
+   - 输入需要的总数量n
+   - 输入3种包装的信息：包装1（数量a1，价格p1）、包装2（数量a2，价格p2）、包装3（数量a3，价格p3）
+
+2. 单种包装花费计算（核心：向上取整）：
+   - 包装1需要购买的包数：
+     if(n % a1 == 0) → 包数 = n / a1 （刚好整除）
+     else → 包数 = n / a1 + 1 （不能整除，需要多买1包）
+   - 包装1总花费：cost1 = 包数 × p1
+   - 同理计算包装2总花费cost2、包装3总花费cost3
+
+3. 最小花费判断（多分支/比较）：
+   - 先比较cost1和cost2，找出较小值min_cost
+   - 再比较min_cost和cost3，最终得到最小花费
+   - 或用多分支语句实现：
+     if(cost1 <= cost2 && cost1 <= cost3) → 最小花费是cost1
+     else if(cost2 <= cost1 && cost2 <= cost3) → 最小花费是cost2
+     else → 最小花费是cost3
+
+4. 关键知识点应用：
+   - 逻辑与（&&）：用于多条件比较（如判断最小值）
+   - 数学公式：总价=数量×单价（反向应用：数量=总价/单价）
+   - 多分支语句：用于三种包装花费的最小值判断
+   - 整数判断：输入的n、包装数量/价格均为整数类型，需做输入合法性判断
+
+🔹 输入类型判断技巧：
+  - 整数类型判断：通过输入验证确保输入的是数字而非字符
+  - 字符类型判断：if(ch < '0' || ch > '9') → 不是数字字符
+
+作业练习网址： https://code.xdf.cn/freecode/editor?type=3&org=code
+            </div>
+            <div class="copy-hint" onclick="copyWechatFeedback()">
+              <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+            </div>
+          </div>
+        </section>
+        
+        <!-- 私信反馈内容（C++---02学校考试了） -->
+        <section class="feedback-card private-feedback">
+          <div class="card-header">
+            <i class="fas fa-envelope-open-text card-icon"></i>
+            <h2 class="card-title">私信反馈内容（C++---02学校考试了）</h2>
+          </div>
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第02课·学校考试了）</h3>
+            <div class="copyable-content" id="copyContent">
+😊【XX同学家长您好！】
+🌟 C++编程第02课【学校考试了】的反馈来啦～
+
+👍 孩子课堂表现亮点 👍
+孩子本节课的表现特别优秀！上课全程积极主动，举手回答问题非常踊跃，不仅能熟练掌握逻辑运算"与或非"的核心规则，精准理解"数量=总价/单价"的数学公式及计算方法，还能结合多分支判断语句解决实际问题。在CSP竞赛习题本采购的编程练习中，孩子能清晰梳理解题思路，独立完成"向上取整计算包数→计算单种包装花费→比较找最小值"的完整解题流程，正确率100%！
+
+📝 学习提醒与建议 📝
+孩子目前对逻辑运算和数学公式应用的掌握非常扎实，保持这份积极性继续前进呀！请提醒孩子：
+1. 课后及时完成作业练习（网址：https://code.xdf.cn/freecode/editor?type=3&org=code），重点练习：
+   - 两位数判断：用逻辑与（&&）实现"≥10且≤99"的条件判断
+   - CSP习题本采购问题：严格按照"输入→计算单包装花费→找最小值"三步法实现
+   - 输入类型判断：练习区分字符类型和整数类型的输入验证
+   
+2. 解题技巧强化：
+   - 向上取整计算：记住"整除则直接除，不整除则商+1"的核心规则
+   - 最小值比较：可以先两两比较，再和第三个值比较，避免逻辑混乱
+   - 多分支语句：判断最小值时，逻辑与（&&）要确保所有条件都满足
+
+3. 拓展练习：
+   - 改编习题本采购问题：增加包装种类到4种，练习多分支判断的拓展应用
+   - 结合单价公式：计算每种包装的"单价=总价/数量"，比较哪种包装单价更低
+
+❤️【温馨提示】❤️
+孩子在逻辑运算和实际问题转化的学习上表现突出，能快速将CSP竞赛的实际问题拆解为具体的编程步骤，这是编程竞赛的核心能力！逻辑运算、数学公式应用、多分支语句都是CSP竞赛的基础考点，孩子当前的掌握程度非常好，继续保持这个学习节奏，后续的竞赛类编程会更轻松。
+感谢您的配合与支持，期待下次课孩子带来更多惊喜表现！
+            </div>
+            <div class="copy-hint" onclick="copyContent()">
+              <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+            </div>
+          </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 家校沟通平台 | C++编程进阶版 | 逻辑运算巧应用，竞赛解题更高效</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

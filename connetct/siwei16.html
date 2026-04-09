@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #fff8e1;
+            border: 1px dashed #ff9800;
+        }
+        
+        .private-feedback .card-icon {
+            color: #ff9800;
+        }
+        
+        .private-feedback .card-title {
+            color: #e65100;
+        }
+        
+        .private-feedback .content-title {
+            color: #ef6c00;
+        }
+        
+        .private-feedback .content-title i {
+            color: #ff9800;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #ede7f6;
+            color: #4a148c;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #d1c4e9;
+        }
+        
+        .copy-hint:hover {
+            background: #d1c4e9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-hotel header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+                <ul class="nav-links">
+                    <li><a href="../网页主页面.html"><i class="fas fa-home"></i> 主站导航 </a></li>
+                </ul>
+                <a href="../预科.html" class="back-to-course">
+                    <i class="fas fa-arrow-left"></i> 思维训练
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>少儿C++编程进阶课</h1>
+            <p>分支语句灵活用，单位转换巧实现！</p>
+        </div>
+        
+        <!-- 群反馈内容（C++--16课 字符串类型） -->
+        <section class="feedback-card">
+          <div class="card-header">
+            <i class="fas fa-users card-icon"></i>
+            <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+          </div>
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-star"></i> 【C++--16课 字符串类型】课堂反馈（第16课·分支语句应用）</h3>
+            <div class="wechat-group-feedback" id="wechatGroupFeedback">
+【C++--16课 字符串类型 】🌈🌈 本节课重难点来了🌻🌻
+✅ 单分支语句应用，能够理解单分支格式和选择 📝。
+✅ 双分支语句应用，判断一件事情只有两个结果，进行选择📝
+✅ 多分支语句和单，双分支的区别，一件事情有很多个结果，选择其中一种条件进行 📝
+
+💖 课堂表现评价 💖
+本节课孩子们整体表现非常好！大部分孩子上课状态专注，遇到问题能主动举手询问，展现出积极的学习态度。在分支语句练习中，能快速理解单分支、双分支的格式和应用场景，清晰区分多分支与单/双分支的核心差异（多结果vs少结果），并能独立完成程序代码编写。在长度单位转换（米、分米、厘米）练习中，能结合分支语句实现灵活转换，课堂互动氛围热烈。
+
+📚📚 重要的知识点梳理 📚📚
+✅① 常见的长度单位转换，米，分米，厘米的转换 ✅
+✅② 分支语句嵌套，和逻辑运算符号的区分  ✅
+✅③ 分支的情况判断，能够正常使用，单分支，双分支，多分支 ✅
+
+📖 核心知识点总结 📖
+🔹 分支语句应用：掌握单分支（单一条件判断）、双分支（两个结果选择）、多分支（多个结果选择）的格式与适用场景，能根据问题结果数量选择对应分支类型
+🔹 长度单位转换：理解米、分米、厘米的换算关系（1米=10分米=100厘米），能通过分支语句实现不同单位间的灵活转换
+🔹 分支与逻辑运算区分：明确分支语句嵌套（if语句内部包含if判断）与逻辑运算（&&/||/!）的不同作用，避免混淆使用
+🔹 独立编程能力：能独立完成分支语句相关程序编写，遇到问题主动沟通，提升问题解决效率
+
+作业练习网址： https://code.xdf.cn/freeIde?type=1
+            </div>
+            <div class="copy-hint" onclick="copyWechatFeedback()">
+              <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+            </div>
+          </div>
+        </section>
+        
+        <!-- 私信反馈内容（C++--16课 字符串类型） -->
+        <section class="feedback-card private-feedback">
+          <div class="card-header">
+            <i class="fas fa-envelope-open-text card-icon"></i>
+            <h2 class="card-title">私信反馈内容（C++--16课 字符串类型）</h2>
+          </div>
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第16课·字符串类型）</h3>
+            <div class="copyable-content" id="copyContent">
+😊【XX同学家长您好！】
+🌟 C++编程第16课【字符串类型】的反馈来啦～
+
+👍 孩子课堂表现亮点 👍
+孩子本节课的表现特别出色！上课状态一直保持得很好，专注认真，遇到不懂的问题能主动举手询问老师，完全不畏惧难题，这种积极探索的态度特别棒！在分支语句练习中，孩子能精准理解单分支、双分支的格式和选择逻辑，清晰区分多分支与单/双分支的核心差异，还能独立完成全部程序代码编写，尤其是在米、分米、厘米的单位转换练习中，结合分支语句的实现非常规范，正确率很高！
+
+📝 学习提醒与建议 📝
+孩子目前的学习状态和独立编程能力都很突出，继续保持这份积极性呀！请提醒孩子：
+1. 课后及时完成作业练习（网址：https://code.xdf.cn/freeIde?type=1），重点巩固单/双/多分支语句的灵活运用，强化长度单位转换的编程实现
+2. 练习时注意区分分支语句嵌套和逻辑运算的不同用法，根据实际需求选择合适的编程方式
+3. 尝试拓展练习：结合分支语句和单位转换，编写"输入长度和单位，转换为目标单位"的综合程序
+4. 继续保持主动提问的好习惯，遇到问题及时沟通，避免知识漏洞积累
+
+❤️【温馨提示】❤️
+孩子在课堂上展现出的积极提问态度和独立编程能力，是编程学习的宝贵财富！分支语句是复杂程序编写的基础，孩子当前的掌握程度非常扎实，只要保持这份学习热情，后续的编程学习会更轻松。
+感谢您的配合与支持，期待下次课孩子带来更多惊喜表现！
+            </div>
+            <div class="copy-hint" onclick="copyContent()">
+              <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+            </div>
+          </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 家校沟通平台 | C++编程进阶版 | 分支语句巧应用，逻辑思维再提升</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

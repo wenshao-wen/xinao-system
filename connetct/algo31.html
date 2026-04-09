@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台 - C++ 字符串与字符数组 </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #f8fbff;
+            border: 1px dashed #3498db;
+        }
+        
+        .private-feedback .card-icon {
+            color: #3498db;
+        }
+        
+        .private-feedback .card-title {
+            color: #1a5276;
+        }
+        
+        .private-feedback .content-title {
+            color: #2874a6;
+        }
+        
+        .private-feedback .content-title i {
+            color: #3498db;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .copy-hint:hover {
+            background: #c8e6c9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+	<body>
+	    <!-- 固定头部导航栏 -->
+	    <header>
+	        <div class="header-container">
+	            <div class="header-left">
+	                <i class="fas fa-sort-amount-up header-icon"></i>
+	                <h1 class="header-title">家校沟通平台</h1>
+	            </div>
+	            <div class="header-right">
+	              <ul class="nav-links">
+	                  <li><a href="../网页主页面.html"><i class="fas fa-home"></i> 主站导航 </a></li>
+	                  <!-- <li><a href="#"><i class="fas fa-book"></i> 教学资源</a></li> -->
+	                  <!-- <li><a href="#"><i class="fas fa-comments"></i> 沟通记录</a></li> -->
+	              </ul>
+	              <a href="../算法.html" class="back-to-course">
+	                  <i class="fas fa-arrow-left"></i> 算法课程
+	              </a>
+	            </div>
+	        </div>
+	    </header>
+	
+	    <!-- 主体内容 -->
+	    <main>
+	        <div class="welcome-banner">
+	            <h1>编程逻辑 · 字符串与字符数组</h1>
+	            <p>第三十一次C++编程课：学习字符串与字符数组的核心概念和操作方法</p>
+	        </div>
+	        
+	        <!-- 群反馈内容 -->
+	        <section class="feedback-card">
+	            <div class="card-header">
+	                <i class="fas fa-users card-icon"></i>
+	                <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+	            </div>
+	            
+	            <div class="content-section">
+	                <h3 class="content-title"><i class="fas fa-star"></i> 【C++---31字符串与字符数组】课堂反馈（第三十一课·字符串处理）</h3>
+	                
+	                <div class="wechat-group-feedback" id="wechatGroupFeedback">
+🔄😊 各位家长好！本次C++课【字符串与字符数组】来啦~ 孩子们学习字符串的核心概念，掌握字符数组的操作方法！  
+
+✨【课堂整体表现】✨  
+- 😃 氛围：字符串主题贴近实际应用，孩子理解字符序列的概念，主动尝试不同的字符串输入输出方法  
+- 👍 亮点：**字符串与字符数组基础**掌握快（如字符数组声明、字符串输入输出），
+- ⚠️ 注意点：部分同学对'\0'结尾标识符理解不深，或使用库函数时参数错误，已用实例演示纠正  
+
+🎯 C++ 字符串与字符数组 重难点梳理
+🌈🌈 本节课内容 🌻🌻
+✅ 字符串的本质：由字符组成的序列，C++ 中需以'\0'作为结尾标识符📝
+✅ 字符数组的存储：作为字符串的容器，声明格式为数据类型 数组名[长度]📝
+✅ 字符数组的输入方式：cin（遇空格 / 回车停止）、cin.getline()（读取整行含空格）📝
+📚📚 重难点解析 📚📚
+✅ ① 字符串结尾标识符'\0'：隐式添加，不占有效长度但占数组存储空间✅
+✅ ② 字符数组核心库函数：strlen()（有效长度）、strcpy()（拷贝）、strcat()（拼接）、strcmp()（区分大小写比较）、strcasecmp()（不区分大小写比较）✅
+✅ ③ 字典序比较规则：逐字符比 ASCII 值，字符不同则定大小；字符全同则短字符串更小✅
+
+📝🔗 作业练习网址（文字版）：  
+[点击这里访问作业练习页面] https://code.xdf.cn/freecode/editor?type=3&org=code
+
+✅ 作业练习建议：可基于字符数组操作函数，完成字符串输入、拼接、比较类编程题
+✅ 作业要求：作业完成后拍照发班级群打卡  
+
+	                </div>
+	                
+	                <div class="copy-hint" onclick="copyWechatFeedback()">
+	                    <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+	                </div>
+	            </div>
+	        </section>
+	        
+	        <!-- 私信反馈内容 -->
+	        <section class="feedback-card private-feedback">
+	            <div class="card-header">
+	                <i class="fas fa-envelope-open-text card-icon"></i>
+	                <h2 class="card-title">私信反馈内容（可直接复制发送）</h2>
+	            </div>
+	            
+	            <div class="content-section">
+	                <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第三十课·字符串与字符数组实战）</h3>
+	                
+	                <div class="copyable-content" id="copyContent">
+😊【XX同学家长您好！】  
+
+🌟 本次C++课【字符串与字符数组】反馈来啦~ 孩子学习字符串的核心概念，掌握字符数组的操作方法，既有亮点也有提升空间！ 🌟  
+
+✨【表现亮点】✨  
+- **字符串基础概念清晰**：理解字符串由字符序列组成，能正确声明和初始化字符数组 🧮  
+- **输入输出方法熟练**：能正确使用cin和cin.getline()进行字符串输入，掌握不同场景的使用区别 ✨  
+- **库函数应用正确**：能正确使用strlen()、strcpy()等核心库函数处理字符串 ✔️  
+
+⚠️【需重点关注】⚠️  
+- **'\0'标识符理解**：对字符串结尾的'\0'标识符作用理解不深，导致数组长度计算错误  
+- **库函数使用细节**：在使用strcpy()和strcat()时，有时会忽略目标数组的长度限制，导致内存越界  
+- **字典序比较规则**：对字符串字典序比较的底层逻辑（ASCII值比较）理解不透彻  
+
+📚【回家练习建议】📚  
+1. **专项突破练习**：  
+   - 练习不同长度字符数组的声明和初始化，观察'\0'的存储位置和影响  
+   - 对比使用cin和cin.getline()读取含空格的字符串，理解两者的区别  
+   - 练习使用各类字符串库函数，编写字符串拼接、比较、拷贝的小程序  
+
+2. **作业完成情况**：孩子已完成基础题，但在"字符串字典序比较"部分标了问号，明天课上重点讲解  
+
+🌱【温馨提示】🌱  
+字符串处理是C++编程中的基础且重要的内容，理解字符数组和字符串库函数的使用对后续学习文本处理、文件操作等内容至关重要。本课的"字符串与字符数组实战"不仅锻炼了孩子的逻辑思维，也为他们未来学习更复杂的编程内容打下了基础。建议每天安排15-20分钟的专项练习，帮助孩子巩固所学知识。有任何问题，欢迎随时与我沟通！
+
+	                </div>
+	                
+	                <div class="copy-hint" onclick="copyContent()">
+	                    <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+	                </div>
+	            </div>
+	        </section>
+	    </main>
+	
+	    <footer>
+	        <p>© 2023 家校沟通平台 | 字符串与字符数组版 | 让字符串处理更高效</p>
+	    </footer>
+	
+	    <script>
+	        // 复制群反馈功能
+	        function copyWechatFeedback() {
+	            const contentElement = document.getElementById('wechatGroupFeedback');
+	            const content = contentElement.textContent;
+	            navigator.clipboard.writeText(content).then(() => {
+	                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+	                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+	                setTimeout(() => {
+	                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+	                }, 3000);
+	            }).catch(err => {
+	                console.error('复制失败:', err);
+	                const range = document.createRange();
+	                range.selectNode(contentElement);
+	                window.getSelection().removeAllRanges();
+	                window.getSelection().addRange(range);
+	                alert('请按 Ctrl+C 复制选中的内容');
+	            });
+	        }
+	        
+	        // 复制私信模板功能
+	        function copyContent() {
+	            const contentElement = document.getElementById('copyContent');
+	            const content = contentElement.textContent;
+	            navigator.clipboard.writeText(content).then(() => {
+	                const hint = document.querySelector('.copyable-content + .copy-hint');
+	                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+	                setTimeout(() => {
+	                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+	                }, 3000);
+	            }).catch(err => {
+	                console.error('复制失败:', err);
+	                const range = document.createRange();
+	                range.selectNode(contentElement);
+	                window.getSelection().removeAllRanges();
+	                window.getSelection().addRange(range);
+	                alert('请按 Ctrl+C 复制选中的内容');
+	            });
+	        }
+	        
+	        // 卡片悬停效果
+	        document.addEventListener('DOMContentLoaded', function() {
+	            const cards = document.querySelectorAll('.feedback-card');
+	            cards.forEach(card => {
+	                card.addEventListener('mouseenter', function() {
+	                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+	                });
+	                card.addEventListener('mouseleave', function() {
+	                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+	                });
+	            });
+	        });
+	    </script>
+	</body>
+	</html>

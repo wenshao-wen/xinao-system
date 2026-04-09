@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新东方少儿编程学习平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --primary-light: #81C784;
+            --secondary: #FF9800;
+            --accent: #FF5722;
+            --light: #f8fff8;
+            --dark: #2E2E2E;
+            --gray: #666;
+            --light-gray: #f0f4f0;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 8px 32px rgba(76, 175, 80, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--light) 0%, var(--light-gray) 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* 自然背景 */
+        .nature-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .leaf {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-light);
+            border-radius: 50% 0;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+
+        .leaf:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .leaf:nth-child(2) { top: 20%; right: 15%; animation-delay: 3s; }
+        .leaf:nth-child(3) { top: 60%; left: 5%; animation-delay: 6s; }
+        .leaf:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 9s; }
+        .leaf:nth-child(5) { bottom: 40%; left: 20%; animation-delay: 12s; }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
+            100% { transform: translateY(0) rotate(360deg); opacity: 0.3; }
+        }
+
+        /* 头部导航 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary-light);
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 2.2rem;
+            animation: swing 3s ease-in-out infinite;
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            border: 2px solid transparent;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .xdf-link {
+            background: linear-gradient(135deg, var(--secondary), var(--accent)) !important;
+            color: white !important;
+            padding: 0.7rem 2rem !important;
+            border: none !important;
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3) !important;
+        }
+
+        .xdf-link:hover {
+            background: linear-gradient(135deg, var(--accent), #E64A19) !important;
+            transform: translateY(-3px) !important;
+            box-shadow: 0 8px 25px rgba(255, 87, 34, 0.4) !important;
+        }
+
+        /* 主内容区 */
+        .content {
+            max-width: 1200px;
+            margin: 120px auto 0;
+            padding: 2rem 20px;
+        }
+
+        /* 轮播图 */
+        .carousel {
+            position: relative;
+            height: 480px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 4rem;
+            border: 3px solid var(--primary-light);
+        }
+
+        .carousel-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding: 0 8%;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-item:nth-child(1) {
+            background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(248, 255, 248, 0.85)), 
+                        url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+        }
+
+        .carousel-item:nth-child(2) {
+            background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(248, 255, 248, 0.85)), 
+                        url('https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+        }
+
+        .carousel-item:nth-child(3) {
+            background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(248, 255, 248, 0.85)), 
+                        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+        }
+
+        .carousel-caption {
+            color: var(--dark);
+            max-width: 650px;
+            animation: slideInRight 1s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .carousel-caption h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .carousel-caption p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .carousel-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 35px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 1.2rem;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .carousel-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        .carousel-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+
+        .carousel-control {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .carousel-control.active {
+            background: var(--primary);
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+        }
+
+        /* 标题样式 - 行内紧凑 */
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            padding: 0 10px;
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 2.4rem;
+            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .section-title i {
+            color: var(--primary);
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-divider {
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            margin: 1rem auto;
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0.5rem auto 0;
+            line-height: 1.6;
+            display: inline-block;
+        }
+
+        /* 编程好处部分 - 行内紧凑 */
+        .benefits-section {
+            margin-bottom: 4rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid var(--primary-light);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(76, 175, 80, 0.2);
+        }
+
+        .benefit-icon {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            color: white;
+        }
+
+        .benefit-content {
+            padding: 1.8rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .benefit-content h3 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .benefit-content h3 i {
+            color: var(--primary);
+            font-size: 1.2rem;
+            background: var(--light-gray);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .benefit-content p {
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        /* 课程设置部分 - 行内紧凑 */
+        .courses-section {
+            margin-bottom: 4rem;
+        }
+
+        .courses-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .course-tab {
+            background: var(--light-gray);
+            border: 2px solid var(--primary-light);
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            color: var(--primary-dark);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .course-tab:hover, .course-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid var(--primary-light);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(76, 175, 80, 0.2);
+        }
+
+        .course-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.8rem;
+            text-align: center;
+        }
+
+        .course-header h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .course-header p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .course-body {
+            padding: 1.8rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-body h4 {
+            color: var(--primary-dark);
+            margin-bottom: 1.2rem;
+            font-size: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .course-body h4 i {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .course-features {
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .course-features li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 2.2rem;
+            color: var(--gray);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            list-style: none;
+        }
+
+        .course-features li::before {
+            content: "🌱";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.2rem;
+        }
+
+        .course-stats {
+            display: inline-flex;
+            align-items: center;
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+            padding-top: 1rem;
+            border-top: 2px dashed var(--primary-light);
+            gap: 15px;
+        }
+
+        .course-stats i {
+            margin-right: 5px;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .enroll-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            text-align: center;
+            padding: 0.9rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: auto;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .enroll-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        /* 赛考政策介绍部分 - 行内紧凑 */
+        .exam-policy {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 4rem;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--primary-light);
+        }
+
+        .policy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .policy-card {
+            background: linear-gradient(135deg, var(--light-gray), rgba(255, 255, 255, 0.8));
+            border-radius: 15px;
+            padding: 1.8rem;
+            border: 2px solid var(--primary-light);
+            transition: var(--transition);
+        }
+
+        .policy-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow);
+        }
+
+        .policy-card h3 {
+            color: var(--primary-dark);
+            margin-bottom: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            gap: 10px;
+        }
+
+        .policy-card h3 i {
+            margin-right: 10px;
+            color: var(--primary);
+            font-size: 1.4rem;
+            background: var(--light-gray);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .policy-card p {
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .policy-card ul {
+            padding-left: 0;
+        }
+
+        .policy-card li {
+            margin-bottom: 0.8rem;
+            color: var(--gray);
+            position: relative;
+            padding-left: 2rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            list-style: none;
+        }
+
+        .policy-card li::before {
+            content: "🎯";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.1rem;
+        }
+
+        /* 底部链接 */
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            border-top: 2px solid var(--primary-light);
+            padding: 2.5rem 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-links {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--dark);
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            background: var(--light-gray);
+            border: 2px solid var(--primary-light);
+            transition: var(--transition);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .footer-link:hover {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .carousel {
+                height: 380px;
+            }
+            
+            .carousel-caption h2 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0.8rem 0;
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.8rem;
+            }
+            
+            .carousel {
+                height: 300px;
+            }
+            
+            .carousel-caption h2 {
+                font-size: 1.8rem;
+            }
+            
+            .carousel-caption p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+                white-space: normal;
+                flex-wrap: wrap;
+            }
+            
+            .exam-policy {
+                padding: 2rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .footer-link {
+                width: 90%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .carousel {
+                height: 250px;
+            }
+            
+            .carousel-caption h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .benefit-card, .course-card, .policy-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 自然背景 -->
+    <div class="nature-bg">
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+    </div>
+
+    <!-- 头部导航 -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-seedling"></i>
+                新东方少儿编程
+            </div>
+            <ul class="nav-links">
+				
+			  	<li><a href="GOC基础版本.html" class="active" target="_blank" ><i class="fas fa-file-powerpoint"></i> GOC启航</a></li>
+                <li><a href="预科.html" target="_blank"  ><i class="fas fa-file-powerpoint"></i> 思维预科</a></li>
+				<li><a href="算法.html"  target="_blank"  ><i class="fas fa-file-powerpoint"></i> 算法竞赛</a></li>
+                <!-- <li><a href="https://code.xdf.cn/home" class="xdf-link" target="_blank"><i class="fas fa-external-link-alt"></i> 新东方在线</a></li> -->
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="content">
+        <!-- 轮播图 -->
+        <div class="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="carousel-caption">
+                        <h2>播种编程梦想，收获智慧未来</h2>
+                        <p>在快乐的学习中培养逻辑思维，让每个孩子都能在数字的田野里自由生长！</p>
+                        <a href="#" class="carousel-btn">开启编程之旅</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-caption">
+                        <h2>从好奇到精通，见证成长每一步</h2>
+                        <p>科学的课程体系，陪伴孩子从编程新手成长为数字世界的创造者！</p>
+                        <a href="#" class="carousel-btn">探索课程体系</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-caption">
+                        <h2>竞赛舞台，展现少年风采</h2>
+                        <p>专业教练团队指导，让孩子的才华在竞技场上绽放光芒！</p>
+                        <a href="#" class="carousel-btn">了解竞赛机会</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <div class="carousel-control active"></div>
+                <div class="carousel-control"></div>
+                <div class="carousel-control"></div>
+            </div>
+        </div>
+
+        <!-- 编程好处部分 - 行内紧凑 -->
+        <section class="benefits-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-spa"></i>学习少儿编程的收获<i class="fas fa-tree"></i>
+                </h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">编程如种树，浇灌思考的甘露，培育解决问题的根系，终将收获智慧的果实</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3><i class="fas fa-lightbulb"></i>思维之树茁壮成长</h3>
+                        <p>编程学习像给思维浇水施肥，系统性地培养孩子的逻辑推理能力。孩子们学会像园丁一样分析问题、规划步骤、培育创意，最终创造出属于自己的数字花园。</p>
+                    </div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3><i class="fas fa-users"></i>协作之花共同绽放</h3>
+                        <p>在团队项目中，孩子们学会倾听、分享、互助，就像森林中的树木相互支撑。这种协作精神将伴随他们，在未来的任何领域都能茁壮成长。</p>
+                    </div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3><i class="fas fa-crosshairs"></i>专注之力根深蒂固</h3>
+                        <p>调试代码如同修剪枝叶，需要耐心与专注。这个过程培养出孩子面对挑战时的坚韧品格，这种品质将成为他们人生道路上最坚实的根基。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 课程设置部分 - 行内紧凑 -->
+        <section class="courses-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-book-open"></i>成长路径<i class="fas fa-route"></i>
+                </h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">精心设计的学习路线，如林间小径般引导孩子们探索编程的奥秘</p>
+            </div>
+            <div class="courses-tabs">
+                <div class="course-tab active"><i class="fas fa-seedling"></i>启蒙探索</div>
+                <div class="course-tab"><i class="fas fa-leaf"></i>基础构建</div>
+                <div class="course-tab"><i class="fas fa-tree"></i>进阶发展</div>
+                <div class="course-tab"><i class="fas fa-trophy"></i>精英挑战</div>
+            </div>
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-header">
+                        <h3>Scratch创意工坊</h3>
+                        <p>图形化编程 · 6-10岁 · 启蒙探索</p>
+                    </div>
+                    <div class="course-body">
+                        <h4><i class="fas fa-star"></i>课程特色：</h4>
+                        <ul class="course-features">
+                            <li>拖拽积木，像搭乐高一样学编程</li>
+                            <li>创作互动故事、动画和小游戏</li>
+                            <li>培养计算思维和表达自信</li>
+                            <li>项目制学习，每课都有作品</li>
+                            <li>激发好奇心，享受创造的快乐</li>
+                        </ul>
+                        <div class="course-stats">
+                            <span><i class="fas fa-users"></i>166,872名小创客</span>
+                            <span><i class="fas fa-clock"></i>48课时</span>
+                        </div>
+                        <a href="#" class="enroll-btn">加入创意工坊</a>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-header">
+                        <h3>Python智慧农场</h3>
+                        <p>代码编程 · 10-14岁 · 基础构建</p>
+                    </div>
+                    <div class="course-body">
+                        <h4><i class="fas fa-star"></i>课程特色：</h4>
+                        <ul class="course-features">
+                            <li>简洁语法，快速收获编程果实</li>
+                            <li>探索数据可视化和简单AI应用</li>
+                            <li>开发实用小工具和趣味项目</li>
+                            <li>培养工程思维和问题解决能力</li>
+                            <li>为未来学习打下坚实基础</li>
+                        </ul>
+                        <div class="course-stats">
+                            <span><i class="fas fa-users"></i>133,832名小工程师</span>
+                            <span><i class="fas fa-clock"></i>64课时</span>
+                        </div>
+                        <a href="#" class="enroll-btn">探索智慧农场</a>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-header">
+                        <h3>C++算法森林</h3>
+                        <p>竞赛编程 · 12-16岁 · 进阶发展</p>
+                    </div>
+                    <div class="course-body">
+                        <h4><i class="fas fa-star"></i>课程特色：</h4>
+                        <ul class="course-features">
+                            <li>深入学习算法和数据结构</li>
+                            <li>挑战信息学奥赛经典题型</li>
+                            <li>培养高效解题策略和代码优化能力</li>
+                            <li>专业教练个性化指导</li>
+                            <li>为升学和竞赛做好充分准备</li>
+                        </ul>
+                        <div class="course-stats">
+                            <span><i class="fas fa-users"></i>160,861名小算法师</span>
+                            <span><i class="fas fa-clock"></i>96课时</span>
+                        </div>
+                        <a href="#" class="enroll-btn">进入算法森林</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 赛考政策介绍部分 - 行内紧凑 -->
+        <section class="exam-policy">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-award"></i>成长认证体系<i class="fas fa-certificate"></i>
+                </h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">权威认证如年轮记录成长，见证孩子们在编程道路上的每一个进步</p>
+            </div>
+            <div class="policy-grid">
+                <div class="policy-card">
+                    <h3><i class="fas fa-medal"></i>中国电子学会考级</h3>
+                    <p>国家级编程能力认证，如同给小树挂上成长标签，记录每个阶段的拔高时刻。</p>
+                    <ul>
+                        <li>覆盖Scratch、Python、C++三大方向</li>
+                        <li>一年四次考试机会，灵活安排</li>
+                        <li>证书获名校认可，助力升学</li>
+                        <li>科学评估体系，见证点滴进步</li>
+                        <li>全国统一标准，含金量十足</li>
+                    </ul>
+                </div>
+                <div class="policy-card">
+                    <h3><i class="fas fa-trophy"></i>GESP考级体系</h3>
+                    <p>计算机学会推出的能力认证，如森林认证般权威，为竞赛之路铺就第一块基石。</p>
+                    <ul>
+                        <li>与信息学奥赛无缝衔接</li>
+                        <li>分级考试，循序渐进</li>
+                        <li>可获CSP-J/S参赛资格</li>
+                        <li>国际互认，全球通行</li>
+                        <li>定期测评，持续激励</li>
+                    </ul>
+                </div>
+                <div class="policy-card">
+                    <h3><i class="fas fa-star"></i>信息学奥赛体系</h3>
+                    <p>国内最高水平的编程竞赛，如同森林之王的角逐，展现顶尖少年的智慧锋芒。</p>
+                    <ul>
+                        <li>多层次竞赛体系，适合不同阶段</li>
+                        <li>获奖可获名校保送或降分录取</li>
+                        <li>培养顶尖算法思维和抗压能力</li>
+                        <li>代表中国参加国际赛事</li>
+                        <li>专业教练团队全程护航</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 底部链接 -->
+    <footer>
+        <div class="footer-links">
+            <a href="https://www.qceit.org.cn/bos/default.html?d=4460.850700805553" class="footer-link" target="_blank">
+                <i class="fas fa-graduation-cap"></i>中国电子学会考级
+            </a>
+            <a href="https://gesp.ccf.org.cn/" class="footer-link" target="_blank">
+                <i class="fas fa-trophy"></i>GESP考级官网
+            </a>
+            <a href="https://www.noi.cn/" class="footer-link" target="_blank">
+                <i class="fas fa-medal"></i>NOI官网
+            </a>
+            <a href="https://code.xdf.cn/home" class="footer-link" target="_blank">
+                <i class="fas fa-code"></i>新东方编程学习
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // 轮播图功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const items = document.querySelectorAll('.carousel-item');
+            const controls = document.querySelectorAll('.carousel-control');
+            let currentIndex = 0;
+            
+            function showSlide(index) {
+                items.forEach(item => item.classList.remove('active'));
+                controls.forEach(control => control.classList.remove('active'));
+                
+                items[index].classList.add('active');
+                controls[index].classList.add('active');
+                currentIndex = index;
+            }
+            
+            controls.forEach((control, index) => {
+                control.addEventListener('click', () => {
+                    showSlide(index);
+                });
+            });
+            
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % items.length;
+                showSlide(currentIndex);
+            }, 5000);
+            
+            // 课程选项卡功能
+            const courseTabs = document.querySelectorAll('.course-tab');
+            
+            courseTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    courseTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                });
+            });
+            
+            // 滚动时头部效果
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.style.background = 'rgba(255, 255, 255, 0.98)';
+                    header.style.boxShadow = '0 6px 30px rgba(76, 175, 80, 0.15)';
+                } else {
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                    header.style.boxShadow = '0 4px 20px rgba(76, 175, 80, 0.1)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

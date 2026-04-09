@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOC课程梳理 - 循环结构重难点</title>
+    <style>
+        * {
+            margin: 10px  0px ;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding-right: 60px; /* 预留右侧按钮空间 */
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            right: 20px;
+            bottom: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #3498db;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-to-top::before {
+            content: "↑";
+            font-size: 16px;
+        }
+
+        .back-to-top:hover {
+            background-color: #fff;
+            color: #2980b9;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 导航栏 */
+        nav {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-left {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-right a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-right a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 主内容区 */
+        .main-content {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 标题 */
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0);
+        }
+
+        .title h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 编程标题样式优化 */
+        .code-title {
+            font-family: 'Consolas', 'Monaco', monospace; /* 等宽字体，突出代码感 */
+            color: #e74c3c; /* 醒目红色 */
+            border-left: 4px solid #e74c3c;
+            padding: 8px 15px;
+            background-color: #f8f9fa;
+            border-radius: 0 4px 4px 0;
+            margin: 25px 0 15px;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* 题目内容区域 */
+        .topics {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .topic {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .topic:hover {
+            transform: translateY(-5px);
+        }
+
+        .topic h2 {
+            color: #3498db;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .topic h2:hover {
+            background: linear-gradient(45deg, #ff7b00, #ff9500, #ffb84d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(255, 149, 0, 0.5);
+        }
+
+        .topic ul {
+            list-style-type: none;
+        }
+
+        .topic li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .topic li::before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .topic li strong {
+            color: #2c3e50;
+        }
+
+        /* 案例练习模式 - 上下结构 */
+        .practice-section {
+            margin-top: 40px;
+        }
+
+        .practice-item {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .practice-description {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .practice-code-image {
+            padding: 20px;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+
+        .practice-code-image img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fafafa;
+        }
+
+        .practice-title {
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #e74c3c;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .practice-question {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .practice-key {
+            margin: 15px 0;
+            color: #27ae60;
+        }
+
+        .practice-key br {
+            margin-bottom: 10px;
+            display: block;
+            content: "";
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            body {
+                padding-right: 0;
+            }
+            
+            .back-to-top {
+                right: 15px;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .nav-left {
+                text-align: center;
+            }
+
+            .nav-right {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .main-content {
+                margin: 20px 10px;
+                padding: 0 10px;
+            }
+
+            .title h1 {
+                font-size: 24px;
+            }
+
+            .topic {
+                padding: 20px;
+            }
+
+            .topic h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="nav-left">GOC课程梳理</div>
+        <div class="nav-right">
+            <a href="../网页主页面.html">导航主页</a>
+            <a href="../GOC基础版本.html">GOC主页</a>
+        </div>
+    </nav>
+
+    <!-- 返回顶部按钮 -->
+    <a href="#" class="back-to-top">返回顶部</a>
+
+    <!-- 主内容 -->
+    <div class="main-content">
+        <!-- 页面主标题 -->
+        <div class="title">
+            <h1>GOC课程 -03 五环护盾  </h1>
+        </div>
+
+        <!-- 题目部分：知识点、难点、练习 -->
+        <div class="topics">
+            <!-- 1. 知识点梳理 -->
+            <div class="topic">
+                <h2>知识点梳理内容</h2>
+                
+                <div class="code-title">圆形指令</div>
+                				                <ul>
+                				                    <li>
+                				                        <strong>绘制空心圆</strong>：
+                				                        格式：pen.o(圆形的大小);     
+                				 <br> 特点：  <br>
+                				名称：绘制圆形，空心圆<br>
+                功能：绘制圆形，数值表示大小  <br>
+                说明：一个数值表大小，2个数值 表大小和颜色 <br>
+                样例：pen.o(200,1)  圆形的大小是 200 ，颜色1号色 <br>
+                
+                				
+                				
+                				<BR>		
+                				                    </li>
+                				                   
+                				                </ul>
+												
+							<!-- 绘制示例2	 -->
+							<div class="code-title">圆形指令</div>
+											                <ul>
+											                    <li>
+											                        <strong>绘制实心</strong>：
+											                        格式：pen.oo(圆形的大小);     
+											 <br> 特点：  <br>
+											名称：绘制圆形，实心圆<br>
+							功能：绘制圆形，数值表示大小  <br>
+							说明：一个数值表大小，2个数值 表大小和颜色 <br>
+							样例：pen.oo(200,1)  圆形的大小是 200 ，颜色1号色 <br>
+							
+											
+											
+											<BR>		
+											                    </li>
+											                   
+											                </ul>
+															
+					<div class="code-title">后退指令</div>
+									                <ul>
+									                    <li>
+									                        <strong>当前的画笔向相反的方向后退 步数</strong>：
+									                        格式：pen.bk(后退的长度数值 );     
+									 <br> 特点：  <br>
+		名称：后退 <br>功能：笔向后移动指定长度，以当前颜色画一条直线。<br> 说明： bk是back(后退)的缩写；length可为整数或小数。 <br> 样例：pen.bk( 80 );
+					
+									
+									
+									<BR>		
+									                    </li>
+									                   
+									                </ul>
+				<!-- 抬笔 -->
+				<div class="code-title">抬笔指令</div>
+													                <ul>
+													                    <li>
+													                        <strong>把画笔抬起来</strong>：
+													                        格式：pen.up();     
+   
+													 <br> 特点：  <br>
+						名称：抬笔 <br>功能：把笔抬起悬空(阴影表示)，以后笔移动时不会画出直线 。 <br>说明：没有参数。抬笔只是影响fd和lineTo命令，<br>对画圆、椭圆、矩形等命令没有影响。   <br>
+				
+													
+									<!-- 落笔				 -->
+									
+				<div class="code-title">落笔指令</div>
+																	                <ul>
+																	                    <li>
+																	                        <strong>落下画笔开始绘制</strong>：
+																	                        格式：pen.down();     
+				   
+																	 <br> 特点：  <br>
+									名称：落笔 <br>功能：把笔落下，以后笔移动时又会正常画出直线。 <br>说明：没有参数。    <br>
+				
+								
+																	
+													<!-- 落笔				 -->					
+															
+            </div>
+
+
+
+        <!-- 案例练习模式 - 上下结构 -->
+        <div class="practice-section">
+            <h2 style="color: #fff; text-align: center; margin-bottom: 30px;">案例练习模式</h2>
+            
+			<!-- =0. 配套作业练习 -->
+			    <div class="topic">
+			        <h2>配套练习</h2>
+			        <ul>
+			            <li><strong>基础语法练习1 </strong>：绘制彩线 </li>
+			            <li><strong>基础语法练习2 </strong>：绘制护盾</li>
+			        </ul>
+			    </div>
+			</div>  
+            <!-- 示例1：while循环计算1-50的和 -->
+            <div class="practice-item">
+                <div class="practice-description">
+                    <div class="practice-title">绘制一个彩线 </div>
+                    <div class="practice-question">
+                        <strong>【题目】</strong>绘制一个不同颜色彩线，注意抬笔和落笔 绘制 
+                    </div>
+					<div class="practice-code-image">
+					    <img src="gocpic/goc31.png" alt="for循环输出10-20的偶数" />
+					</div> 
+                    
+                </div>
+           
+            </div>
+
+            <!-- 示例2：for循环输出10-20的偶数 -->
+            <div class="practice-item">
+                <div class="practice-description">
+                    <div class="practice-title">示例2：绘制护盾1  </div>
+                    <div class="practice-question">
+                        <strong>【题目】</strong>绘制一个美国队长的护盾外环
+                    </div>
+					<div class="practice-code-image">
+					    <img src="gocpic/goc32.png" alt="for循环输出10-20的偶数" />
+					</div> 
+            
+                </div>
+        
+            </div>
+
+            <!-- 示例3：阶乘累加计算 -->
+            <div class="practice-item">
+                <div class="practice-description">
+                   <div class="practice-title">示例2：绘制护盾1  </div>
+                   <div class="practice-question">
+                       <strong>【题目】</strong>绘制一个美国队长的护盾五角星
+                   </div>
+                   <div class="practice-code-image">
+                       <img src="gocpic/goc33.png" alt="for循环输出10-20的偶数" />
+                   </div> 
+                               
+                </div>
+           .
+            </div>
+			
+.
+        </div>
+
+        <!-- 作业练习的图片展示 -->
+        <div class="practice-section">
+            <h2 style="color: #fff; text-align: center; margin-bottom: 30px;">作业练习参考</h2>
+            
+            <!-- 作业列表 -->
+            <div class="topics">
+                <div class="topic">
+                    <h2>作业练习</h2>
+                    <ul>
+                        <li><strong>作业练习1 </strong>：绘制彩线</li>
+                        <li><strong>作业练习2</strong>：绘制彩球</li>.
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 作业1 -->
+            <div class="practice-item">
+                <div class="practice-description">
+                    <div class="practice-title">作业练习1：彩线</div>
+                    <div class="practice-question">
+                        <strong>【题目要求】</strong>按照下面的要求，绘制图案
+                    </div>
+                </div>
+                <div class="practice-code-image">
+                     <img src="gocpic/goc34.png" alt="for循环输出10-20的偶数" />
+                </div>
+            </div>
+
+            <!-- 作业2 -->
+            <div class="practice-item">
+                <div class="practice-description">
+                    <div class="practice-title">作业练习2：绘制彩球</div>
+                    <div class="practice-question">
+                           <strong>【题目要求】</strong>按照下面的要求，绘制图案
+                    </div>
+                </div>
+                <div class="practice-code-image">
+                     <img src="gocpic/goc35.png" alt="for循环输出10-20的偶数" />
+                </div>
+            </div>
+
+           .
+        </div>
+    </div>
+
+    <script>
+        // 返回顶部按钮功能
+        const backToTopBtn = document.querySelector('.back-to-top');
+        
+        // 滚动时显示/隐藏按钮
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) { // 滚动超过300px显示
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        
+        // 点击返回顶部
+        backToTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // 平滑滚动
+            });
+        });
+    </script>
+</body>
+</html>

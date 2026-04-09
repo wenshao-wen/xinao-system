@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台 - C++因数与倍数课程</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #fff8e1;
+            border: 1px dashed #ff9800;
+        }
+        
+        .private-feedback .card-icon {
+            color: #ff9800;
+        }
+        
+        .private-feedback .card-title {
+            color: #e65100;
+        }
+        
+        .private-feedback .content-title {
+            color: #ef6c00;
+        }
+        
+        .private-feedback .content-title i {
+            color: #ff9800;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #ede7f6;
+            color: #4a148c;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #d1c4e9;
+        }
+        
+        .copy-hint:hover {
+            background: #d1c4e9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-calculator header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+               <ul class="nav-links">
+                   <li><a href="../网页主页面.html"><i class="fas fa-home"></i>导航首页</a></li>
+                   <!-- <li><a href="#"><i class="fas fa-book"></i> 教学资源</a></li> -->
+                   <!-- <li><a href="#"><i class="fas fa-comments"></i> 沟通记录</a></li> -->
+               </ul>
+               <a href="../课件a.html" class="back-to-course">
+                   <i class="fas fa-arrow-left"></i> 返回课程
+               </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>逻辑思维 · 因数与倍数</h1>
+            <p>第24次C++编程课：以因数倍数为载体，夯实取模运算与多分支判断核心能力</p>
+        </div>
+        
+        <!-- 群反馈内容 -->
+        <section class="feedback-card">
+            <div class="card-header">
+                <i class="fas fa-users card-icon"></i>
+                <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-star"></i> 【C++第24课：因数与倍数】课堂反馈（逻辑思维强化）</h3>
+                
+                <div class="wechat-group-feedback" id="wechatGroupFeedback">
+🌱 各位家长好！本次C++课程我们聚焦「因数与倍数」主题，带领孩子将数学逻辑转化为代码思维，重点练习取模运算（%）与多分支判断语句，为后续算法学习筑牢基础。  
+
+✨ 课堂整体表现 ✨
+▫️ 理解直观化：借助温度计案例，孩子能清晰区分正负数边界（正数＞0、负数＜0、0非正非负），多分支判断语句应用流畅；
+▫️ 运算掌握快：快速理解取模运算核心逻辑（如15%3=0 → 15是3的倍数），能自主用枚举法列出数字的因数组合（如12=1×12=2×6=3×4）；
+▫️ 待提升点：少数孩子存在因数与倍数概念混淆（如误说"3是12的倍数"），或枚举因数时遗漏数字（如忘写12本身），已通过例题分步拆解讲解。
+
+🌟 本节课核心目标 🌟
+✅ 知识目标：
+  1. 掌握多分支语句（if-else if-else）的应用，能通过代码实现正负数判断；
+  2. 理解取模运算（%）原理，能用其判断一个数是否为另一个数的倍数；
+  3. 学会用枚举法有序列出一个数的所有因数。
+✅ 能力目标：能独立完成"输入数字→判断正负→查找倍数/因数→输出结果"的完整代码逻辑；
+✅ 情感目标：感知数学逻辑与编程的关联性，培养有序枚举、严谨推理的思维习惯。
+
+📚 家长辅导小技巧 📚
+1. 生活化解释：
+   - 多分支判断：类比温度计读数（＞0℃偏热、＜0℃偏冷、=0℃适中）；
+   - 取模运算：类比分糖果（15颗糖分给3人刚好分完→15是3的倍数；分给4人剩3颗→不是倍数）；
+   - 因数枚举：类比拆积木（12块积木拆成2堆，所有合理拆分方式对应的数字都是因数）。
+
+📝 作业说明 📝
+作业练习网址：https://code.xdf.cn/freeIde?type=1
+要求：完成"因数倍数判断器"代码编写后，拍照发群打卡。
+
+<!-- 💡 教师使用提示 💡
+1. 可结合班级情况替换课堂案例（如"XX同学用多分支判断-5℃为负数，代码零错误"）；
+2. 强调枚举法的高效性：找因数从1开始试，到该数的平方根为止（如找16的因数试到4即可）；
+3. 记忆口诀："找因数，从1起，一对一对写整齐，到平方根就停笔"。 -->
+                </div>
+                
+                <div class="copy-hint" onclick="copyWechatFeedback()">
+                    <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+                </div>
+            </div>
+        </section>
+        
+        <!-- 私信反馈内容 -->
+        <section class="feedback-card private-feedback">
+            <div class="card-header">
+                <i class="fas fa-envelope-open-text card-icon"></i>
+                <h2 class="card-title">私信反馈内容（个性化版）</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第24课·逻辑思维成长）</h3>
+                
+                <div class="copyable-content" id="copyContent">
+【XX同学家长您好！】
+
+本次C++第24课「因数与倍数」的学习反馈如下：孩子在课堂上展现出良好的逻辑探索能力，同时也有一些细节需要重点巩固，家校配合能更好地提升孩子的编程逻辑思维。
+
+✨ 课堂亮点表现 ✨
+1. 多分支语句应用精准：在温度计案例中，能准确通过代码（if(temp<0) cout<<"负数"）判断-5℃为负数，代码逻辑清晰；
+2. 取模运算理解透彻：能自主总结"15%4=3→余数不为0，故15不是4的倍数"，并举例20%5=0验证倍数关系，实现了数学与编程的有效联动；
+3. 枚举思维有序：求12的因数时，能从1开始有序列出(1×12、2×6、3×4)，无遗漏、无重复，体现了优秀的有序思考能力。
+
+⚠️ 需要重点巩固的内容 ⚠️
+1. 概念易混淆：判断"3和12的因数倍数关系"时，误称"3是倍数"，已用"母子关系"类比讲解（因数是"母数"，倍数是"子数"，12是3的子数→3是12的因数），孩子已理解；
+2. 枚举范围不清晰：求16的因数时试到数字5（实际试到平方根4即可），已教会"试到平方根停止"的高效枚举方法。
+
+📚 课后练习建议 📚
+1. 基础概念巩固：
+   - 随机说出两组数字（如6和18、7和21），让孩子判断因数与倍数关系，强调"因数和倍数成对出现"；
+   - 练习取模运算：计算(-21)%5（正确结果为4，因-21=(-5)×5+4）、17%3（余数2），重点理解负数取模的运算规则；
+   - 枚举法练习：求24的因数，按"1→√24（约4.9）"的范围有序列出(1×24、2×12、3×8、4×6)。
+2. 作业与疑问：孩子反馈在家完成3道练习题时.
+
+❤️ 温馨提示 ❤️
+因数倍数与多分支判断是后续学习排序、加密等算法的核心基础。孩子具备良好的逻辑感知能力，
+
+如果孩子在练习过程中遇到问题，可随时拍照咨询!
+                </div>
+                
+                <div class="copy-hint" onclick="copyContent()">
+                    <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 家校沟通平台 | 逻辑强化版 | 以数学逻辑为基，筑编程思维之塔</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

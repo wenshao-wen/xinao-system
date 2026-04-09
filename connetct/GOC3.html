@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台 - GOC五环护盾课程</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0d5e0d, #1a5d1a);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(13, 70, 13, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #7fdb7f;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #7fdb7f;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(127, 219, 127, 0.2);
+            color: #7fdb7f;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(127, 219, 127, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #0d5e0d;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #7fdb7f;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #0d5e0d;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #1a5d1a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #7fdb7f;
+        }
+        
+        /* 群反馈微信专用样式（表情包增强） */
+        .wechat-group-feedback {
+            background: #f0f9f0;
+            border: 2px dashed #7fdb7f;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式（耐心细心抗挫力版） */
+        .private-feedback {
+            background: #f8fbff;
+            border: 1px dashed #3498db;
+        }
+        
+        .private-feedback .card-icon {
+            color: #3498db;
+        }
+        
+        .private-feedback .card-title {
+            color: #1a5276;
+        }
+        
+        .private-feedback .content-title {
+            color: #2874a6;
+        }
+        
+        .private-feedback .content-title i {
+            color: #3498db;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #7fdb7f;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .copy-hint:hover {
+            background: #c8e6c9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-chalkboard-teacher header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+               <ul class="nav-links">
+                   <li><a href="../网页主页面.html"><i class="fas fa-home"></i>导航首页</a></li>
+                   <!-- <li><a href="#"><i class="fas fa-book"></i> 教学资源</a></li> -->
+                   <!-- <li><a href="#"><i class="fas fa-comments"></i> 沟通记录</a></li> -->
+               </ul>
+               <a href="../GOC基础版本.html" class="back-to-course">
+                   <i class="fas fa-arrow-left"></i> 返回课程
+               </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>家校共育 · 品质养成</h1>
+            <p>第三次GOC编程课：用五环护盾培养耐心、细心与抗挫力，让代码调试成为成长契机</p>
+        </div>
+        
+        <!-- 群反馈内容（GOC五环护盾·第三次课） -->
+        <section class="feedback-card">
+            <div class="card-header">
+                <i class="fas fa-users card-icon"></i>
+                <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-star"></i> 【GOC---03五环护盾】课堂反馈（第三次课·品质培养）</h3>
+                
+                <div class="wechat-group-feedback" id="wechatGroupFeedback">
+😊🌱 各位家长好！第三次GOC课【五环护盾】来啦~ 这次我们学"给城堡画保护圈"，孩子们耐心调试的样子超棒！  
+
+✨【课堂整体表现】✨  
+- 😃 氛围：85%孩子主动尝试"后退+抬落笔"组合指令，6位同学历经3次调试终于画出闭合五环（掌声送给他们！）  
+- 👍 亮点：对"bk()后退距离""pen.up()抬笔防连线"理解到位，细心孩子会用草稿纸算环间距（像小工程师！）  
+- ⚠️ 注意点：部分同学因"抬笔后忘落笔"导致断环，或因"后退数值过大"让环间距太宽，已引导"分步检查指令"  
+
+🌟🌈 本节课核心目标与重难点 🌈🌟  
+✅ 知识目标：掌握bk()后退指令（数值=距离）、pen.up()抬笔、pen.down()落笔  
+✅ 能力目标：用"后退+抬落笔"配合绘制五环护盾（考验耐心与细心）  
+✅ 情感目标：体验"试错-调整"的抗挫过程，明白"代码像护盾，调试让它更坚固"  
+
+📚💡 家长可关注的知识点（比喻版）💡📚  
+① bk()后退像"倒退走路"：数值100=倒退100步（注意别撞到前面的环哦）  
+② pen.up()抬笔像"提笔歇口气"：抬笔后移动不画线（像护盾环之间留空隙）  
+③ pen.down()落笔像"重新握笔"：落笔后移动才画线（像继续画下一个环）  
+④ 五环秘诀：画完一环→抬笔后退→落笔画下一环（像串糖葫芦，一颗颗来）  
+
+🎯❤️ 家庭辅导小建议 ❤️🎯  
+- 夸"调试过程"："刚才改了3次后退数值才让环对齐，这就是耐心魔法！"  
+- 用"护盾质检员"游戏：让孩子检查代码"抬笔落笔有没有成对出现"  
+- 若孩子烦躁，说："护盾有点歪没关系，工程师都是改出来的，妈妈陪你一起查指令~" ❤️  
+
+📝🔗 作业练习网址（文字版）：  
+https://www.51goc.com/static/gocWebNet/gocWebNet.html?submitBt=0&insert=0&ra=60&winName=20200413  
+
+✅ 作业要求：完成"五环护盾"后拍照发群打卡，优秀作品会展示在"护盾荣誉墙" 🛡️  
+
+💡👩🏫 教师使用提示 👨🏫💡  
+1. 可替换【课堂表现】案例（如"小明用草稿纸记5次调试参数"）  
+2. 强调"品质比完美重要"：哪怕五环有点歪，只要体现耐心调试就值得表扬  
+3. 搭配"调试步骤图"（抬笔→后退→落笔→画环）发送，帮家长理解难点  
+。
+                </div>
+                
+                <div class="copy-hint" onclick="copyWechatFeedback()">
+                    <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+                </div>
+            </div>
+        </section>
+        
+        <!-- 私信反馈内容（耐心细心抗挫力强化版） -->
+        <section class="feedback-card private-feedback">
+            <div class="card-header">
+                <i class="fas fa-envelope-open-text card-icon"></i>
+                <h2 class="card-title">私信反馈内容（耐心细心抗挫力版）</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第三次课·品质成长）</h3>
+                
+                <div class="copyable-content" id="copyContent">
+😊【XX同学家长您好！】  
+
+🌟 第三次GOC课【五环护盾】反馈来啦~ 这次孩子展现了超棒的耐心、细心和抗挫力，为他的成长点赞！ 🌟  
+
+✨【耐心表现】✨  
+- 绘制钢铁侠护盾时，因"后退距离不对"导致环重叠，他没有放弃，而是说："我再试3次，肯定能调好"，最终第4次调试成功画出间距均匀的护盾 ⏳  
+- 全程专注。反复确认"抬笔→后退→落笔"步骤，像小工匠雕琢作品  
+
+✨【细心表现】✨  
+- 主动发现"pen.up()后忘了pen.down()"的错误，自己对照笔记修正（笔记上还画了箭头标注顺序） ✏️  
+- 用草稿纸记录每次调试的后退数值（50→30→40），最终找到最佳间距，这份严谨太可贵！  
+
+✨【抗挫力表现】✨  
+- 第一次画出的护盾位置偏了，他说："护盾被怪兽撞歪了，我要修好它！"，笑着继续改代码 😄  
+- 同桌求助时，他分享"分步检查法"（先看抬笔、再看后退、最后看落笔），还说："调试就像打游戏闯关，失败了再来一局！"  
+
+💪【作业完成信心评估】💪  
+✅ 优势：已掌握"后退+抬落笔"核心逻辑，细心记录调试参数的习惯会帮他高效完成作业  
+✅ 动力：孩子说"想做个无缝隙的五环护盾送给爸爸"，这份心意是最大驱动力  
+⚠️ 小提醒：若遇"环闭合不严"，可参考课堂录屏"微调后退数值法"（附链接）  
+
+🌱【品质培养小妙招】🌱  
+1. 用"护盾工程师勋章"激励：完成作业时，在他代码旁贴"耐心星""细心星""抗挫星"贴纸 ⭐  
+2. 复盘调试过程："刚才哪次修改最有效？"（引导总结"细心检查＞盲目试错"）  
+3. 强调"错误价值"："护盾上的小瑕疵，是你变成高级工程师的勋章哦！"  
+
+📚【复习资源】📚  
+.
+GOC"护盾闯关"游戏（练抬落笔配合）：[推荐关卡链接]  
+
+❤️【温馨提示】❤️  
+第三次课就能展现出这样的耐心和细心，特别了不起！作业中遇到困难别着急，咱们像修护盾一样慢慢调。完成后记得群里打卡，他的"五环护盾"会成为班级"品质榜样"~ 有任何卡壳随时找我，咱们一起当他的"调试助手"！  
+
+相信他一定能带着这份品质，画出最棒的护盾！  
+
+.
+
+（注：括号内为替换内容，删除括号后发送；重点突出"耐心/细心/抗挫力"具体案例）
+                </div>
+                
+                <div class="copy-hint" onclick="copyContent()">
+                    <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026家校沟通平台 | 品质养成版 | 让耐心细心抗挫力，成为孩子代码的底色</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预科C++学习阶段 - 课程重难点梳理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* 导航栏 */
+        nav {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-left {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-right a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-right a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 主内容区 */
+        .main-content {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 标题 */
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0);
+        }
+
+        .title h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 题目内容区域 */
+
+.timu{
+		display: flex;
+                justify-content: left;
+                gap: 10px;
+                flex-wrap: wrap;
+		background-color:#F3F4F5;
+border-radius: 15px 15px 0px 0px;
+ text-size:30px ;
+padding:10px;
+
+        }
+.xian{
+		width:100%;
+height:1px;
+		background-color:white;
+		padding:1px;
+}
+
+.custom-line {
+    border-bottom: 3px solid #333;
+    margin: 15px 0;
+}
+        .topics {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .topic {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .topic:hover {
+            transform: translateY(-5px);
+        }
+
+        .topic h2 {
+            color: #3498db;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .topic h2:hover {
+            background: linear-gradient(45deg, #ff7b00, #ff9500, #ffb84d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(255, 149, 0, 0.5);
+        }
+
+        .topic ul {
+            list-style-type: none;
+        }
+
+        .topic li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .topic li::before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .topic li strong {
+            color: #2c3e50;
+        }
+
+        /* 代码图片展示区域 */
+        .code-images {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .code-images h2 {
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .code-images p {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .image-container {
+            margin-bottom: 25px;
+            text-align: center;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fafafa;
+        }
+
+        .image-container p {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #555;
+            text-align: left;
+            line-height: 1.6;
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+
+        .image-container p strong {
+            color: #2c3e50;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .nav-left {
+                text-align: center;
+            }
+
+            .nav-right {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .main-content {
+                margin: 20px 10px;
+                padding: 0 10px;
+            }
+
+            .title h1 {
+                font-size: 24px;
+            }
+
+            .topic {
+                padding: 20px;
+            }
+
+            .topic h2 {
+                font-size: 20px;
+            }
+
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="nav-left">预科学习阶段课程重难点梳理</div>
+        <div class="nav-right">
+             <a href="../网页主页面.html">首页</a>
+			 <a href="../课件a.html">返回</a>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <div class="main-content">
+        <!-- 页面主标题 -->
+        <div class="title">
+            <h1>预科2课 框架输出</h1>                                   <!--课题-->       
+             
+        </div>
+
+        <!-- 题目部分：知识点、难点、练习 -->
+        <div class="topics">
+            <!-- 1. 知识点梳理 -->
+            <div class="topic">
+                <h2>知识点梳理内容</h2>
+                <ul>
+                    <li>
+						 <strong>框架的含义                                   <!--知识点1-->  
+                            </strong>：                           
+				         C++基本框架代码解析                                  <!--知识点1解析-->
+				   </li>
+                    <li>
+						<strong>语句的连续输出 </strong>：                          <!--知识点2-->
+						 cout指令的连续使用输出                                  <!--知识点2解析-->
+						<br>
+					</li>
+                    <li>
+						<strong>数学的混合运算</strong>：                          <!--知识点3-->
+						cout指令学习<br>
+					</li>
+                </ul>
+            </div>
+
+            <!-- 2. 重点难点解析 -->
+            <div class="topic">
+                <h2>重点难点解析</h2>
+                <ul>
+                    <li>
+                    						 <strong>框架的书背记默写 </strong>：      <!--重难点1-->  
+                    				        1. 框架数值并且默写 <br>
+                    </li>
+                     <li>
+                    						<strong>cout 输出指令 </strong>：       <!--重难点2--> 
+                    						， 连续输出的内容使用  << 新内容1 <<新内容2   <br>
+                    					</li>
+                     <li>
+                    						<strong>数学的运算</strong>：      <!--重难点3--> 
+                    						乘除法运算，混合运算
+                    					</li>
+                    <li>
+                    						<strong>文字书写</strong>：      <!--重难点3--> 
+                    						输出文字需要加引号 输出运算不需要加引号
+                    					</li>
+                </ul>
+            </div>
+
+            <!-- 3. 配套作业练习 -->
+            <div class="topic">
+                <h2>配套练习</h2>
+                <ul>
+                    <li><strong>基础语法练习1 </strong>：班级种树 </li>                                                <!--题目标题1-->
+                    <li><strong>基础语法练习2 </strong>：养殖场家禽数量 </li>                                              <!--题目标题2-->
+                </ul>
+            </div>
+        </div>
+		
+	
+	        <!-- 代码图片展示 & 详细说明部分 -->
+	        <div class="code-images">
+	            <h2>📸 参考代码与练习说明</h2>
+	            <!-- 示例1：小明的成绩单  -->
+	            <div class="image-container">           
+					<p>                                                                                             <!--题目1-->
+					    <strong>【题目】</strong>杨树36棵 ，松树 28棵，男生种树 31棵！（1）全班一共栽树多少棵？     （2）女生栽树多少棵？ 
+<br>
+					    <strong>【思路】</strong> 加钱运算<br>
+					    <strong>【关键代码】</strong> 无;<br>
+					    <strong>【说明】</strong> 涉及加减运算
+					</p>
+
+	                  <img src="imglist/yu41.png"  />
+	            </div>
+	
+	            <!-- 示例2：三角形的周长-->
+	            <div class="image-container">
+					<p>                                                                                               <!--题目2-->
+					    <strong>【题目】</strong>养殖场养了很多的家禽，其中公鸡18只，母鸡35只，鸭子26只，（ 1 ）一共养了多少只鸡？（ 2 ）卖掉多少只鸡后，鸡和鸭同样多？
+<br>
+					    <strong>【思路】</strong>加减运算<br>
+					    <strong>【关键代码】</strong> cout<< <br>
+					    <strong>【说明】</strong> 涉及加减运算
+					</p>
+
+	                <img src="imglist/yu42.png" alt="三角形的周长" />
+	            </div>
+			
+	        </div>
+			
+		<div class="topics">
+			<div class="topic">
+			    <h2>作业练习</h2>
+			    <ul>
+			        <li><strong>作业练习1 </strong>：个人信息</li>                     <!--家庭作业1-->
+			        <li><strong>作业练习2</strong>：输出古诗 </li>                  <!--家庭作业2-->
+			        <li><strong>作业练习3</strong>：家禽计算</li>                   <!--家庭作业3-->
+			    </ul>
+			</div>
+		</div>
+		
+
+			<div class="image-container">
+			     <img src="imglist/yu44.png"  />
+			</div>
+			<div class="image-container">
+			     <img src="imglist/yu45.png" />
+			</div>
+			<div class="image-container">
+			     <img src="imglist/yu46.png"  />
+			</div>
+			
+		
+		
+    </div>
+	
+	
+</body>
+</html>

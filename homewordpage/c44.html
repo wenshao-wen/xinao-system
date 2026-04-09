@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预科C++学习阶段 - 课程重难点梳理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* 偏紫色渐变背景 */
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* 导航栏样式 */
+        nav {
+            background-color: rgba(255, 255, 255, 0.1); /* 半透明导航栏 */
+            backdrop-filter: blur(10px); /* 毛玻璃效果 */
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-left {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-right a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-right a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 标题样式 */
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #fff; /* 白色标题更醒目 */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .title h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, #f0f0f0); /* 渐变文字 */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 主题内容区域 */
+        .topics {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .topic {
+            background-color: rgba(255, 255, 255, 0.9); /* 半透明白色背景 */
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .topic:hover {
+            transform: translateY(-5px);
+        }
+
+        .topic h2 {
+            color: #3498db;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 24px;
+            transition: all 0.3s ease; /* 添加过渡效果 */
+        }
+
+        /* 鼠标悬停时标题的渐变橙色特效 */
+        .topic h2:hover {
+            background: linear-gradient(45deg, #ff7b00, #ff9500, #ffb84d); /* 渐变橙色 */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(255, 149, 0, 0.5); /* 添加发光效果 */
+        }
+
+        .topic ul {
+            list-style-type: none;
+        }
+
+        .topic li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .topic li::before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        .topic li strong {
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .nav-left {
+                text-align: center;
+            }
+
+            .nav-right {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .main-content {
+                margin: 20px 10px;
+                padding: 0 10px;
+            }
+
+            .title h1 {
+                font-size: 24px;
+            }
+
+            .topic {
+                padding: 20px;
+            }
+
+            .topic h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+		<div class="nav-right">
+		    <a href="#">首页</a>
+		</div>
+        <div class="nav-left">预科学习阶段课程重难点梳理</div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <div class="main-content">
+        <!-- 标题 -->
+        <div class="title">
+            <h1>初始C++代码</h1>
+        </div>
+
+        <!-- 主题内容 -->
+        <div class="topics">
+            <!-- 知识点梳理内容 -->
+            <div class="topic">
+                <h2>知识点梳理内容</h2>
+                <ul>
+                    <li><strong>C++基础语法</strong>：掌握变量定义、数据类型（int、float、char等）、运算符（算术、关系、逻辑）的使用，理解常量与变量的区别。</li>
+                    <li><strong>控制结构</strong>：熟悉顺序结构、选择结构（if-else、switch-case）、循环结构（for、while、do-while）的语法与应用场景，能编写简单的条件判断和循环程序。</li>
+                    <li><strong>函数基础</strong>：理解函数的定义、声明与调用，掌握形参与实参的传递方式，能编写自定义函数实现模块化编程。</li>
+                </ul>
+            </div>
+
+            <!-- 重点难点解析 -->
+            <div class="topic">
+                <h2>重点难点解析</h2>
+                <ul>
+                    <li><strong>指针与引用</strong>：指针是存储内存地址的变量，引用是变量的别名；指针需要初始化且可修改指向，引用必须在定义时初始化且不可修改；两者都可实现间接访问，但引用更安全。</li>
+                    <li><strong>数组与字符串</strong>：数组是连续内存存储的同类型元素集合，下标从0开始；字符串是字符数组的特殊形式，C++中推荐使用string类（更安全、便捷）；注意数组越界问题。</li>
+                    <li><strong>面向对象基础</strong>：类是对象的蓝图，包含数据成员（属性）和成员函数（行为）；封装（private/public/protected）、继承（public/private/protected继承）、多态（虚函数、纯虚函数）是面向对象的三大特性。</li>
+                </ul>
+            </div>
+
+            <!-- 配套作业练习 -->
+            <div class="topic">
+                <h2>配套作业练习</h2>
+                <ul>
+                    <li><strong>基础语法练习</strong>：编写程序实现两个数的加减乘除运算，使用if-else判断闰年，用for循环打印九九乘法表。</li>
+                    <li><strong>函数练习</strong>：编写递归函数计算阶乘，设计函数交换两个变量的值（传址与传引用对比），实现自定义的字符串连接函数。</li>
+                    <li><strong>综合练习</strong>：编写学生成绩管理系统（使用数组存储成绩，计算平均分、最高分），实现简单的银行账户类（包含存款、取款、查询余额功能）。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

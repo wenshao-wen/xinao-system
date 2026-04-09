@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>思维训练全阶段测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #4caf50 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container-wrapper {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 20px;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .sidebar-title {
+            color: #1b5e20;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #4caf50;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            color: #2e7d32;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+            background: rgba(76, 175, 80, 0.05);
+        }
+
+        .sidebar-nav a:hover {
+            background: rgba(76, 175, 80, 0.15);
+            border-left-color: #4caf50;
+            transform: translateX(5px);
+        }
+
+        .sidebar-nav a.active {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: white;
+            border-left-color: #1b5e20;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        /* 固定头部样式 */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            color: white;
+            padding: 15px 20px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* 快捷键区域 */
+        .shortcut-keys {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .shortcut-key {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 0.9em;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .shortcut-key:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        /* 调整内容区域 */
+        .content {
+            margin-top: 70px;
+            flex: 1;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #4caf50 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .main-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .phase {
+            border-bottom: 3px solid #f0f0f0;
+        }
+
+        .phase:last-child {
+            border-bottom: none;
+        }
+
+        .phase-header {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .phase-header:hover {
+            background: linear-gradient(135deg, #1b5e20 0%, #388e3c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .sub-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: #fafafa;
+            max-height: none;
+            overflow: visible;
+            transition: none;
+        }
+
+        .sub-menu li {
+            border-bottom: 1px solid #e8e8e8;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 10px 0;
+        }
+
+        .sub-menu li:last-child {
+            border-bottom: none;
+        }
+
+        .sub-menu .lesson-link {
+            display: block;
+            color: #333;
+            text-decoration: none;
+            padding: 16px 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.1em;
+            position: relative;
+            padding-left: 55px;
+            z-index: 1;
+            flex: 1;
+        }
+
+        .sub-menu .lesson-link::before {
+            content: counter(lesson-counter);
+            counter-increment: lesson-counter;
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85em;
+            font-weight: bold;
+            box-shadow: 0 3px 8px rgba(76, 175, 80, 0.3);
+            z-index: 2;
+        }
+
+        .sub-menu .lesson-link:hover {
+            background: linear-gradient(90deg, #f1f8e9 0%, #e8f5e9 100%);
+            color: #2e7d32;
+            padding-left: 65px;
+            transform: translateX(5px);
+        }
+
+        /* 测试类型特殊样式 */
+        .test-item {
+            background: linear-gradient(90deg, #fff8e1 0%, #ffecb3 50%, #ffe082 100%) !important;
+            font-weight: bold;
+            color: #5d4037 !important;
+            position: relative;
+        }
+
+        .test-item::before {
+            background: linear-gradient(135deg, #ffb300 0%, #ff8f00 100%) !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(255, 179, 0, 0.3) !important;
+        }
+
+        .test-item:hover {
+            background: linear-gradient(90deg, #ffecb3 0%, #ffe082 50%, #ffd54f 100%) !important;
+            color: #e65100 !important;
+            transform: translateX(5px) scale(1.01);
+        }
+
+        /* 计数器重置 */
+        .sub-menu {
+            counter-reset: lesson-counter;
+        }
+
+        /* 底部链接样式 */
+        .footer-links {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            margin-top: 30px;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.4em;
+            margin-bottom: 18px;
+            font-weight: bold;
+        }
+        
+        .link-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-link {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .footer-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .container-wrapper {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+                margin-bottom: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                margin: 0;
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .header p {
+                font-size: 1em;
+            }
+            
+            .phase-header {
+                padding: 16px 20px;
+                font-size: 1.1em;
+            }
+            
+            .sub-menu .lesson-link {
+                padding: 14px 20px;
+                font-size: 1em;
+                padding-left: 45px;
+            }
+            
+            .sub-menu .lesson-link::before {
+                left: 18px;
+                width: 24px;
+                height: 24px;
+                font-size: 0.8em;
+            }
+            
+            .link-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+            
+            .footer-link {
+                width: 90%;
+                text-align: center;
+            }
+
+            .test-btn {
+                width: 100%;
+                margin-left: 0;
+                margin-top: 8px;
+            }
+
+            .sub-menu li {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 12px 20px;
+            }
+            
+            .shortcut-keys {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .shortcut-key {
+                padding: 6px 12px;
+                font-size: 0.85em;
+            }
+        }
+
+        /* 动画效果 */
+        .sub-menu li {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 进度指示器 */
+        .progress-bar {
+            height: 6px;
+            background: rgba(0, 0, 0, 0.08);
+            position: relative;
+            margin: 0 30px 20px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1b5e20 0%, #4caf50 50%, #8bc34a 100%);
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 3px;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+        }
+
+        /* 橙色测试按钮样式 */
+        .test-btn {
+            padding: 1.2rem 1.8rem;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 3px 8px rgba(255, 152, 0, 0.3);
+            margin-left: auto;
+        }
+
+        .test-btn:hover {
+            background: linear-gradient(90deg, #f57c00 0%, #e65100 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(255, 152, 0, 0.4);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部 -->
+    <div class="fixed-header">
+        <div class="header-title">🎓 出门测试</div>
+        <div class="shortcut-keys">
+            <a style="color: white; text-decoration: none;" href="预科.html">
+                <div class="shortcut-key">思维训练首页</div>
+            </a>
+<!--            <div class="shortcut-key" onclick="scrollToPhase('phase1')">思维训练1阶段</div>
+            <div class="shortcut-key" onclick="scrollToPhase('phase2')">思维训练2阶段</div>
+            <div class="shortcut-key" onclick="scrollToPhase('phase3')">思维训练3阶段</div>
+            <div class="shortcut-key" onclick="scrollToPhase('phase4')">思维训练4阶段</div> -->
+        </div>
+    </div>
+
+    <div class="container-wrapper">
+        <!-- 侧边导航 -->
+        <nav class="sidebar">
+            <div class="sidebar-title">📚 课程导航</div>
+            <ul class="sidebar-nav">
+                <li><a href="#phase1" class="active">思维训练1</a></li>
+                <li><a href="#phase2">思维训练2</a></li>
+                <li><a href="#phase3">思维训练3</a></li>
+                <li><a href="#phase4">思维训练4</a></li>
+                <li><a href="#" onclick="scrollToFooter()">相关考级网站</a></li>
+            </ul>
+        </nav>
+
+        <!-- 主体内容 -->
+        <div class="content">
+            <div class="container">
+                <div class="header">
+                    <h1>🎓 思维训练阶段全阶段出门测试</h1>
+                    <p>系统化学习 · 循序渐进 · 全面掌握</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <ul class="main-menu">
+                    <!-- 思维训练1阶段：基础入门 (1-12课) -->
+                    <li class="phase" id="phase1">
+                        <div class="phase-header">
+                            📚 思维训练1阶段 - C++基础入门 (1-12课)
+                        </div>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/PbkDqEG.aspx" class="lesson-link">第1课 - 初始C++</a>
+                                <a href="https://kaoshi.wjx.top/vm/PbkDqEG.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/mBsHcyA.aspx# " class="lesson-link">第2课 - 框架和输出</a>
+                                <a href="https://kaoshi.wjx.top/vm/mBsHcyA.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href=" https://kaoshi.wjx.top/vm/hMTMSNO.aspx " class="lesson-link">第3课 - 有趣的字符画</a>
+                                <a href=" https://kaoshi.wjx.top/vm/hMTMSNO.aspx " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href=" https://kaoshi.wjx.top/vm/rX8u1LO.aspx# " class="lesson-link">第4课 - 字母代替数</a>
+                                <a href=" https://kaoshi.wjx.top/vm/rX8u1LO.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/reO8pgL.aspx# " class="lesson-link">第5课 - 输入和运算</a>
+                                <a href="https://kaoshi.wjx.top/vm/reO8pgL.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/hSaN6NO.aspx" class="lesson-link">第6课 - 小数和格式化</a>
+                                <a href="https://ks.wjx.com/vm/hSaN6NO.aspx " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/wm7ultv.aspx# " class="lesson-link">第7课 - 真假布尔</a>
+                                <a href="https://kaoshi.wjx.top/vm/wm7ultv.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/mk2RyAK.aspx " class="lesson-link">第8课 - 进制变换</a>
+                                <a href="https://ks.wjx.com/vm/mk2RyAK.aspx " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/O5DXYiH.aspx " class="lesson-link">第9课 - 单数还是双数</a>
+                                <a href="https://ks.wjx.com/vm/O5DXYiH.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/Y8poQp6.aspx# " class="lesson-link test-item">📋 第10课 - 综合复习测试</a>
+                                <a href="https://ks.wjx.com/vm/Y8poQp6.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/w3lssGu.aspx" class="lesson-link">第11课 - 逻辑运算与</a>
+                                <a href="https://ks.wjx.com/vm/w3lssGu.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/OEH4Msi.aspx" class="lesson-link">第12课 - 闰年和平年</a>
+                                <a href="https://ks.wjx.com/vm/OEH4Msi.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="  https://kaoshi.wjx.top/vm/PnjLvqE.aspx#" class="lesson-link test-item">📋 思维训练1阶段期中测试</a>
+                                <a href="  https://kaoshi.wjx.top/vm/PnjLvqE.aspx#" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/e4htFRk.aspx# " class="lesson-link test-item">📋 思维训练1阶段期末测试</a>
+                                <a href="https://ks.wjx.com/vm/e4htFRk.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- 思维训练2阶段：进阶学习 (13-24课) -->
+                    <li class="phase" id="phase2">
+                        <div class="phase-header">
+                            🔍 思维训练2阶段 - 进阶编程概念 (13-24课)
+                        </div>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="https://ks.wjx.com/vm/mHLZPyA.aspx" class="lesson-link">第13课 - 文件夹的秘密</a>
+                                <a href="https://ks.wjx.com/vm/mHLZPyA.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/rsLOes1.aspx" class="lesson-link">第14课 - 变量和类型</a>
+                                <a href="https://ks.wjx.com/vm/rsLOes1.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/r41Lqfh.aspx" class="lesson-link">第15课 - 加法的运算</a>
+                                <a href="https://ks.wjx.com/vm/r41Lqfh.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/w3sulsT.aspx" class="lesson-link">第16课 - 字符串类型</a>
+                                <a href="https://ks.wjx.com/vm/w3sulsT.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/QZf9HCr.aspx" class="lesson-link">第17课 - 转换和图形</a>
+                                <a href="https://ks.wjx.com/vm/QZf9HCr.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/OGiH4Jp.aspx# " class="lesson-link">第18课 - 重量单位的认识</a>
+                                <a href="https://ks.wjx.com/vm/OGiH4Jp.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/meALAYy.aspx" class="lesson-link">第19课 - 容量的运算</a>
+                                <a href="https://ks.wjx.com/vm/meALAYy.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/wk20uTr.aspx" class="lesson-link">第20课 - 判定星期几</a>
+                                <a href="https://ks.wjx.com/vm/wk20uTr.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/eUFtP8f.aspx# " class="lesson-link">第21课 - 学校考试了</a>
+                                <a href="https://ks.wjx.com/vm/eUFtP8f.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/OdUZ5iJ.aspx" class="lesson-link">第22课 - 寻找bug</a>
+                                <a href="https://ks.wjx.com/vm/OdUZ5iJ.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/QZ9O1cC.aspx# " class="lesson-link">第23课 - 运算符号的选择</a>
+                                <a href="https://ks.wjx.com/vm/QZ9O1cC.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/ex3KtP8.aspx# " class="lesson-link">📋第24课 - 大象喝水</a>
+                                <a href="https://ks.wjx.com/vm/ex3KtP8.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href=" https://kaoshi.wjx.top/vm/mBW3Iyn.aspx#" class="lesson-link test-item">📋 思维训练2阶段期中测试</a>
+                                <a href=" https://kaoshi.wjx.top/vm/mBW3Iyn.aspx#" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/PLdIMDq.aspx# " class="lesson-link test-item">📋 思维训练2阶段期末测试</a>
+                                <a href="https://ks.wjx.com/vm/PLdIMDq.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- 思维训练3阶段：核心算法 (25-36课) -->
+                    <li class="phase" id="phase3">
+                        <div class="phase-header">
+                            ⚙️ 思维训练3阶段 - 核心算法基础 (25-36课)
+                        </div>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="https://ks.wjx.com/vm/OCUNiiJ.aspx" class="lesson-link">第25课 - 随机计算器</a>
+                                <a href="https://ks.wjx.com/vm/OCUNiiJ.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/wmuouTr.aspx" class="lesson-link">第26课 - 模拟计算器</a>
+                                <a href="https://ks.wjx.com/vm/wmuouTr.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/h9tRAOs.aspx" class="lesson-link">第27课 - while循环</a>
+                                <a href="https://ks.wjx.com/vm/h9tRAOs.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/YDt6phR.aspx" class="lesson-link">第28课 - while循环进阶</a>
+                                <a href="https://ks.wjx.com/vm/YDt6phR.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/PpqxqMf.aspx" class="lesson-link">第29课 - for循环</a>
+                                <a href="https://ks.wjx.com/vm/PpqxqMf.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/ws1uc1u.aspx" class="lesson-link">第30课 - 范围for循环</a>
+                                <a href="https://ks.wjx.com/vm/ws1uc1u.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/wm1uLMu.aspx# " class="lesson-link">第31课 - break与continue</a>
+                                <a href="https://ks.wjx.com/vm/wm1uLMu.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/rQLgwLI.aspx" class="lesson-link">第32课 - do-while循环</a>
+                                <a href="https://ks.wjx.com/vm/rQLgwLI.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/test33.aspx" class="lesson-link">第33课 - 项目综合实战</a>
+                                <a href="https://kaoshi.wjx.top/vm/test33.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/test34.aspx" class="lesson-link test-item">📋 第34课 - 循环专项测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/test34.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/Pvqfcqx.aspx" class="lesson-link">第35课 - 循环进阶</a>
+                                <a href="https://ks.wjx.com/vm/Pvqfcqx.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/wEmu1uM.aspx" class="lesson-link">第36课 - 循环嵌套</a>
+                                <a href="https://ks.wjx.com/vm/wEmu1uM.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href=" https://kaoshi.wjx.top/vm/Q0qbPXC.aspx# " class="lesson-link test-item">📋 思维训练3阶段期中测试</a>
+                                <a href=" https://kaoshi.wjx.top/vm/Q0qbPXC.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/hOaHTYO.aspx# " class="lesson-link test-item">📋 思维训练3阶段期末测试</a>
+                                <a href="https://ks.wjx.com/vm/hOaHTYO.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- 思维训练4阶段：高级应用 (37-51课) -->
+                    <li class="phase" id="phase4">
+                        <div class="phase-header">
+                            🚀 思维训练4阶段 - 高级编程技能 (37-51课)
+                        </div>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/reILBiL.aspx# " class="lesson-link">第37课 - 顺序语句专题</a>
+                                <a href="https://kaoshi.wjx.top/vm/reILBiL.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/mHns0Cy.aspx# " class="lesson-link">第38课 - 分支语句专题</a>
+                                <a href="https://ks.wjx.com/vm/mHns0Cy.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/ejtFSAL.aspx" class="lesson-link">  第39课 - 数的查询</a>
+                                <a href="https://ks.wjx.com/vm/ejtFSAL.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/tfMr44W.aspx" class="lesson-link test-item">📋第40课 GESP卷1 - 编程能力测试</a>
+                                <a href="https://ks.wjx.com/vm/tfMr44W.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/w2CFhu6.aspx" class="lesson-link test-item">📋 第41课 GESP卷2 - 编程能力测试</a>
+                                <a href="https://ks.wjx.com/vm/w2CFhu6.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/OthZPui.aspx" class="lesson-link">第42课 - 枚举算法</a>
+                                <a href="https://ks.wjx.com/vm/OthZPui.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/wgJdCu6.aspx" class="lesson-link">第43课 - 角谷猜想</a>
+                                <a href="https://ks.wjx.com/vm/wgJdCu6.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/exF3j5t.aspx" class="lesson-link">第44课 - 数组1</a>
+                                <a href="https://ks.wjx.com/vm/exF3j5t.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/test45.aspx" class="lesson-link">第45课 - 数组2</a>
+                                <a href="https://kaoshi.wjx.top/vm/test45.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/test46.aspx" class="lesson-link">第46课 - 进制反转</a>
+                                <a href="https://kaoshi.wjx.top/vm/test46.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/test47.aspx" class="lesson-link">第47课 - 简单排序</a>
+                                <a href="https://kaoshi.wjx.top/vm/test47.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/test48.aspx" class="lesson-link">第48课 - 标记法</a>
+                                <a href="https://kaoshi.wjx.top/vm/test48.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/test49.aspx" class="lesson-link">第49课 - 桶排序</a>
+                                <a href="https://kaoshi.wjx.top/vm/test49.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/test50.aspx" class="lesson-link">第50课 - 字符数组</a>
+                                <a href="https://kaoshi.wjx.top/vm/test50.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/test51.aspx" class="lesson-link test-item">📋 第51课 - 综合期末测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/test51.aspx" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://kaoshi.wjx.top/vm/reWULH0.aspx#" class="lesson-link test-item">�📋 思维训练4阶段期中测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/reWULH0.aspx#" class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li>
+                                <a href="https://ks.wjx.com/vm/wmn87u6.aspx# " class="lesson-link test-item">📋 思维训练4阶段期末测试</a>
+                                <a href="https://ks.wjx.com/vm/wmn87u6.aspx# " class="test-btn" target="_blank">参加测试</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- 底部考级网站链接 -->
+                <div class="footer-links" id="footer">
+                    <div class="footer-title">相关考级网站</div>
+                    <div class="link-container">
+                        <a href="https://www.qceit.org.cn/bos/default.html?d=4460.850700805553" class="footer-link" target="_blank">中国电子学会考级</a>
+                        <a href="https://gesp.ccf.org.cn/" class="footer-link" target="_blank">GESP考级官网</a>
+                        <a href="https://www.noi.cn/" class="footer-link" target="_blank">NOI官网</a>
+                        <a href="https://code.xdf.cn/home" class="footer-link" target="_blank">新东方编程学习</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 滚动到指定阶段
+        function scrollToPhase(phaseId) {
+            const phase = document.getElementById(phaseId);
+            if (phase) {
+                // 计算偏移量，考虑固定头部高度
+                const offset = 70;
+                const elementPosition = phase.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({
+                    top: elementPosition - offset,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // 滚动到底部
+        function scrollToFooter() {
+            const footer = document.getElementById('footer');
+            if (footer) {
+                const offset = 70;
+                const elementPosition = footer.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({
+                    top: elementPosition - offset,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // 更新学习进度
+        function updateProgress() {
+            const allLessons = document.querySelectorAll('.sub-menu li .lesson-link');
+            const totalLessons = allLessons.length;
+            const progress = (totalLessons / 51) * 100;
+            document.getElementById('progressFill').style.width = Math.min(progress, 100) + '%';
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            
+            // 为所有课程链接添加点击事件
+            document.querySelectorAll('.lesson-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    console.log('点击课程:', this.textContent);
+                });
+            });
+
+            // 为测试按钮添加点击事件提示
+            document.querySelectorAll('.test-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    console.log('跳转测试:', href);
+                    window.open(href, '_blank');
+                });
+            });
+
+            // 侧边导航激活状态
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('.phase');
+                const navLinks = document.querySelectorAll('.sidebar-nav a');
+                
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // 键盘快捷键支持
+        document.addEventListener('keydown', function(e) {
+            // 数字1-4对应思维训练1-4阶段
+            if (e.key === '1') scrollToPhase('phase1');
+            if (e.key === '2') scrollToPhase('phase2');
+            if (e.key === '3') scrollToPhase('phase3');
+            if (e.key === '4') scrollToPhase('phase4');
+        });
+    </script>
+</body>
+</html>

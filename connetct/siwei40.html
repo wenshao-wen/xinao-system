@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #fff8e1;
+            border: 1px dashed #ff9800;
+        }
+        
+        .private-feedback .card-icon {
+            color: #ff9800;
+        }
+        
+        .private-feedback .card-title {
+            color: #e65100;
+        }
+        
+        .private-feedback .content-title {
+            color: #ef6c00;
+        }
+        
+        .private-feedback .content-title i {
+            color: #ff9800;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #ede7f6;
+            color: #4a148c;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #d1c4e9;
+        }
+        
+        .copy-hint:hover {
+            background: #d1c4e9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-hotel header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+                <ul class="nav-links">
+                    <li><a href="../网页主页面.html"><i class="fas fa-home"></i> 主站导航</a></li>
+                </ul>
+                <a href="../预科.html" class="back-to-course">
+                    <i class="fas fa-arrow-left"></i> 思维训练
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>少儿C++编程进阶课</h1>
+            <p>格式化输入高效用，switch语句巧解多分支！</p>
+        </div>
+        
+        <!-- 群反馈内容（C++---40 格式化输入和switch语句） -->
+        <section class="feedback-card">
+            <div class="card-header">
+                <i class="fas fa-users card-icon"></i>
+                <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+            </div>
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-star"></i> 【C++---40 格式化输入和switch语句】课堂反馈（第四十课·格式化输入和switch语句）</h3>
+                <div class="wechat-group-feedback" id="wechatGroupFeedback">
+【C++---40 格式化输入和switch语句】🌈🌈 本节课重难点来了🌻🌻
+✅ C语言中的格式化输入 📝
+✅ 开关语句switch语句 📝
+✅ 多分支语句和switch的对比 📝
+
+📚📚 重要的知识点梳理 📚📚
+✅① 格式化输入 scanf() 的使用，注意和格式化输出printf() 对比记忆 ✅
+✅② switch语句的结构记忆，每个case语句引领一个分支，分支结束有break直接结束整个switch语句，如果没有break直接执行下一个case后面的分支语句（不做条件判断） ✅
+✅③ switch语句的判断规则 ✅
+✅④ 不同场景下Switch结构和多分支结构的选择（比如星期、月份、季节分支较多的优先使用Switch结构） ✅
+
+💖 课堂表现评价 💖
+本节课孩子们对新知识的接受度很高！能快速掌握格式化输入scanf()的基本用法，通过与printf()对比记忆，加深了对格式化输入输出的理解。在switch语句的学习中，大部分孩子能牢记"case+break"的核心结构，理解break语句的作用，也能区分switch与多分支if-else的适用场景。在星期、月份等案例练习中，能灵活运用switch语句解决多分支问题，课堂互动积极，逻辑思维能力持续提升～
+
+📖 核心知识点总结 📖
+🔹 一、格式化输入scanf() 核心用法
+  1. 基本格式：scanf("格式控制符", &变量名);
+     - 格式控制符：%d（整数）、%f（浮点数）、%c（字符）等，需与变量类型匹配
+     - &符号：取地址符，必须加在变量名前，告诉程序数据存储位置
+     - 示例：输入整数age → int age; scanf("%d", &age);
+  2. 与printf() 对比记忆：
+     | 功能         | 函数名 | 核心格式                | 关键区别                  |
+     |--------------|--------|-------------------------|---------------------------|
+     | 格式化输出   | printf | printf("格式控制符", 变量); | 不需要&符号，直接使用变量  |
+     | 格式化输入   | scanf  | scanf("格式控制符", &变量); | 必须加&符号（数组除外）    |
+  3. 使用注意：格式控制符必须与变量类型严格一致（如int用%d，double用%lf），否则数据读取错误
+
+🔹 二、switch语句 核心要点
+  1. 完整结构：
+     switch(表达式) {
+         case 常量1: 语句1; break;
+         case 常量2: 语句2; break;
+         ...
+         default: 语句n; （可选，所有case不匹配时执行）
+     }
+  2. 结构说明：
+     - 表达式：结果必须是整数类型（int、char等），不能是浮点数或字符串
+     - case常量：每个case后必须是常量（如1、'A'），不能是变量或表达式
+     - break作用：执行完当前case语句后，立即终止整个switch语句，避免"穿透"
+     - 穿透现象：若case后无break，会跳过下一个case的条件判断，直接执行其语句
+  3. 判断规则：
+     - 计算表达式的值，与各个case的常量逐一匹配
+     - 找到匹配的case，执行对应语句；若无匹配case，执行default语句（若有）
+     - 匹配时区分大小写（如case 'A'和case 'a'是两个不同分支）
+
+🔹 三、switch与多分支if-else的选择
+  1. switch语句适用场景：
+     - 分支条件是"变量等于某个常量"（如星期1-7、月份1-12、季节对应数字）
+     - 分支数量较多（通常3个以上），代码结构更清晰
+     - 示例：根据输入的数字（1-7）输出对应的星期
+  2. 多分支if-else适用场景：
+     - 分支条件是范围判断（如x>10、5<y<=20）
+     - 分支条件复杂（如结合逻辑运算符&&、||）
+     - 示例：根据分数判断成绩等级（90+优秀、80-89良好等）
+  3. 核心区别：switch是"等值判断"，if-else是"范围/条件判断"，按需选择
+
+作业练习网址： https://code.xdf.cn/freeIde?type=1（或者离线版DEV-C++）
+完成后发班级群打卡
+                </div>
+                <div class="copy-hint" onclick="copyWechatFeedback()">
+                    <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+                </div>
+            </div>
+        </section>
+        
+        <!-- 私信反馈内容（C++---40 格式化输入和switch语句） -->
+        <section class="feedback-card private-feedback">
+            <div class="card-header">
+                <i class="fas fa-envelope-open-text card-icon"></i>
+                <h2 class="card-title">私信反馈内容（C++---40 格式化输入和switch语句）</h2>
+            </div>
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第四十课·格式化输入和switch语句）</h3>
+                <div class="copyable-content" id="copyContent">
+😊【XX同学家长好呀！】
+🌟 宝贝C++编程第四十课【格式化输入和switch语句】的反馈来啦～
+
+👍 宝贝课堂表现亮点 👍
+宝贝这节课表现超棒！能快速掌握scanf()的格式化输入用法，牢记与printf()的区别，尤其是&符号的使用没有出错～ 在switch语句的学习中，能熟练写出"case+break"的完整结构，理解穿透现象的原因，还能根据场景正确选择switch和多分支if-else，课堂练习的准确率很高，继续保持这份学习状态呀！
+
+📝 课后重点提醒与建议 📝
+1. scanf() 重点巩固：
+   - 核心提醒：让宝贝牢记"scanf必须加&，printf不用加"的区别，这是高频易错点
+   - 练习方法：让宝贝写一组输入输出代码（如输入姓名、年龄、成绩，再格式化输出），强化格式控制符与变量类型的匹配
+   - 易错点：double类型要用%lf（scanf）和%f（printf），避免混淆
+
+2. switch语句强化练习：
+   - 结构记忆：让宝贝默写switch语句的完整结构，重点检查case后的break是否遗漏
+   - 穿透现象实验：让宝贝写一段无break的switch代码，观察执行结果，加深对break作用的理解
+   - 场景练习：让宝贝用switch实现"输入月份1-12，输出对应季节"，熟练多分支等值判断场景
+
+3. 分支结构选择训练：
+   - 给宝贝不同题目，让他选择合适的分支结构：
+     - 题目1：输入分数（0-100），判断等级 → 用多分支if-else
+     - 题目2：输入数字1-4，输出对应的季节 → 用switch
+   - 引导宝贝总结："等值判断用switch，范围判断用if-else"的选择逻辑
+
+❤️【温馨提示】❤️
+格式化输入输出是编程的基础技能，switch语句是多分支场景的高效解决方案，这两个知识点在后续复杂程序中会频繁用到。宝贝目前掌握得很扎实，但还需要通过多练习巩固细节（如&符号、break语句），避免因小错误影响程序运行～
+
+作业可以用指定网址或离线版DEV-C++完成，记得发班级群打卡！如果宝贝在练习中对switch的穿透现象或分支选择有疑问，鼓励他主动联系老师询问，及时解决问题～
+
+感谢您的配合与支持，期待宝贝下次课带来更多精彩表现！
+                </div>
+                <div class="copy-hint" onclick="copyContent()">
+                    <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 家校沟通平台 | C++编程进阶版 | 格式化输入高效用，switch语句巧解多分支</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

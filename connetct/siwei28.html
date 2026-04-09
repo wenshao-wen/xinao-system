@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #fff8e1;
+            border: 1px dashed #ff9800;
+        }
+        
+        .private-feedback .card-icon {
+            color: #ff9800;
+        }
+        
+        .private-feedback .card-title {
+            color: #e65100;
+        }
+        
+        .private-feedback .content-title {
+            color: #ef6c00;
+        }
+        
+        .private-feedback .content-title i {
+            color: #ff9800;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #ede7f6;
+            color: #4a148c;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #d1c4e9;
+        }
+        
+        .copy-hint:hover {
+            background: #d1c4e9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-hotel header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+                <ul class="nav-links">
+                    <li><a href="../网页主页面.html"><i class="fas fa-home"></i> 主站导航</a></li>
+                </ul>
+                <a href="../预科.html" class="back-to-course">
+                    <i class="fas fa-arrow-left"></i> 思维训练
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>少儿C++编程进阶课</h1>
+            <p>while循环进阶应用，玩转数字分离与水仙花数！</p>
+        </div>
+        
+        <!-- 群反馈内容（C++---28while循环进阶） -->
+        <section class="feedback-card">
+          <div class="card-header">
+            <i class="fas fa-users card-icon"></i>
+            <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+          </div>
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-star"></i> 【C++---28while循环进阶】课堂反馈（第二十八课·while循环进阶）</h3>
+            <div class="wechat-group-feedback" id="wechatGroupFeedback">
+【C++---28while循环进阶】🌈🌈  本节课内容 🌻🌻
+✅  数的组成 📝。
+✅  数位判断 📝。
+✅  数字按位分离 📝
+✅  判断水仙花数 📝
+
+📚📚  重难点解析 📚📚
+✅  ① 生活中常见的数 满10进1 ✅
+✅  ② 分离数字 %10取出末尾数字，/10删除末尾数字 ✅
+✅  ③ 对一个多位数通过 while循环 来重复取位 ✅
+
+💖 课堂表现评价 💖
+本节课孩子们整体表现很棒！大家能快速理解数的"满10进1"基本规则，掌握了用%10和/10分离数字的核心方法，并且能结合while循环实现多位数的逐位提取，在水仙花数判断的练习中，大部分孩子能梳理出"分离数字→计算立方和→对比原数"的核心逻辑，课堂互动积极，动手实践能力稳步提升～
+
+📖 核心知识点总结 📖
+🔹 数字分离核心技巧：
+  - %10运算：取出数字的最后一位（如123%10=3）
+  - /10运算：删除数字的最后一位（如123/10=12）
+  - 循环配合：通过while循环重复执行上述两步，可提取多位数的每一位
+
+🔹 水仙花数核心定义：
+  - 三位数的水仙花数：其个位、十位、百位数字的立方和等于该数本身
+  - 示例：153 = 1³ + 5³ + 3³，因此153是水仙花数
+
+🔹 while循环进阶应用要点：
+  - 循环条件：判断数字是否大于0（num > 0），确保所有数位都能被提取
+  - 循环逻辑：先取末尾数字→再删除末尾数字→重复直至数字变为0
+
+作业练习网址： https://code.xdf.cn/freeIde?type=1 （或者DEV-C++软件）
+作业要求：作业完成后拍照发班级群打卡
+            </div>
+            <div class="copy-hint" onclick="copyWechatFeedback()">
+              <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+            </div>
+          </div>
+        </section>
+        
+        <!-- 私信反馈内容（C++---28while循环进阶） -->
+        <section class="feedback-card private-feedback">
+          <div class="card-header">
+            <i class="fas fa-envelope-open-text card-icon"></i>
+            <h2 class="card-title">私信反馈内容（C++---28while循环进阶）</h2>
+          </div>
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第二十八课·while循环进阶）</h3>
+            <div class="copyable-content" id="copyContent">
+😊【XX同学家长好呀！】
+🌟 宝贝C++编程第二十八课【while循环进阶】的反馈来啦～
+
+👍 宝贝课堂表现超棒！👍
+宝贝这节课状态特别好，能快速理解"满10进1"的数字规则，掌握了用%10取末尾数字、/10删末尾数字的方法，还能结合while循环给多位数"拆位"，在水仙花数练习中思路很清晰，动手能力越来越强啦～
+
+📝 课后重点巩固建议 📝
+1. 三位数取数专项练习：
+   - 核心方法：让宝贝多练三位数的个位、十位、百位提取（如456：个位456%10=6，十位(456/10)%10=5，百位456/100=4）
+   - 练习技巧：先手动算，再用编程验证，熟悉商和余数的配合使用
+
+2. 商和余数的灵活运用：
+   - 重点理解：%10是取余数（拿末尾），/10是取商（删末尾），两者是数字分离的核心
+   - 小练习：让宝贝随便说一个三位数，快速说出每一位数字，再用代码实现
+
+3. 水仙花数解题训练：
+   - 先理解定义：三位数的个位、十位、百位立方和等于自身
+   - 解题步骤：
+     ① 分离出个位、十位、百位数字
+     ② 计算三个数字的立方和
+     ③ 对比立方和与原数是否相等
+   - 实践建议：先找153、370等经典水仙花数验证，再尝试输出所有三位数的水仙花数
+
+❤️【温馨提示】❤️
+这节课的数字分离和水仙花数是while循环的经典应用，宝贝目前掌握得不错！建议让宝贝多动手写代码，比如尝试分离四位数、判断四位数的水仙花数（四叶玫瑰数），既能巩固知识点，又能提升编程兴趣～
+
+作业练习可以用指定网址（https://code.xdf.cn/freeIde?type=1）或DEV-C++软件完成，做完记得拍照发班级群打卡哦～
+
+感谢您的配合与支持，期待宝贝下次课带来更多惊喜！
+            </div>
+            <div class="copy-hint" onclick="copyContent()">
+              <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+            </div>
+          </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 家校沟通平台 | C++编程进阶版 | while循环进阶，数字分离趣味学</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

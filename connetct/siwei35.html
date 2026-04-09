@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #fff8e1;
+            border: 1px dashed #ff9800;
+        }
+        
+        .private-feedback .card-icon {
+            color: #ff9800;
+        }
+        
+        .private-feedback .card-title {
+            color: #e65100;
+        }
+        
+        .private-feedback .content-title {
+            color: #ef6c00;
+        }
+        
+        .private-feedback .content-title i {
+            color: #ff9800;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #ede7f6;
+            color: #4a148c;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #d1c4e9;
+        }
+        
+        .copy-hint:hover {
+            background: #d1c4e9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-hotel header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+                <ul class="nav-links">
+                    <li><a href="../网页主页面.html"><i class="fas fa-home"></i> 主站导航</a></li>
+                </ul>
+                <a href="../预科.html" class="back-to-course">
+                    <i class="fas fa-arrow-left"></i> 思维训练
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>少儿C++编程进阶课</h1>
+            <p>循环三要素巩固，玩转最值、阶乘与乘方！</p>
+        </div>
+        
+        <!-- 群反馈内容（C++---35 循环进阶） -->
+        <section class="feedback-card">
+            <div class="card-header">
+                <i class="fas fa-users card-icon"></i>
+                <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+            </div>
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-star"></i> 【C++---35 循环进阶】课堂反馈（第三十五课·循环进阶）</h3>
+                <div class="wechat-group-feedback" id="wechatGroupFeedback">
+【C++---35 循环进阶】🌈🌈  本节课内容 🌻🌻
+✅  三大循环总结，循环的三要素，开始，结束，增加，循环三要素，开始找对应的起始条件，结束条件，增加的数值。 熟练掌握三大循环格式！然后填充里面的内容。 📝
+✅  求最值：擂台PK赛，能够在循环之中，重复输入数值，找最大最小数值，可以使用参考数值，找出最大数值和最小数值！ 📝
+✅  阶乘和乘方的的初始，阶乘的数值乘积累乘，使用1 表示📝
+
+📚📚  重难点解析 📚📚
+✅  ① 三种循环的选择 ✅
+✅  ② 求最值中虚拟最值变量逐一进行比较 ✅
+✅  ③ 阶乘和乘法初值确定 ✅
+
+💖 课堂表现评价 💖
+本节课是循环知识的进阶应用，孩子们整体掌握不错！能熟练梳理三大循环的三要素（开始、结束、增加），准确区分不同循环的适用场景。在求最值的"擂台PK赛"练习中，大部分孩子能理解"虚拟最值变量"的思路，通过逐一比较找出最大/最小值；阶乘和乘方的学习中，能牢记初值设为1的关键。课堂上孩子们积极思考，对复杂循环应用的接受度稳步提升～
+
+📖 核心知识点总结 + 重点题目思路分析 📖
+🔹 一、三大循环总结（三要素统一梳理）
+  | 循环类型 | 三要素位置                | 核心适用场景                  | 格式示例（1-10遍历）                          |
+  |----------|---------------------------|-------------------------------|-----------------------------------------------|
+  | for      | 括号内集中定义（初始化;条件;更新） | 已知次数/范围（如1-100遍历）  | for(int i=1; i<=10; i++) { ... }              |
+  | while    | 初始化在外，条件在括号，更新在循环体 | 未知次数（如用户输入终止）    | int i=1; while(i<=10) { ... i++; }            |
+  | do-while | 初始化在外，条件在括号，更新在循环体 | 至少执行1次（如游戏循环）      | int i=1; do { ... i++; } while(i<=10);         |
+  
+  【重点题目思路分析】题目：用三种循环分别实现"输出1-20的偶数"
+  1. for循环思路：
+     - 三要素：开始i=2（第一个偶数），结束i<=20，增加i+=2（每次+2跳奇数）
+     - 核心：直接控制循环变量步长，无需额外判断，效率最高
+  2. while循环思路：
+     - 三要素：初始化i=2，条件i<=20，更新i+=2
+     - 核心：先判断再执行，适合后续可能修改条件的场景（如改为输出1-50偶数）
+  3. do-while循环思路：
+     - 三要素：初始化i=2，条件i<=20，更新i+=2
+     - 核心：至少执行1次，即使条件不满足也会输出第一个偶数（此处与前两者结果一致，体现场景适配性）
+  4. 循环选择思路：已知范围和步长，优先用for循环；若需确保至少输出1个偶数，用do-while；若后续可能动态修改结束条件，用while
+
+🔹 二、求最值（擂台PK赛·核心思路）
+  1. 定义虚拟最值变量：找最大值设max_val，找最小值设min_val
+  2. 初始化虚拟变量：用第一个输入的数值给max_val/min_val赋值（作为参考数值）
+  3. 循环输入数值：依次输入后续需要比较的数值
+  4. 逐一比较更新：
+     - 找最大值：新输入数值 > max_val → 用新数值更新max_val
+     - 找最小值：新输入数值 < min_val → 用新数值更新min_val
+  5. 循环结束：max_val/min_val即为所有数值的最大/最小值
+  
+  【重点题目思路分析】题目：输入5个整数，找出其中的最大值和最小值
+  1. 第一步：确定循环三要素
+     - 开始：输入第一个数（作为初始参考值），计数变量count=1
+     - 结束：count<5（共输入5个数）
+     - 增加：count++（每输入一个数计数+1）
+  2. 第二步：初始化参考变量
+     - 输入第一个数num1，设max_val=num1，min_val=num1（避免初始为0导致负数场景错误）
+  3. 第三步：循环输入与比较
+     - 循环4次，每次输入num，分别与max_val、min_val比较
+     - 若num>max_val → max_val=num；若num<min_val → min_val=num
+  4. 第四步：输出结果
+     - 循环结束后，直接输出max_val和min_val
+  5. 关键思路：参考数值动态更新，每轮只留最优解，如同擂台PK，赢者留任
+
+🔹 三、阶乘与乘方（初值关键）
+  - 阶乘定义：n! = n × (n-1) × ... × 1（如5! = 5×4×3×2×1=120）
+  - 乘方定义：a^b = a × a × ... × a（b个a相乘，如2^3=2×2×2=8）
+  - 初值设置：必须设为1（若设为0，相乘后结果永远为0）
+  - 循环逻辑：用for循环从1遍历到n（阶乘）或b（乘方），每次用result *= 当前数值
+  
+  【重点题目思路分析】
+  1. 题目1：计算5的阶乘（5!）
+     - 思路：
+       ① 定义result=1（初值设1）
+       ② for循环i从1到5：i=1时result=1×1=1；i=2时result=1×2=2；i=3时=2×3=6；i=4时=6×4=24；i=5时=24×5=120
+       ③ 循环结束，result=120即为5!
+     - 关键：初值不能设为0，否则所有乘法结果都为0
+  
+  2. 题目2：计算3的4次方（3^4）
+     - 思路：
+       ① 定义base=3（底数），exponent=4（指数），result=1（初值设1）
+       ② for循环i从1到4：每次result *= base（即result=result×3）
+       ③ 循环过程：1×3=3 → 3×3=9 → 9×3=27 → 27×3=81
+       ④ 循环结束，result=81即为3^4
+     - 关键：循环次数等于指数，初值1确保乘法逻辑正确
+
+
+作业要求：作业完成后拍照发班级群打卡
+                </div>
+				
+                <div class="copy-hint" onclick="copyWechatFeedback()">
+                    <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+                </div>
+            </div>
+        </section>
+        
+        <!-- 私信反馈内容（C++---35 循环进阶） -->
+        <section class="feedback-card private-feedback">
+            <div class="card-header">
+                <i class="fas fa-envelope-open-text card-icon"></i>
+                <h2 class="card-title">私信反馈内容（C++---35 循环进阶）</h2>
+            </div>
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第三十五课·循环进阶）</h3>
+                <div class="copyable-content" id="copyContent">
+😊【XX同学家长好呀！】
+🌟 宝贝C++编程第三十五课【循环进阶】的反馈来啦～
+
+👍 宝贝课堂表现亮点 👍
+宝贝这节课表现超棒！能熟练总结三大循环的三要素和适用场景，在求最值的"擂台PK赛"中快速理解核心逻辑，还能牢记阶乘与乘方的初值设置要点，课堂练习中准确率很高，尤其是重点题目的思路梳理很清晰，对循环进阶应用的掌握越来越扎实，继续加油呀！
+
+📝 课后重点提醒与建议 📝
+重点和你分享每部分重点题目的思路分析，方便你辅导宝贝练习：
+
+1. 三大循环应用题目：重点练"循环选择"思路
+   - 辅导方法：给宝贝同一道题（如"输出1-15的奇数"），让他用三种循环分别实现
+   - 思路引导：做完后问他"哪种循环最方便？为什么？"，强化"已知次数用for，至少执行用do-while，未知次数用while"的选择逻辑
+   - 易错点：提醒宝贝注意while和do-while的更新语句位置，避免遗漏导致无限循环
+
+2. 求最值题目：掌握"参考数值比较"核心
+   - 题目示例：输入6个小数（如3.2、5.7、2.9、7.1、4.5、6.3），找最大值和最小值
+   - 思路拆解：
+     ① 先输入第一个数3.2，设max=3.2，min=3.2（参考数值）
+     ② 输入5.7：5.7>3.2→max=5.7；5.7>3.2→min不变
+     ③ 依次比较后续每个数，动态更新max和min
+     ④ 最后输出max=7.1，min=2.9
+   - 关键提醒：不要让宝贝把参考数值初始化为0，避免输入负数时结果错误
+
+3. 阶乘与乘方题目：牢记初值设1的逻辑
+   - 阶乘练习：计算4!（4×3×2×1），让宝贝一步步写过程：result=1→1×4=4→4×3=12→12×2=24→24×1=24
+   - 乘方练习：计算2^5，过程：result=1→1×2=2→2×2=4→4×2=8→8×2=16→16×2=32
+   - 思路强化：问宝贝"如果初值设0会怎么样？"，让他实际计算验证，加深记忆
+
+❤️【温馨提示】❤️
+循环进阶是编程的核心知识点，重点题目的思路梳理能帮助宝贝举一反三。宝贝目前对思路的掌握不错，但还需要通过多练习巩固，建议让他每做一道题都先写思路再写代码，养成规范的解题习惯～
+
+作业可以用指定网址或DEV-C++软件完成，记得拍照发班级群打卡！如果宝贝在练习中对思路有疑问，鼓励他主动联系老师询问，及时解决问题～
+
+感谢您的配合与支持，期待宝贝下次课带来更多精彩表现！
+                </div>
+                <div class="copy-hint" onclick="copyContent()">
+                    <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 家校沟通平台 | C++编程进阶版 | 循环进阶巧应用，最值阶乘轻松解</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #fff8e1;
+            border: 1px dashed #ff9800;
+        }
+        
+        .private-feedback .card-icon {
+            color: #ff9800;
+        }
+        
+        .private-feedback .card-title {
+            color: #e65100;
+        }
+        
+        .private-feedback .content-title {
+            color: #ef6c00;
+        }
+        
+        .private-feedback .content-title i {
+            color: #ff9800;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #ede7f6;
+            color: #4a148c;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #d1c4e9;
+        }
+        
+        .copy-hint:hover {
+            background: #d1c4e9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-hotel header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+                <ul class="nav-links">
+                    <li><a href="../网页主页面.html">
+						<i class="fas fa-home"></i> 主站导航</a>
+					</li>
+                </ul>
+                <a href="../预科.html" class="back-to-course">
+                    <i class="fas fa-arrow-left"></i> 思维训练
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>少儿C++编程进阶课</h1>
+            <p>do-while循环新解锁，三种循环巧区分！</p>
+        </div>
+        
+        <!-- 群反馈内容（C++---32 do-while循环） -->
+        <section class="feedback-card">
+            <div class="card-header">
+                <i class="fas fa-users card-icon"></i>
+                <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+            </div>
+            <div class="content-section">
+                <h3 class="content-title">
+					<i class="fas fa-star"></i> 
+					【C++---32 do-while循环】课堂反馈（第三十二课·do-while循环）
+					</h3>
+                <div class="wechat-group-feedback" id="wechatGroupFeedback">
+【C++---32 do-while循环】🌈🌈 本节课重难点来了🌻🌻
+✅ do-while循环格式，能够区分和while 循环的区别，区分for 循环的语句格式 📝
+✅ do-while循环特点，表示先做事情后判断条件 📝
+✅ do-while循环和while循环的异同点，都是属于条件循环的语句！ 📝
+
+📚📚 重要的知识点梳理 📚📚
+✅① do-while循环使用的场景 ✅
+✅② do-while循环和while循环对比记忆 ✅
+✅③ 案例：账号密码登录梳理，首先设置正确的账号，然后显示整个菜单的信息，登录会员账号和密码，判断正确进入账户，最后输出 ✅
+
+💖 课堂表现评价 💖
+本节课孩子们对do-while循环的学习表现积极！大部分孩子能快速掌握do-while的基本格式，理解"先执行后判断"的核心特点，也能通过对比记忆区分它与while、for循环的差异。在账号密码登录的案例练习中，能运用do-while循环实现"至少登录一次"的逻辑，课堂互动氛围热烈，对循环语句的综合运用能力稳步提升～
+
+📖 核心知识点总结 📖
+🔹 三种循环的相同点：
+  1. 本质都是循环语句，用于重复执行一段代码
+  2. 都有循环条件，满足条件时继续循环，不满足时终止
+  3. 都可通过break语句强制终止循环，continue语句跳过当前次循环
+  4. 循环体中都需有改变循环条件的语句，避免无限循环
+
+🔹 三种循环的核心区别：
+  | 循环类型   | 执行顺序       | 格式特点                     | 适用场景                                   |
+  |------------|----------------|------------------------------|--------------------------------------------|
+  | do-while   | 先执行，后判断 | do{循环体}while(条件);        | 至少需要执行一次的场景（如登录验证、菜单选择） |
+  | while      | 先判断，后执行 | while(条件){循环体}           | 不确定执行次数，靠条件控制（如猜数字游戏）   |
+  | for        | 先判断，后执行 | for(初始化;条件;更新){循环体} | 已知循环次数或范围（如1-100遍历、固定次数循环） |
+
+  - 关键差异1：执行次数，do-while至少执行1次，while和for可能执行0次
+  - 关键差异2：格式结构，for循环三要素集中，while和do-while三要素分散
+  - 关键差异3：使用场景，根据"是否至少执行一次"和"是否已知次数"选择
+
+🔹 do-while循环核心要点：
+  - 格式注意：do后面紧跟循环体{}，while括号后必须加分号（;），不可遗漏
+  - 执行逻辑：先执行do中的循环体，再判断while后的条件，条件为真则继续循环
+  - 经典案例：账号密码登录（必须先输入账号密码，再判断是否正确，至少输入一次）
+
+作业练习网址：https://code.xdf.cn/freeIde?type=1（或者离线版DEV-C++）
+完成之后拍照发班级群打卡
+                </div>
+                <div class="copy-hint" onclick="copyWechatFeedback()">
+					<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+                </div>
+            </div>
+        </section>
+        
+        <!-- 私信反馈内容（C++---32 do-while循环） -->
+        <section class="feedback-card private-feedback">
+            <div class="card-header">
+                <i class="fas fa-envelope-open-text card-icon"></i>
+                <h2 class="card-title">私信反馈内容（C++---32 do-while循环）</h2>
+            </div>
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第三十二课·do-while循环）</h3>
+                <div class="copyable-content" id="copyContent">
+😊【XX同学家长好呀！】
+🌟 宝贝C++编程第三十二课【do-while循环】的反馈来啦～
+
+👍 宝贝课堂表现亮点 👍
+宝贝这节课表现超棒！能快速掌握do-while循环的格式和"先执行后判断"的特点，在课堂练习中能正确写出账号密码登录的核心逻辑，还能主动对比do-while与while、for循环的区别，思维越来越灵活，继续保持这份学习热情呀！
+
+📝 课后重点提醒与建议 📝
+1. 重点巩固三种循环的区别：
+   - 让宝贝用简单例子总结：do-while是"先做事再判断"，至少执行1次；while和for是"先判断再做事"，可能不执行
+   - 可以让宝贝分别用三种循环实现同一个简单功能（如输出3次"Hello"），对比格式和执行差异
+
+2. do-while循环格式强化：
+   - 特别提醒宝贝：while括号后面的分号不能忘，这是do-while循环的高频易错点
+   - 练习建议：多写几次账号密码登录的案例，熟练掌握"输入→判断→正确则进入，错误则重新输入"的逻辑
+
+3. 场景选择练习：
+   - 给宝贝出不同场景题，让他选择合适的循环（如"猜数字游戏"用while，"菜单选择"用do-while，"1-10求和"用for）
+   - 通过场景练习，加深对三种循环适用场景的理解，避免混用
+
+❤️【温馨提示】❤️
+本节课是循环语句的综合梳理课，掌握三种循环的区别和适用场景，能为后续复杂程序编写打下坚实基础。宝贝目前对do-while循环的掌握情况很好，但三种循环的灵活选择还需要通过多练习巩固～
+
+作业可以用指定网址或离线版DEV-C++完成，记得拍照发班级群打卡！如果宝贝在练习中对循环选择有疑问，鼓励他主动联系老师询问，及时解决问题～
+
+感谢您的配合与支持，期待宝贝下次课带来更多精彩表现！
+                </div>
+                <div class="copy-hint" onclick="copyContent()">
+                    <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 家校沟通平台 | C++编程进阶版 | do-while循环巧运用，三种循环灵活选</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<<i class="fas fa-check"></</i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<<i class="fas fa-copy"></</i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

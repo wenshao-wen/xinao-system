@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台 - C++ 阶段复习 </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 代码展示样式 */
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        
+        .code-title {
+            color: #ab47bc;
+            font-weight: 600;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #f8fbff;
+            border: 1px dashed #3498db;
+        }
+        
+        .private-feedback .card-icon {
+            color: #3498db;
+        }
+        
+        .private-feedback .card-title {
+            color: #1a5276;
+        }
+        
+        .private-feedback .content-title {
+            color: #2874a6;
+        }
+        
+        .private-feedback .content-title i {
+            color: #3498db;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .copy-hint:hover {
+            background: #c8e6c9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+            
+            .code-block {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-sort-amount-up header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+              <ul class="nav-links">
+                  <li><a href="../网页主页面.html"><i class="fas fa-home"></i> 主站导航 </a></li>
+                  <!-- <li><a href="#"><i class="fas fa-book"></i> 教学资源</a></li> -->
+                  <!-- <li><a href="#"><i class="fas fa-comments"></i> 沟通记录</a></li> -->
+              </ul>
+              <a href="../算法.html" class="back-to-course">
+                  <i class="fas fa-arrow-left"></i> 算法课程
+              </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>编程逻辑 · 阶段复习</h1>
+            <p>第三十九次C++编程课：复习函数专项训练核心知识点</p>
+        </div>
+        
+        <!-- 群反馈内容 -->
+        <section class="feedback-card">
+            <div class="card-header">
+                <i class="fas fa-users card-icon"></i>
+                <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-star"></i> 【C++---39课函数】课堂反馈（第三十九课·专项训练）</h3>
+                
+                <div class="wechat-group-feedback" id="wechatGroupFeedback">
+🔄😊 各位家长好！本次C++课【函数专项训练】来啦~ 孩子们将深入学习函数的概念、创建和调用，以及如何通过函数解决素数和公约数等实际问题！
+
+✨【课堂整体表现】✨  
+- 😃 氛围：函数专项训练主题激发了孩子们的兴趣，孩子们能够主动探索函数的使用方法
+- 👍 亮点：**函数的基本概念**理解清晰（如创建、调用、参数传递），能够使用函数封装解决问题的逻辑
+- ⚠️ 注意点：部分同学在区分形式参数和实际参数时遇到困难，或在素数判断/最大公约数求解中逻辑不够严谨，已通过实例详细解释
+
+🎯 GOC 函数的练习提升 重难点梳理
+🌈🌈 本节课内容 🌻🌻
+✅ 函数的理解，创建和调用 📝
+✅ 函数的参数理解，形式参数，实际参数 📝
+✅ 使用函数解决素数的问题 📝
+📚📚 重难点解析 📚📚
+✅ ①什么是函数，函数是解决问题的代码块✅
+✅ ①函数如何去创建，返回值的类型，函数的主函数调用  ✅
+✅ ② 素数的概念，如何判断素数 ，公约数的学习，能够求解最大公约数✅
+
+📖 核心知识点代码示例：
+【判断素数函数】
+bool isPrime(int n) {
+    if (n <= 1) return false;
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) return false;
+    }
+    return true;
+}
+
+【求解最大公约数函数】
+int gcd(int a, int b) {
+    while (b != 0) {
+        int temp = a % b;
+        a = b;
+        b = temp;
+    }
+    return a;
+}
+
+📝🔗 作业练习网址（文字版）：  
+
+https://code.xdf.cn/freecode/editor?type=3&org=code
+
+✅ 作业练习建议：完成函数相关编程题，特别是素数判断和最大公约数求解，巩固专项训练内容
+✅ 作业要求：作业完成后拍照发班级群打卡  
+                </div>
+                
+                <div class="copy-hint" onclick="copyWechatFeedback()">
+                    <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+                </div>
+            </div>
+        </section>
+        
+        <!-- 私信反馈内容 -->
+        <section class="feedback-card private-feedback">
+            <div class="card-header">
+                <i class="fas fa-envelope-open-text card-icon"></i>
+                <h2 class="card-title">私信反馈内容（可直接复制发送）</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第三十九课·函数专项训练实战）</h3>
+                
+                <div class="copyable-content" id="copyContent">
+😊【XX同学家长您好！】  
+
+🌟 本次C++课【函数专项训练】反馈来啦~ 孩子们深入学习了函数的概念、创建和调用，掌握了函数在素数判断、公约数求解等实际问题中的应用，既有亮点也有提升空间！ 🌟  
+
+✨【表现亮点】✨  
+- **函数基本概念清晰**：能够理解函数的定义、创建和调用方式，掌握形式参数与实际参数的传递规则 🧮  
+- **代码封装意识提升**：能够将素数判断、公约数求解等逻辑封装成函数，代码模块化程度更高 ✨  
+- **学习态度积极**：主动探索函数的应用场景，积极参与课堂练习和讨论 ✔️  
+
+⚠️【需重点关注】⚠️  
+- **参数传递理解**：在区分形式参数和实际参数时，部分场景下理解不够精准，容易出现参数不匹配问题
+- **素数判断逻辑**：在素数判断函数中，边界条件（如n≤1）处理不够严谨，循环终止条件选择不够优化
+- **最大公约数求解**：使用辗转相除法求解最大公约数时，循环逻辑理解不够深入，需要进一步练习
+
+📖 核心代码解释：
+1. 素数判断函数：通过循环检查2到√n之间的数是否能整除n，高效判断素数
+2. 最大公约数函数：使用辗转相除法，通过循环取余直到余数为0，最终得到最大公约数
+
+2. **作业完成情况**：孩子已完成函数基础练习，但在"素数判断函数优化"和"最大公约数求解"部分标了问号，下次课上重点讲解  
+
+🌱【温馨提示】🌱  
+函数专项训练是提升编程能力的重要环节，理解和熟练封装函数对后续学习至关重要。本课的"专项训练实战"不仅巩固了孩子的函数基础知识，也帮助发现了需要重点提升的方向。建议每天安排15-20分钟的专项练习，针对性解决薄弱环节。有任何问题，欢迎随时与我沟通！
+                </div>
+                
+                <div class="copy-hint" onclick="copyContent()">
+                    <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2023 家校沟通平台 | 函数专项训练版 | 让知识巩固更高效</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

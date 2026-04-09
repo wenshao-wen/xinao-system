@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++思维训练导航页</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --secondary: #2E7D32;
+            --accent: #81C784;
+            --light: #f8f9ff;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #4CC9F0;
+            --warning: #F72585;
+            --info: #81C784;
+            --gold: #FFD166;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --sidebar-bg: rgba(255, 255, 255, 0.9);
+            --border-color: rgba(76, 175, 80, 0.2);
+            --shadow: 0 4px 20px rgba(76, 175, 80, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 渐变背景装饰 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(76, 175, 80, 0.05) 0%, transparent 20%),
+                        radial-gradient(circle at 90% 80%, rgba(46, 125, 50, 0.05) 0%, transparent 20%);
+            z-index: -1;
+        }
+
+        /* 固定头部导航栏 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            backdrop-filter: blur(20px);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+            background: rgba(255, 255, 255, 0.2);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links a i {
+            font-size: 0.9rem;
+        }
+
+        /* 左侧阶段导航栏 */
+        .stage-sidebar {
+            position: fixed;
+            left: 0;
+            top: 70px;
+            width: 260px;
+            height: calc(100vh - 70px);
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            overflow-y: auto;
+            z-index: 999;
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 0 0 10px 10px;
+            margin: 0 1rem 1rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .stage-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            padding: 0 1rem;
+        }
+
+        .stage-nav-item {
+            position: relative;
+        }
+
+        .stage-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--dark);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .stage-nav-link:hover {
+            transform: translateX(8px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .stage-nav-link.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .stage-nav-link.active .stage-icon {
+            background: white;
+            color: var(--primary);
+        }
+
+        .stage-nav-link.active .stage-name {
+            color: white;
+        }
+
+        .stage-nav-link.active .stage-lessons {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .stage-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .stage-info {
+            flex: 1;
+        }
+
+        .stage-name {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .stage-lessons {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* 主体内容样式 */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem 20px 2rem 280px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .main-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--secondary);
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        /* 阶段内容区 */
+        .phase-section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 100px;
+        }
+
+        .phase-header {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .phase-header:hover {
+            transform: translateY(-5px);
+        }
+
+        .phase-icon {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: bold;
+            font-size: 1.8rem;
+            box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+        }
+
+        .phase-info {
+            flex: 1;
+        }
+
+        .phase-title {
+            color: var(--secondary);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .phase-desc {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        /* 课程列表样式 */
+        .lessons-list {
+            display: grid;
+            gap: 1.8rem;
+        }
+
+        /* 课程卡片样式 */
+        .lesson-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .lesson-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .lesson-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 1.2rem;
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+            flex-shrink: 0;
+        }
+
+        .lesson-title {
+            color: var(--dark);
+            font-size: 1.2rem;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        /* 按钮容器 */
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        /* 按钮样式 */
+        /* 按钮容器 - 保持网格布局，但增加间隙 */
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(103px, 1fr));
+            gap: 1rem; /* 增加按钮之间的间距，看起来更宽松 */
+        }
+    
+        /* 按钮基础样式 */
+        .lesson-btn {
+            padding: 1rem 1rem; /* 显著增加内边距，让按钮更“胖” */
+            border-radius: 12px; /* 圆角稍微大一点，更现代 */
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-weight: 600; /* 字体加粗 */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 增加一点阴影深度 */
+            text-align: center;
+            /* 移除原来的背景，由具体类名定义纯色 */
+            background-color: #6c757d; /* 默认灰色，防止未定义时出错 */
+            color: white;
+            border: 2px solid transparent; /* 预留边框位置，防止悬停时跳动 */
+        }
+    
+        .lesson-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            /* 悬停时稍微变深，增加反馈 */
+        }
+    
+        /* 定义具体的纯色按钮 */
+    
+        /* 课件按钮 - 改为深蓝色 */
+        .video-btn {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .video-btn:hover {
+            background-color: #0b5ed7;
+        }
+    
+        /* 代码平台按钮 - 改为深青色 */
+        .practice-btn {
+            background-color: #157347;
+            color: white;
+        }
+        .practice-btn:hover {
+            background-color: #13663f;
+        }
+    
+        /* 复习视频按钮 - 改为深紫色 */
+        .review-btn {
+            background-color: #6610f2;
+            color: white;
+        }
+        .review-btn:hover {
+            background-color: #5a0fc2;
+        }
+    
+        /* 上课案例按钮 - 改为深红色 */
+        .submit-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .submit-btn:hover {
+            background-color: #bb2d3b;
+        }
+    
+        /* 重点梳理按钮 - 改为深橙色 */
+        .submit-btna {
+            background-color: #fd7e14;
+            color: white;
+        }
+        .submit-btna:hover {
+            background-color: #dc6a0d;
+        }
+    
+        /* 家校沟通按钮 - 改为深粉色 */
+        .submit-btnb {
+            background-color: #d63384;
+            color: white;
+        }
+        .submit-btnb:hover {
+            background-color: #c12a73;
+        }
+    
+        /* 特殊卡片样式（测试/项目）保持不变或微调 */
+        .test-card .lesson-number {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .project-card .lesson-number {
+            background-color: #198754;
+        }
+        .exam-card .lesson-number {
+            background-color: #dc3545;
+        }
+
+        .exam-card .lesson-title {
+            color: #EF476F;
+        }
+
+        /* 底部超链接 */
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 3rem;
+            margin-left: 260px;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-links {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            padding: 0 2rem;
+        }
+
+        .footer-link {
+            color: var(--secondary);
+            text-decoration: none;
+            padding: 1.2rem 1.5rem;
+            border-radius: 15px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-link:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        /* 侧边栏返回顶部 */
+        .back-to-top {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            cursor: pointer;
+            border: none;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lesson-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            main {
+                padding-left: 260px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .stage-sidebar {
+                width: 220px;
+            }
+            
+            nav {
+                padding-left: 240px;
+            }
+            
+            main {
+                padding-left: 240px;
+            }
+            
+            footer {
+                margin-left: 220px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stage-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding-top: 20px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                top: 0;
+                height: auto;
+                transform: translateX(-100%);
+            }
+            
+            .stage-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            nav {
+                padding-left: 20px;
+            }
+            
+            main {
+                padding-left: 20px;
+                padding-top: 80px;
+            }
+            
+            footer {
+                margin-left: 0;
+            }
+            
+            .nav-toggle {
+                display: block;
+                color: white;
+                font-size: 1.5rem;
+                background: none;
+                border: none;
+                cursor: pointer;
+                margin-left: 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .phase-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .button-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .phase-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .lesson-card {
+                padding: 1.5rem;
+            }
+            
+            .button-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边栏返回顶部按钮 -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- 左侧阶段导航栏 -->
+    <div class="stage-sidebar" id="stageSidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">C++思维训练</div>
+        </div>
+        <div class="stage-nav">
+            <div class="stage-nav-item">
+                <a href="#phase1" class="stage-nav-link active">
+                    <div class="stage-icon">1</div>
+                    <div class="stage-info">
+                        <div class="stage-name">思维训练1</div>
+                        <div class="stage-lessons">第1-12次课</div>
+                    </div>
+                </a>
+            </div>
+            <div class="stage-nav-item">
+                <a href="#phase2" class="stage-nav-link">
+                    <div class="stage-icon">2</div>
+                    <div class="stage-info">
+                        <div class="stage-name">思维训练2</div>
+                        <div class="stage-lessons">第13-24次课</div>
+                    </div>
+                </a>
+            </div>
+            <div class="stage-nav-item">
+                <a href="#phase3" class="stage-nav-link">
+                    <div class="stage-icon">3</div>
+                    <div class="stage-info">
+                        <div class="stage-name">思维训练3</div>
+                        <div class="stage-lessons">第25-36次课</div>
+                    </div>
+                </a>
+            </div>
+            <div class="stage-nav-item">
+                <a href="#phase4" class="stage-nav-link">
+                    <div class="stage-icon">4</div>
+                    <div class="stage-info">
+                        <div class="stage-name">思维训练4</div>
+                        <div class="stage-lessons">第37-51次课</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 固定头部导航栏 -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-laptop-code"></i>
+                C++思维训练
+            </div>
+            <ul class="nav-links">
+                <li><a href="预科.html"   target="_blank"><i class="fas fa-brain"></i> 思维训练</a></li>
+                <li><a href="出门测试.html"   target="_blank"><i class="fas fa-clipboard-list"></i> 出门测试</a></li>
+				 <li><a href="https://code.xdf.cn/freecode/editor?type=3&org=code"  target="_blank"><i class="fas fa-code"></i> 编辑平台</a></li>
+                <li><a href="#resources"   target="_blank"><i class="fas fa-book"></i> 学习资源</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <h1 class="main-title">C++预科阶段课程</h1>
+        
+        <!-- 第1阶段：第1-12次课 -->
+        <section class="phase-section" id="phase1">
+            <div class="phase-header">
+                <div class="phase-icon">1</div>
+                <div class="phase-info">
+                    <h2 class="phase-title">预科1阶段：初始C++基础</h2>
+                    <p class="phase-desc">第1-12次课，掌握C++编程基础，从零开始学习编程思维和基本语法</p>
+                </div>
+            </div>
+            
+            <div class="lessons-list">
+                <!-- 第1课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">1</div>
+                        <span class="lesson-title">1. 初始C++</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWHpobFVKUXVjSFhY" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/owhe3p4ghelt37zxnntdp0qfolwfi8o2#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://ks.wjx.com/vm/hSZOVfa.aspx#" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c1.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei1.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第2课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">2</div>
+                        <span class="lesson-title">2. 框架和输出</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWHF4b0NacUpvQ0JN" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/0lce004vztxtz10196gduic6ufojb7gl#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://ks.wjx.com/vm/wmpluZt.aspx#" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c2.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei2.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第3课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">3</div>
+                        <span class="lesson-title">3. 有趣的字符画</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWGVZdm5ya2ZkQ29x" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/uazlwfnb6d487ckomo4gjfjoh4mca9kj#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://ks.wjx.com/vm/PXr7qND.aspx#" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c3.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei3.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第4课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">4</div>
+                        <span class="lesson-title">4. 字母代替数</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFV6ZGpMQ1h2SWhI" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/6audyxygpjj1c4y2yfrl6ee2nrv88r8i#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c4.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei4.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第5课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">5</div>
+                        <span class="lesson-title">5. 输入和运算</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFdjWnpTRm9HU1Fn" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/4of8ljns3pp77km13txc4eydzabxtpqc#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c5.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei5.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第6课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">6</div>
+                        <span class="lesson-title">6. 小数和格式化</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFNpc29Dc09zSkF1" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/llvh9kjpi679ldfh8gv7ngiq3h9mf9qj#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c6.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei6.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第7课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">7</div>
+                        <span class="lesson-title">7. 真假布尔</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEhnV3VUZUR2dUZB" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/4hf0235kvi0m6oaivyrh1cvpl71kl5ma#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c7.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei7.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第8课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">8</div>
+                        <span class="lesson-title">8. 进制变换</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFhzRE9KY3hvUFJF" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/fvexbqhu6w0m4ar3bps1o2k05bdwwb95#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c8.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei8.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第9课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">9</div>
+                        <span class="lesson-title">9. 单数还是双数</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFJCbXNiUFNudEpO" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/cg4nkbdrs3ii1b3ej9gr78n0406qbf0c#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c9.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei9.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第10课（测试课） -->
+                <div class="lesson-card test-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">10</div>
+                        <span class="lesson-title">10. 综合复习</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEdjZVZzbmVZa1FL" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/9g32ngecdynzpjw5m8yx4hjbnsxx5mbi#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c10.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei10.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第11课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">11</div>
+                        <span class="lesson-title">11. 逻辑运算与</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWGZSeXVTU3h1dVV6" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/g36sxrf3hcqmun1oc7lry75qagdcrq1m#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c11.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei11.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第12课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">12</div>
+                        <span class="lesson-title">12. 闰年和平年</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWGNEWEh3Q3ZJdmhM" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/kgjft5y61gcsfd6ufzobwzcxkb4dfi37#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c12.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei12.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第2阶段：第13-24次课 -->
+        <section class="phase-section" id="phase2">
+            <div class="phase-header">
+                <div class="phase-icon">2</div>
+                <div class="phase-info">
+                    <h2 class="phase-title">预科2阶段：进阶编程概念</h2>
+                    <p class="phase-desc">第13-24次课，深入学习编程核心概念，掌握复杂逻辑和算法思维</p>
+                </div>
+            </div>
+            
+            <div class="lessons-list">
+                <!-- 第13课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">13</div>
+                        <span class="lesson-title">13. 文件夹的秘密</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWG5JSUpYcGRDdmR1" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/x6cqeakk10xu5k9qcdafiz9hh480dee4#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c13.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei13.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第14课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">14</div>
+                        <span class="lesson-title">14. 变量和类型</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEhleVpqd1JqU1Nw" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/gt4grmb1poqupnn9yoeap5pandfdlba7#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c14.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei14.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第15课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">15</div>
+                        <span class="lesson-title">15. 加法的运算</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEJpQmRHZUpUU0JC" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/cjdmb4d46o6olhkjvvntvtgqysry0p8r#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c15.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei15.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第16课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">16</div>
+                        <span class="lesson-title">16. 字符串类型</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEt0emprWG5BWW94" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/57aanjtj64y6o43lg1187mtbhgp2hqw1#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c16.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei16.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第17课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">17</div>
+                        <span class="lesson-title">17. 转换和图形</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFRjVWtrdmVhU1Z4" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/k65tnx6pha7bhm3xpftm3rgdclu4txih#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c17.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei17.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第18课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">18</div>
+                        <span class="lesson-title">18. 重量单位的认识</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEhCdGhhemNYTVJ5" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/5usebrrt35gl2f1rirsyldxt5t1hqfbb#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c18.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei18.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第19课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">19</div>
+                        <span class="lesson-title">19. 容量的运算</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWGpSR09VSW1kZEdQ" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/ycnhla5k1gc0mgo0w03o2q3ccxcm06f7#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c19.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei19.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第20课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">20</div>
+                        <span class="lesson-title">20. 判定星期几</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWHB1SGx5R2hBc1N5" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/3dwqugl94xtlc0poj4zqzwr9xqkcnd16#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c20.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei20.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第21课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">21</div>
+                        <span class="lesson-title">21. 学校考试了</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWE9LV1RrVk5ZeEVr" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/ko4t11jtor01ojkyauzpyfmprpxxgtn3#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c121.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei21.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第22课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">22</div>
+                        <span class="lesson-title">22. 寻找bug</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWERTa2JaV1BqSnpi" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/9dtrs5sevpdoajqk543nprihyvqjq4g3#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c22.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei22.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第23课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">23</div>
+                        <span class="lesson-title">23. 运算符号的选择</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEZYYk1CTGdQbXFF" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/fz9uo68dy6yi6r96k9eddt6yz6wh6wf8#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c23.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei23.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第24课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">24</div>
+                        <span class="lesson-title">24. 大象喝水</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWGpDY3R3WkZMZXNs" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/2kunbwbqchcrma2tlas0rd87aimsuita#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                     <!--   <a href="connetct/base24.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-paper-plane"></i>学情沟通
+                        </a> -->
+                        <a href="homewordpage/c24.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei24.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第3阶段：第25-36次课 -->
+        <section class="phase-section" id="phase3">
+            <div class="phase-header">
+                <div class="phase-icon">3</div>
+                <div class="phase-info">
+                    <h2 class="phase-title">预科3阶段：循环结构深入</h2>
+                    <p class="phase-desc">第25-36次课，掌握各种循环结构的用法和应用场景</p>
+                </div>
+            </div>
+            
+            <div class="lessons-list">
+                <!-- 第25课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">25</div>
+                        <span class="lesson-title">25. 随机计算器</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWHZ6YnNyWHN3em5F" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/kpdigprvij9djbot7d0qj49ryzujckx3#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c25.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei25.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第26课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">26</div>
+                        <span class="lesson-title">26. 模拟计算器</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWHJjSnJCUW1qZENu" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/rjnapng2oukxtbzerpqe19swfjr0m13a#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c26.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei26.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第27课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">27</div>
+                        <span class="lesson-title">27. while循环</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFZjbWtTUkJ3YWp6" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/13puf3g5jpqq72hym0gifilsjtcm3xes#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c27.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei27.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第28课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">28</div>
+                        <span class="lesson-title">28. while循环进阶</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEJWZVJkWUtiYm9L" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/cf8z6r4v9tcg0kqq2nd6n801amwt0wsj#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c28.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei28.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第29课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">29</div>
+                        <span class="lesson-title">29. for循环</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWGdDZ1NKSnVoR3JQ" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://yk3.gokuai.com/file/oxps2twx2k1fdg9ftpqq2a4oatipl0dn#" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c29.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei29.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第30课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">30</div>
+                        <span class="lesson-title">30. 范围for循环</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWG1oa01QbG5YRXdu" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1BPX8B2EzF/?share_source=copy_web&vd_source=98e1ed69886a7f1962575b86c692626c" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c30.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei30.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第31课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">31</div>
+                        <span class="lesson-title">31. break与continue</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWG1Gak5DQ3JJcWxW" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1EAX8B7ERK/?share_source=copy_web&vd_source=98e1ed69886a7f1962575b86c692626c" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c31.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei31.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第32课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">32</div>
+                        <span class="lesson-title">32. do-while循环</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWGNUTHZ3T0JxeU1j" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1zAX8B7EPk/?share_source=copy_web&vd_source=98e1ed69886a7f1962575b86c692626c" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c32.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei32.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第33课（项目实战） -->
+                <div class="lesson-card project-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">33</div>
+                        <span class="lesson-title">33. 项目综合实战</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFRxa3dTUkVOVmty" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1EAX8B7EXh/?share_source=copy_web&vd_source=98e1ed69886a7f1962575b86c692626c" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c33.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwe33.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第34课（测试课） -->
+                <div class="lesson-card exam-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">34</div>
+                        <span class="lesson-title">34. 循环专项测试</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="#" class="lesson-btn video-btn">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1Xx41117tr" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c34.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei34.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第35课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">35</div>
+                        <span class="lesson-title">35. 循环进阶</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFNuQUNReVdJTEpi" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1vhXbBuEpE/?share_source=copy_web&vd_source=98e1ed69886a7f1962575b86c692626c" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c35.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei35.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第36课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">36</div>
+                        <span class="lesson-title">36. 循环嵌套</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFZwQ0dZVkFjUmJP" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1RhXbBuEgq/?share_source=copy_web&vd_source=98e1ed69886a7f1962575b86c692626c" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c36.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei36.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第4阶段：第37-51次课 -->
+        <section class="phase-section" id="phase4">
+            <div class="phase-header">
+                <div class="phase-icon">4</div>
+                <div class="phase-info">
+                    <h2 class="phase-title">预科4阶段：高级编程技能</h2>
+                    <p class="phase-desc">第37-51次课，掌握高级编程技巧，学习数组、字符串和算法应用</p>
+                </div>
+            </div>
+            
+            <div class="lessons-list">
+                <!-- 第37课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">37</div>
+                        <span class="lesson-title">37. 顺序语句专题</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWE1Zc3dGV0p0dExL" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1vhXbBuEWM/?share_source=copy_web&vd_source=98e1ed69886a7f1962575b86c692626c" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c37.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei37.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第38课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">38</div>
+                        <span class="lesson-title">38. 分支语句专题</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEpSeXhsY3duaW5K" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1vbXbB6EWd/?share_source=copy_web&vd_source=98e1ed69886a7f1962575b86c692626c" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c38.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei38.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第39课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">39</div>
+                        <span class="lesson-title">39. 数的查询</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWGdSUExMbGRPR0pP" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1dbXbB6E3V/?share_source=copy_web&vd_source=98e1ed69886a7f1962575b86c692626c" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c39.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei39.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第40课（测试课） -->
+                <div class="lesson-card exam-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">40</div>
+                        <span class="lesson-title">40. GESP卷1</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEdjQXR2SWREbE9U" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1vbXbB6ESe/?share_source=copy_web&vd_source=98e1ed69886a7f1962575b86c692626c" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c40.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei40.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第41课（测试课） -->
+                <div class="lesson-card exam-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">41</div>
+                        <span class="lesson-title">41. GESP卷2</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFJDbWFOUUNveUdv" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://docs.qq.com/slide/DWFJDbWFOUUNveUdv" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1Xx41117tr" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c41.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei41.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第42课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">42</div>
+                        <span class="lesson-title">42. 枚举算法</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEd5bEV5S1hyZEpB" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1Xx41117tr" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c42.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei42.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第43课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">43</div>
+                        <span class="lesson-title">43. 角谷猜想</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWGZPdWJzUnNYdmdo" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1Xx41117tr" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c43.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei43.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第44课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">44</div>
+                        <span class="lesson-title">44. 一维数组火车</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWHh5am1pbFhMRWRn" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1Xx41117tr" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c44.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei44.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第45课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">45</div>
+                        <span class="lesson-title">45. 数组练习2</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWHdhanFRZGFiYkdM" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1Xx41117tr" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c45.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei45.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第46课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">46</div>
+                        <span class="lesson-title">46. 进制反转</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWFJaQWZTaWxNc2dF" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1Xx41117tr" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c46.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei46.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第47课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">47</div>
+                        <span class="lesson-title">47. 简单排序</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWE1jQWVna0ZNUFNN" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1Xx41117tr" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c47.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei47.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第48课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">48</div>
+                        <span class="lesson-title">48. 标记法</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWEFkZFNkekFGWG9t" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1Xx41117tr" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c48.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei48.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第49课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">49</div>
+                        <span class="lesson-title">49. 桶排序</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWE1Bd0FjWHdjd0F5" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1Xx41117tr" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c49.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei49.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第50课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">50</div>
+                        <span class="lesson-title">50. 字符数组</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWGNOaFB6QVBCU2VY" class="lesson-btn video-btn" target="_blank">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://www.bilibili.com/video/BV1Xx41117tr" class="lesson-btn review-btn" target="_blank">
+                            <i class="fas fa-video"></i>视频
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c50.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei50.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 第51课 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">51</div>
+                        <span class="lesson-title">51. 字符串</span>
+                    </div>
+                    <div class="button-container">
+                        <a href="https://docs.qq.com/slide/DWG1TRWtmQ21TUFNF" class="lesson-btn video-btn">
+                            <i class="fas fa-file-powerpoint"></i>课件
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn practice-btn" target="_blank">
+                            <i class="fas fa-laptop-code"></i>平台
+                        </a>
+                        <a href="https://code.xdf.cn/freecode/editor?type=3&org=code" class="lesson-btn submit-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>案例
+                        </a>
+                        <a href="homewordpage/c51.html" class="lesson-btn submit-btna" target="_blank">
+                            <i class="fas fa-bookmark"></i>重点
+                        </a>
+                        <a href="connetct/siwei51.html" class="lesson-btn submit-btnb" target="_blank">
+                            <i class="fas fa-comments"></i>家校
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部超链接 -->
+    <footer id="resources">
+        <div class="footer-links">
+            <a href="https://www.qceit.org.cn/bos/default.html?d=4460.850700805553" class="footer-link" target="_blank">
+                <i class="fas fa-graduation-cap"></i> 中国电子学会考级
+            </a>
+            <a href="https://gesp.ccf.org.cn/" class="footer-link" target="_blank">
+                <i class="fas fa-trophy"></i> GESP考级官网
+            </a>
+            <a href="https://www.noi.cn/" class="footer-link" target="_blank">
+                <i class="fas fa-medal"></i> NOI官网
+            </a>
+            <a href="https://code.xdf.cn/home" class="footer-link" target="_blank">
+                <i class="fas fa-code"></i> 新东方编程学习
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+                
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // 侧边栏返回顶部功能
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 左侧导航栏高亮当前阶段
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.phase-section');
+            const navLinks = document.querySelectorAll('.stage-nav-link');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 添加页面加载动画
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.lesson-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+    </script>
+</body>
+</html>

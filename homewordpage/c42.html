@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预科C++学习阶段 - 42课枚举算法重难点梳理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding-right: 60px; /* 预留右侧按钮空间 */
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            right: 20px;
+            bottom: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #3498db;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-to-top::before {
+            content: "↑";
+            font-size: 16px;
+        }
+
+        .back-to-top:hover {
+            background-color: #fff;
+            color: #2980b9;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 导航栏 */
+        nav {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-left {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-right a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-right a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 主内容区 */
+        .main-content {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 标题 */
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0);
+        }
+
+        .title h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 编程标题样式优化 */
+        .code-title {
+            font-family: 'Consolas', 'Monaco', monospace; /* 等宽字体，突出代码感 */
+            color: #e74c3c; /* 醒目红色 */
+            border-left: 4px solid #e74c3c;
+            padding: 8px 15px;
+            background-color: #f8f9fa;
+            border-radius: 0 4px 4px 0;
+            margin: 25px 0 15px;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* 题目内容区域 */
+        .topics {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .topic {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .topic:hover {
+            transform: translateY(-5px);
+        }
+
+        .topic h2 {
+            color: #3498db;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .topic h2:hover {
+            background: linear-gradient(45deg, #ff7b00, #ff9500, #ffb84d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(255, 149, 0, 0.5);
+        }
+
+        .topic ul {
+            list-style-type: none;
+        }
+
+        .topic li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .topic li::before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .topic li strong {
+            color: #2c3e50;
+        }
+
+        /* 代码图片展示区域 */
+        .code-images {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .code-images h2 {
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .code-images p {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .image-container {
+            margin-bottom: 25px;
+            text-align: center;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fafafa;
+        }
+
+        .image-container p {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #555;
+            text-align: left;
+            line-height: 1.6;
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+
+        .image-container p strong {
+            color: #2c3e50;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            body {
+                padding-right: 0;
+            }
+            
+            .back-to-top {
+                right: 15px;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .nav-left {
+                text-align: center;
+            }
+
+            .nav-right {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .main-content {
+                margin: 20px 10px;
+                padding: 0 10px;
+            }
+
+            .title h1 {
+                font-size: 24px;
+            }
+
+            .topic {
+                padding: 20px;
+            }
+
+            .topic h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="nav-left">预科学习阶段课程重难点梳理</div>
+        <div class="nav-right">
+            <a href="../网页主页面.html">首页</a>
+            <a href="../import.html">返回</a>
+        </div>
+    </nav>
+
+    <!-- 返回顶部按钮 -->
+    <a href="#" class="back-to-top">返回顶部</a>
+
+    <!-- 主内容 -->
+    <div class="main-content">
+        <!-- 页面主标题 -->
+        <div class="title">
+            <h1>预科42课 枚举算法</h1>
+        </div>
+
+        <!-- 题目部分：知识点、难点、练习 -->
+        <div class="topics">
+            <!-- 1. 知识点梳理 -->
+            <div class="topic">
+                <h2>知识点梳理内容</h2>
+                <div class="code-title">for循环基本语法</div>
+                <ul>
+                    <li>
+                        <strong>for循环语法</strong>：
+                        格式：for (初始化; 循环条件; 更新条件) { 循环体; } <br>
+                        特点：将“初始化、判断、更新”整合在一行，适合已知循环次数的场景。
+                    </li>
+                    <li>
+                        <strong>循环终止方式</strong>：
+                        1. 条件不成立自动终止；<br>
+                        2. 使用break语句强制跳出循环（如找到目标值后停止）。
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 2. 重点难点解析 -->
+            <div class="topic">
+                <h2>重点难点解析</h2>
+                
+                <div class="code-title">枚举算法的特点</div>
+                <ul>
+                    <li>
+                        <strong>循环条件的设计</strong>： <br>
+						<li>                      枚举算法（Enumeration Algorithm）是一种通过​​逐一列举所有可能的情况，并检查每一种情况是否满足问题的要求，
+						从而找出解或所有解​​的算法策略。它属于​​穷举法​​的一种，是最基础、最直观的算法思想之一。
+						</li>
+						<li>特点： </li>
+
+  1. ​​穷举性（全面性）​​  <br>
+  枚举算法会尝试​​所有可能的情况或组合​​，确保不会遗漏任何潜在的解。
+  优点：只要解存在于枚举范围内，就一定能找到。
+  缺点：如果解空间太大，效率会非常低。<br>
+  2. ​​正确性高​​
+  因为枚举了所有可能性，只要判断条件写得正确，得到的解一定是正确的。
+  适合用于对​​准确性要求高、解空间相对较小​​的问题。 <br>
+  3. ​​实现简单直观​​
+  算法逻辑通常很容易理解和编写，特别适合初学者。
+  往往只需要使用循环、条件判断等基本控制结构即可实现。 <br>
+  4. ​​时间复杂度较高（效率问题）​​
+  当问题的解空间非常大时（比如排列组合、大范围数字等），枚举所有情况会导致算法运行时间过长，甚至不可行。
+  时间复杂度通常是 ​​指数级或阶乘级​​，如 O(2ⁿ)、O(n!)，对于大规模数据不适用。 <br>
+  5. ​​空间复杂度通常较低​​
+  枚举算法一般只需要存储当前枚举的状态或临时变量，不需要保存大量中间数据，因此空间开销相对较小。 <br>
+  <br> 二、适用场景 <br>
+  枚举算法适用于以下类型的问题： <br>
+  ​​解空间较小​​，可以快速枚举所有可能情况。
+  ​​需要找出所有可行解或特定解​​，如组合、排列问题。
+  ​​问题本身没有明显的高效算法​​，或者作为暴力求解的起点。
+  ​​作为其他优化算法的基础或对比方法​​，比如动态规划、贪心算法等的对照。
+  <br> 三、经典应用举例 <br>
+  ​​百钱百鸡问题​​：用有限的钱买不同价格的鸡，求所有可能的购买组合。 <br>
+  ​​查找数组中两个数之和等于目标值​​（暴力解法）。 <br>
+  <br>  四、优化方向 <br>
+  虽然枚举算法简单，但在面对较大问题时效率低下，因此常采用以下优化手段： <br>
+  ​​剪枝（Pruning）​​：在枚举过程中，提前排除不可能产生解的分支，减少计算量。 <br>
+  ​​限制枚举范围​​：根据问题条件缩小可能的取值范围，避免无效枚举。 <br>
+  
+
+                    </li>
+                </ul>
+
+                <div class="code-title">公因数的概念</div>
+                <ul>
+                    <li>
+                        <strong> 因数概念 </strong>：
+                       因数（Factor）​​，也叫​​约数​​，是指能够​​整除某个整数​​的整数。<br>
+                        三、举例说明  <br>
+                        例 1：求 12 的因数 <br>
+                        我们找所有能整除 12 的正整数： <br>
+                        1 × 12 = 12 → ​​1 和 12 是因数​​ <br>
+                        2 × 6 = 12 → ​​2 和 6 是因数​​ <br>
+                        3 × 4 = 12 → ​​3 和 4 是因数​​ <br>
+                        4 × 3 = 12（重复了，不用再记） <br>
+                        ……  <br>
+                        所以，​​12 的因数有：1, 2, 3, 4, 6, 12​ <br>
+						✅ 总结：​​因数总是成对出现​​（除了完全平方数，比如 16 = 4×4，4 只算一次）  <br>
+                    </li>
+                    <li>
+                        <strong>公因数</strong>：
+                        一、什么是公因数？
+                        ​​公因数（Common Divisor）​​ 是指能够同时​​整除两个或多个整数​​的整数。换句话说，如果一个数能同时整除两个数，那么这个数就是这两个数的公因数。
+							<br>
+							示例（求 12 和 18 的公因数）：​​  <br>
+							较小数是 12 <br>
+							依次判断 1 ~ 12： <br>
+							1：12÷1=0, 18÷1=0 → 是公因数 <br>
+							2：12÷2=0, 18÷2=0 → 是 <br>
+							3：是 <br>
+							4：18÷4有余数 → 不是 <br>
+							5：都有余数 → 不是 <br>
+							6：是 <br>
+							7~12：都不能同时整除 <br>
+							公因数有：1, 2, 3, 6 <br>
+					</li>
+                </ul>
+            </div>
+
+            <!-- 3. 配套作业练习 -->
+            <div class="topic">
+                <h2>配套练习</h2>
+                <ul>
+                    <li><strong>基础语法练习1 </strong>：因数的列举</li>
+                    <li><strong>基础语法练习2 </strong>：公因数的列举</li>
+                    <li><strong>综合练习3</strong>：用循环计算“1!+2!+3!+…+5!”（5的阶乘累加）</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 代码图片展示 & 详细说明部分 -->
+        <div class="code-images">
+            <h2>📸 参考代码与练习说明</h2>
+            
+            <!-- 示例1：while循环计算1-50的和 -->
+            <div class="code-title">示例1：因数的列举</div>
+            <div class="image-container">
+                <p>
+                    <strong>【题目】</strong>输入一个整数，列举其所有的因数 <br>
+                    <strong>【思路】</strong> 从数值1 到数值n ，n是i 的倍数 <br>
+                    <strong>【关键代码】</strong> for-if  n%i==0<br>
+                    <strong>【说明】</strong> 多次倍数的判断 
+                </p>
+                 <img src="imglist/yu421.png" alt="公因数列举" />
+            </div>
+
+            <!-- 示例2：for循环输出10-20的偶数 -->
+            <div class="code-title">示例2：公因数列举 </div>
+            <div class="image-container">
+                <p>
+                    <strong>【题目】</strong>输入2个数值，找出其所有的因数，然后把他们共有的因数输出 <br>
+                    <strong>【思路】</strong> 1. 输入整数m 和整数n ,列举其所有的因数 <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 循环体内直接输出i的值；<br>
+                    <strong>【关键代码】</strong>for- if m%i==0 && n%i==0；<br>
+                    <strong>【说明】</strong> 逻辑运算 && 
+                </p>
+                <img src="imglist/yu422.png" alt="公因数列举" />
+            </div>
+
+            <!-- 示例3：阶乘累加计算 -->
+            <div class="code-title">示例3：百鸡百钱</div>
+            <div class="image-container">
+                <p>
+                    <strong>【题目】</strong>小明暑假去爷爷的农场帮忙，爷爷给了他100元去买100只鸡。市场上有三种鸡：公鸡：5元/只（会打鸣叫大家起床）母鸡：3元/只（会下蛋做早餐）小鸡：1元/3只（毛茸茸超可爱）小明要怎么买才能正好花完100元买到100只鸡呢？让我们帮小明算一算！<br>
+                    <strong>【思路】</strong> 1.一共100元，需求100只鸡 ， 公鸡5元一只，母鸡3元一只，小鸡1元3只 <br>
+                    <strong>【关键代码】</strong> 符合条件 百鸡百钱<br>
+                    <strong>【说明】</strong> 无
+                </p>
+                <img src="imglist/yu423.png" alt="循环计算阶乘累加" />
+            </div>
+        </div>
+
+        <div class="topics">
+            <div class="topic">
+                <h2>作业练习</h2>
+                <ul>
+                    <li><strong>作业练习1 </strong>：又遇鸡和兔</li>
+                    <li><strong>作业练习2</strong>：文具购买 </li>
+                    <li><strong>作业练习3</strong>：爸爸的年龄”</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="image-container">
+            <img src="imglist/yu424.png" alt="鸡兔同笼" />
+        </div>
+        <div class="image-container">
+            <img src="imglist/yu425.png" alt="买文具" />
+        </div>
+        <div class="image-container">
+             <img src="imglist/yu426.png" alt="年龄" />
+        </div>
+    </div>
+
+    <script>
+        // 返回顶部按钮功能
+        const backToTopBtn = document.querySelector('.back-to-top');
+        
+        // 滚动时显示/隐藏按钮
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) { // 滚动超过300px显示
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        
+        // 点击返回顶部
+        backToTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // 平滑滚动
+            });
+        });
+    </script>
+</body>
+</html>

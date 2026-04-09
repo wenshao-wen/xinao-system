@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预科阶段全阶段测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #333333;
+            position: relative;
+            overflow-x: hidden;
+            padding-top: 70px;
+            padding-left: 220px;
+            padding-right: 20px;
+        }
+
+        /* 侧边导航栏 */
+        .sidebar-nav {
+            position: fixed;
+            left: 0;
+            top: 70px;
+            width: 200px;
+            height: calc(100vh - 70px);
+            background: rgba(76, 175, 80, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(76, 175, 80, 0.5);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(76, 175, 80, 0.3);
+            z-index: 900;
+            overflow-y: auto;
+        }
+
+        .sidebar-nav h3 {
+            color: white;
+            text-align: center;
+            margin-bottom: 1rem;
+            padding: 0 1rem;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-links {
+            list-style: none;
+        }
+
+        .sidebar-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-links a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid white;
+            padding-left: 1.7rem;
+        }
+
+        /* 侧边栏返回顶部 */
+        .back-to-top {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            cursor: pointer;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+        }
+
+        /* 固定头部导航栏（绿色设计） */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(76, 175, 80, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(76, 175, 80, 0.5);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(76, 175, 80, 0.3);
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #f1f8e9;
+            text-shadow: 0 0 5px rgba(76, 175, 80, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* 主体内容样式 */
+        .content {
+            margin-top: 70px;
+            flex: 1;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .main-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #2e7d32;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+            animation: fadeInDown 1s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 二级菜单样式 - 去除折叠设置 */
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        .menu-item {
+            position: relative;
+            animation: fadeInUp 0.6s ease;
+            animation-fill-mode: both;
+        }
+
+        .menu-header {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-header:hover {
+            background: rgba(76, 175, 80, 0.05);
+            border-color: rgba(76, 175, 80, 0.6);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .menu-title {
+            color: #2e7d32;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .submenu {
+            max-height: none;
+            overflow: visible;
+            transition: none;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 0 0 10px 10px;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-top: none;
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+        }
+
+        .submenu-list {
+            list-style: none;
+            padding: 0 1.5rem;
+            max-height: none;
+        }
+
+        .submenu-item {
+            margin-bottom: 0.5rem;
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submenu-item a {
+            display: block;
+            color: #333333;
+            text-decoration: none;
+            padding: 0.7rem 1rem;
+            font-size: 1.05rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            white-space: normal;
+            word-wrap: break-word;
+            flex: 1;
+        }
+
+        .submenu-item a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .submenu-item a:hover {
+            color: #2e7d32;
+            background: rgba(76, 175, 80, 0.05);
+            padding-left: 1.5rem;
+            text-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+        }
+
+        .submenu-item a:hover::before {
+            left: 100%;
+        }
+
+        /* 复习测试按钮样式 - 绿色背景 */
+        .review-test-btn {
+            display: inline-block;
+            padding: 0.3rem 0.9rem;
+            background: linear-gradient(90deg, #4caf50, #2e7d32);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(76, 175, 80, 0.4);
+            flex-shrink: 0;
+        }
+
+        .review-test-btn:hover {
+            background: linear-gradient(90deg, #2e7d32, #1b5e20);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
+        }
+
+        /* 测试项目特殊样式 */
+        .test-item a {
+            background: linear-gradient(90deg, rgba(255, 152, 0, 0.2), rgba(255, 152, 0, 0.1));
+            border-left: 3px solid #ff9800;
+            font-weight: bold;
+            color: #ff9800;
+        }
+
+        .test-item a:hover {
+            background: linear-gradient(90deg, rgba(255, 152, 0, 0.3), rgba(255, 152, 0, 0.2));
+            color: #ff9800;
+            text-shadow: 0 0 5px #ff9800;
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
+            transform: translateX(8px) scale(1.02);
+        }
+
+        /* 底部考级网站链接 */
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid rgba(76, 175, 80, 0.3);
+            padding: 2rem 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            margin-top: 3rem;
+        }
+
+        .footer-links {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: #2e7d32;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer-link:hover {
+            background: rgba(76, 175, 80, 0.15);
+            border-color: rgba(76, 175, 80, 0.6);
+            color: #2e7d32;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.2);
+        }
+
+        /* 动态进度条 */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(76, 175, 80, 0.2);
+            z-index: 1002;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #2e7d32);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            body {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .sidebar-nav {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+                right: 15px;
+                bottom: 15px;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .menu-container {
+                gap: 2rem;
+            }
+
+            .submenu-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .review-test-btn {
+                align-self: flex-start;
+                margin-top: 5px;
+                padding: 0.25rem 0.6rem;
+                font-size: 0.75rem;
+            }
+
+            .submenu-item a {
+                padding: 0.7rem 1rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* 动画延迟计算 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-item:nth-child(1) { animation-delay: 0.1s; }
+        .menu-item:nth-child(2) { animation-delay: 0.3s; }
+        .menu-item:nth-child(3) { animation-delay: 0.5s; }
+        .menu-item:nth-child(4) { animation-delay: 0.7s; }
+    </style>
+</head>
+<body>
+    <!-- 进度条 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- 固定头部导航栏（绿色设计） -->
+    <header>
+        <nav>
+            <div class="logo">🎓 预科阶段进门测试</div>
+            <ul class="nav-links">
+                <li><a href="预科.html">预科首页</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 侧边导航栏 -->
+    <div class="sidebar-nav">
+        <h3>课程导航</h3>
+        <ul class="sidebar-links">
+            <li><a href="#stage1">预科1阶段</a></li>
+            <li><a href="#stage2">预科2阶段</a></li>
+            <li><a href="#stage3">预科3阶段</a></li>
+            <li><a href="#stage4">预科4阶段</a></li>
+            <li><a href="#resources">考级资源</a></li>
+        </ul>
+    </div>
+
+    <!-- 侧边栏返回顶部按钮 -->
+    <div class="back-to-top" id="backToTop">↑</div>
+
+    <!-- 主体内容：二级菜单 -->
+    <div class="content">
+        <div class="container">
+            <h1 class="main-title">🎓 预科阶段全阶段出门测试</h1>
+            
+            <div class="menu-container">
+                <!-- 预科1阶段 -->
+                <div class="menu-item" id="stage1">
+                    <div class="menu-header">
+                        <span class="menu-title">📚 预科1阶段 - C++基础入门 (1-12课)</span>
+                    </div>
+                    <div class="submenu">
+                        <ul class="submenu-list">
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/PbkDqEG.aspx" target="_blank">第1课 - 初始C++</a>
+                                <a href="https://kaoshi.wjx.top/vm/PbkDqEG.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/mBsHcyA.aspx#" target="_blank">第2课 - 框架和输出</a>
+                                <a href="https://kaoshi.wjx.top/vm/mBsHcyA.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/hMTMSNO.aspx" target="_blank">第3课 - 有趣的字符画</a>
+                                <a href="https://kaoshi.wjx.top/vm/hMTMSNO.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/rX8u1LO.aspx#" target="_blank">第4课 - 字母代替数</a>
+                                <a href="https://kaoshi.wjx.top/vm/rX8u1LO.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/reO8pgL.aspx#" target="_blank">第5课 - 输入和运算</a>
+                                <a href="https://kaoshi.wjx.top/vm/reO8pgL.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/hSaN6NO.aspx" target="_blank">第6课 - 小数和格式化</a>
+                                <a href="https://ks.wjx.com/vm/hSaN6NO.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/wm7ultv.aspx#" target="_blank">第7课 - 真假布尔</a>
+                                <a href="https://kaoshi.wjx.top/vm/wm7ultv.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/mk2RyAK.aspx" target="_blank">第8课 - 进制变换</a>
+                                <a href="https://ks.wjx.com/vm/mk2RyAK.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/O5DXYiH.aspx" target="_blank">第9课 - 单数还是双数</a>
+                                <a href="https://ks.wjx.com/vm/O5DXYiH.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://ks.wjx.com/vm/Y8poQp6.aspx#" target="_blank">📋 第10课 - 综合复习测试</a>
+                                <a href="https://ks.wjx.com/vm/Y8poQp6.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/w3lssGu.aspx" target="_blank">第11课 - 逻辑运算与</a>
+                                <a href="https://ks.wjx.com/vm/w3lssGu.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/OEH4Msi.aspx" target="_blank">第12课 - 闰年和平年</a>
+                                <a href="https://ks.wjx.com/vm/OEH4Msi.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://kaoshi.wjx.top/vm/PnjLvqE.aspx#" target="_blank">📋 预科1阶段期中测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/PnjLvqE.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://kaoshi.wjx.top/vm/finaltest1.aspx" target="_blank">📋 预科1阶段期末测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/finaltest1.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 预科2阶段 -->
+                <div class="menu-item" id="stage2">
+                    <div class="menu-header">
+                        <span class="menu-title">🔍 预科2阶段 - 进阶编程概念 (13-24课)</span>
+                    </div>
+                    <div class="submenu">
+                        <ul class="submenu-list">
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/mHLZPyA.aspx" target="_blank">第13课 - 文件夹的秘密</a>
+                                <a href="https://ks.wjx.com/vm/mHLZPyA.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/rsLOes1.aspx" target="_blank">第14课 - 变量和类型</a>
+                                <a href="https://ks.wjx.com/vm/rsLOes1.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/r41Lqfh.aspx" target="_blank">第15课 - 加法的运算</a>
+                                <a href="https://ks.wjx.com/vm/r41Lqfh.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/w3sulsT.aspx" target="_blank">第16课 - 字符串类型</a>
+                                <a href="https://ks.wjx.com/vm/w3sulsT.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/QZf9HCr.aspx" target="_blank">第17课 - 转换和图形</a>
+                                <a href="https://ks.wjx.com/vm/QZf9HCr.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/OGiH4Jp.aspx#" target="_blank">第18课 - 重量单位的认识</a>
+                                <a href="https://ks.wjx.com/vm/OGiH4Jp.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/meALAYy.aspx" target="_blank">第19课 - 容量的运算</a>
+                                <a href="https://ks.wjx.com/vm/meALAYy.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/wk20uTr.aspx" target="_blank">第20课 - 判定星期几</a>
+                                <a href="https://ks.wjx.com/vm/wk20uTr.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/eUFtP8f.aspx#" target="_blank">第21课 - 学校考试了</a>
+                                <a href="https://ks.wjx.com/vm/eUFtP8f.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/OdUZ5iJ.aspx" target="_blank">第22课 - 寻找bug</a>
+                                <a href="https://ks.wjx.com/vm/OdUZ5iJ.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/QZ9O1cC.aspx#" target="_blank">第23课 - 运算符号的选择</a>
+                                <a href="https://ks.wjx.com/vm/QZ9O1cC.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/ex3KtP8.aspx#" target="_blank">📋第24课 - 大象喝水</a>
+                                <a href="https://ks.wjx.com/vm/ex3KtP8.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://kaoshi.wjx.top/vm/mBW3Iyn.aspx#" target="_blank">📋 预科2阶段期中测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/mBW3Iyn.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://kaoshi.wjx.top/vm/finaltest2.aspx" target="_blank">📋 预科2阶段期末测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/finaltest2.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 预科3阶段 -->
+                <div class="menu-item" id="stage3">
+                    <div class="menu-header">
+                        <span class="menu-title">⚙️ 预科3阶段 - 核心算法基础 (25-36课)</span>
+                    </div>
+                    <div class="submenu">
+                        <ul class="submenu-list">
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/OCUNiiJ.aspx" target="_blank">第25课 - 随机计算器</a>
+                                <a href="https://ks.wjx.com/vm/OCUNiiJ.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/wmuouTr.aspx" target="_blank">第26课 - 模拟计算器</a>
+                                <a href="https://ks.wjx.com/vm/wmuouTr.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/h9tRAOs.aspx" target="_blank">第27课 - while循环</a>
+                                <a href="https://ks.wjx.com/vm/h9tRAOs.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/YDt6phR.aspx" target="_blank">第28课 - while循环进阶</a>
+                                <a href="https://ks.wjx.com/vm/YDt6phR.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/PpqxqMf.aspx" target="_blank">第29课 - for循环</a>
+                                <a href="https://ks.wjx.com/vm/PpqxqMf.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/ws1uc1u.aspx" target="_blank">第30课 - 范围for循环</a>
+                                <a href="https://ks.wjx.com/vm/ws1uc1u.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/wm1uLMu.aspx#" target="_blank">第31课 - break与continue</a>
+                                <a href="https://ks.wjx.com/vm/wm1uLMu.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/rQLgwLI.aspx" target="_blank">第32课 - do-while循环</a>
+                                <a href="https://ks.wjx.com/vm/rQLgwLI.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/test33.aspx" target="_blank">第33课 - 项目综合实战</a>
+                                <a href="https://kaoshi.wjx.top/vm/test33.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://kaoshi.wjx.top/vm/test34.aspx" target="_blank">📋 第34课 - 循环专项测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/test34.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/Pvqfcqx.aspx" target="_blank">第35课 - 循环进阶</a>
+                                <a href="https://ks.wjx.com/vm/Pvqfcqx.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/wEmu1uM.aspx" target="_blank">第36课 - 循环嵌套</a>
+                                <a href="https://ks.wjx.com/vm/wEmu1uM.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://kaoshi.wjx.top/vm/Q0qbPXC.aspx#" target="_blank">📋 预科3阶段期中测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/Q0qbPXC.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://kaoshi.wjx.top/vm/finaltest3.aspx" target="_blank">📋 预科3阶段期末测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/finaltest3.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 预科4阶段 -->
+                <div class="menu-item" id="stage4">
+                    <div class="menu-header">
+                        <span class="menu-title">🚀 预科4阶段 - 高级编程技能 (37-51课)</span>
+                    </div>
+                    <div class="submenu">
+                        <ul class="submenu-list">
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/reILBiL.aspx#" target="_blank">第37课 - 顺序语句专题</a>
+                                <a href="https://kaoshi.wjx.top/vm/reILBiL.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/mHns0Cy.aspx#" target="_blank">第38课 - 分支语句专题</a>
+                                <a href="https://ks.wjx.com/vm/mHns0Cy.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/ejtFSAL.aspx" target="_blank">第39课 - 数的查询</a>
+                                <a href="https://ks.wjx.com/vm/ejtFSAL.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://ks.wjx.com/vm/tfMr44W.aspx" target="_blank">📋第40课 GESP卷1 - 编程能力测试</a>
+                                <a href="https://ks.wjx.com/vm/tfMr44W.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://ks.wjx.com/vm/w2CFhu6.aspx" target="_blank">📋 第41课 GESP卷2 - 编程能力测试</a>
+                                <a href="https://ks.wjx.com/vm/w2CFhu6.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/OthZPui.aspx" target="_blank">第42课 - 枚举算法</a>
+                                <a href="https://ks.wjx.com/vm/OthZPui.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/wgJdCu6.aspx" target="_blank">第43课 - 角谷猜想</a>
+                                <a href="https://ks.wjx.com/vm/wgJdCu6.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://ks.wjx.com/vm/exF3j5t.aspx" target="_blank">第44课 - 数组1</a>
+                                <a href="https://ks.wjx.com/vm/exF3j5t.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/test45.aspx" target="_blank">第45课 - 数组2</a>
+                                <a href="https://kaoshi.wjx.top/vm/test45.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/test46.aspx" target="_blank">第46课 - 进制反转</a>
+                                <a href="https://kaoshi.wjx.top/vm/test46.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/test47.aspx" target="_blank">第47课 - 简单排序</a>
+                                <a href="https://kaoshi.wjx.top/vm/test47.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/test48.aspx" target="_blank">第48课 - 标记法</a>
+                                <a href="https://kaoshi.wjx.top/vm/test48.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/test49.aspx" target="_blank">第49课 - 桶排序</a>
+                                <a href="https://kaoshi.wjx.top/vm/test49.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="https://kaoshi.wjx.top/vm/test50.aspx" target="_blank">第50课 - 字符数组</a>
+                                <a href="https://kaoshi.wjx.top/vm/test50.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://kaoshi.wjx.top/vm/test51.aspx" target="_blank">📋 第51课 - 综合期末测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/test51.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://kaoshi.wjx.top/vm/reWULH0.aspx#" target="_blank">📋 预科4阶段期中测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/reWULH0.aspx#" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                            <li class="submenu-item test-item">
+                                <a href="https://kaoshi.wjx.top/vm/finaltest4.aspx" target="_blank">📋 预科4阶段期末测试</a>
+                                <a href="https://kaoshi.wjx.top/vm/finaltest4.aspx" class="review-test-btn" target="_blank">参加测试</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部考级网站链接 -->
+    <footer id="resources">
+        <div class="footer-links">
+            <a href="https://www.qceit.org.cn/bos/default.html?d=4460.850700805553" class="footer-link" target="_blank">中国电子学会考级</a>
+            <a href="https://gesp.ccf.org.cn/" class="footer-link" target="_blank">GESP考级官网</a>
+            <a href="https://www.noi.cn/" class="footer-link" target="_blank">NOI官网</a>
+            <a href="https://code.xdf.cn/home" class="footer-link" target="_blank">新东方编程学习</a>
+        </div>
+    </footer>
+
+    <script>
+        // 显示或隐藏"返回顶部"按钮
+        function toggleBackToTop() {
+            const backToTopButton = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        }
+
+        // 平滑滚动到顶部
+        document.getElementById('backToTop').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 更新进度条
+        function updateProgressBar() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+
+        // 监听滚动事件以控制"返回顶部"按钮的显示和进度条更新
+        window.addEventListener('scroll', function() {
+            toggleBackToTop();
+            updateProgressBar();
+        });
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleBackToTop();
+            updateProgressBar();
+            
+            // 为菜单项添加点击动画
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach((item, index) => {
+                item.style.animationDelay = (index * 0.2) + 's';
+            });
+            
+            // 为复习测试按钮添加点击事件
+            const reviewTestButtons = document.querySelectorAll('.review-test-btn');
+            reviewTestButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    window.open(href, '_blank');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #fff8e1;
+            border: 1px dashed #ff9800;
+        }
+        
+        .private-feedback .card-icon {
+            color: #ff9800;
+        }
+        
+        .private-feedback .card-title {
+            color: #e65100;
+        }
+        
+        .private-feedback .content-title {
+            color: #ef6c00;
+        }
+        
+        .private-feedback .content-title i {
+            color: #ff9800;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #ede7f6;
+            color: #4a148c;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #d1c4e9;
+        }
+        
+        .copy-hint:hover {
+            background: #d1c4e9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-hotel header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+                <ul class="nav-links">
+                    <li><a href="../网页主页面.html"><i class="fas fa-home"></i> 主站导航</a></li>
+                </ul>
+                <a href="../预科.html" class="back-to-course">
+                    <i class="fas fa-arrow-left"></i> 思维训练
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>少儿C++编程进阶课</h1>
+            <p>随机数+条件判断，自制剪刀石头布游戏！</p>
+        </div>
+        
+        <!-- 群反馈内容（C++---33 剪刀石头布） -->
+        <section class="feedback-card">
+            <div class="card-header">
+                <i class="fas fa-users card-icon"></i>
+                <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+            </div>
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-star"></i> 【C++---33 剪刀石头布】课堂反馈（第三十三课·剪刀石头布游戏制作）</h3>
+                <div class="wechat-group-feedback" id="wechatGroupFeedback">
+【C++---33 剪刀石头布】🌈🌈 本节课重难点来了🌻🌻
+✅ 头文件扩充，普通文件流到万能头文件，熟练掌握框架 📝
+✅ 随机数生成，随机数和时间产生关联，生成指定范围的随机数 📝
+✅ 剪刀石头布游戏的制作，提示信息输出规则，比赛和计算机各自产生随机数，然后自己选择出拳，对结果进行判断！ 📝
+
+📚📚 重要的知识点梳理 📚📚
+✅① 随机数生成，随机数产生，在指定范围内产生随机数值 ✅
+✅② 比赛规则输出，清晰的语句输出让玩家理解游戏规则 📝
+✅③ 思路整理：比赛规则→电脑出拳→玩家出拳→判断结果→循环比赛 ✅
+
+💖 课堂表现评价 💖
+本节课孩子们的学习热情超高！大家对剪刀石头布游戏制作充满兴趣，能快速掌握万能头文件的使用框架，理解随机数与系统时间关联的原理，也能按步骤完成"规则输出→双方出拳→结果判断"的游戏流程。在循环比赛的拓展练习中，大部分孩子能灵活运用之前学的循环语句，课堂互动氛围热烈，动手实践能力和逻辑梳理能力都有明显提升～
+
+📖 核心知识点总结 📖
+🔹 万能头文件核心用法：
+  - 头文件格式：#include <bits/stdc++.h>
+  - 核心优势：包含C++所有常用头文件（如输入输出、随机数、时间相关），无需单独引入多个头文件，简化代码框架
+  - 使用要点：直接写在代码最开头，后续可直接调用cout、cin、rand()等函数，无需额外声明
+
+🔹 随机数生成完整流程：
+  1. 关联系统时间：srand(time(NULL)); （让每次运行生成不同随机数，避免重复）
+  2. 生成指定范围：rand() % 范围 + 起始值（如生成1-3的随机数：rand() % 3 + 1）
+  3. 对应游戏逻辑：1=剪刀，2=石头，3=布（将随机数与出拳类型绑定）
+  4. 注意事项：srand()只需调用一次，放在rand()之前，否则随机数无效
+
+🔹 剪刀石头布游戏完整思路：
+  1. 输出比赛规则：cout输出"1=剪刀，2=石头，3=布，选择对应数字出拳！"
+  2. 电脑出拳：通过随机数生成1-3的数字，代表电脑选择
+  3. 玩家出拳：cin接收玩家输入的1-3数字，记录玩家选择
+  4. 判断结果：用多分支if-else if-else判断双方输赢（如玩家1+电脑3→玩家赢，玩家2+电脑1→玩家赢等）
+  5. 循环比赛：用while循环实现"一局结束后继续游戏"的功能
+
+作业练习网址：https://code.xdf.cn/freeIde?type=1（或者离线版DEV-C++）
+完成后发班级群打卡
+                </div>
+                <div class="copy-hint" onclick="copyWechatFeedback()">
+                    <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+                </div>
+            </div>
+        </section>
+        
+        <!-- 私信反馈内容（C++---33 剪刀石头布） -->
+        <section class="feedback-card private-feedback">
+            <div class="card-header">
+                <i class="fas fa-envelope-open-text card-icon"></i>
+                <h2 class="card-title">私信反馈内容（C++---33 剪刀石头布）</h2>
+            </div>
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第三十三课·剪刀石头布游戏制作）</h3>
+                <div class="copyable-content" id="copyContent">
+😊【XX同学家长好呀！】
+🌟 宝贝C++编程第三十三课【剪刀石头布】的反馈来啦～
+
+👍 宝贝课堂表现亮点 👍
+宝贝这节课表现超出色！对游戏制作的兴趣特别浓厚，能快速掌握万能头文件的使用，理解随机数与系统时间关联的原理，还能按"规则→出拳→判断→循环"的思路独立梳理游戏逻辑，课堂上很快就完成了基础版游戏制作，甚至主动尝试拓展循环功能，动手能力和逻辑思维越来越棒啦！
+
+📝 课后重点提醒与建议 📝
+1. 巩固随机数生成流程：
+   - 让宝贝牢记"先写srand(time(NULL))，再用rand()生成范围"的顺序，这是游戏随机性的关键
+   - 练习建议：修改随机数范围（如生成1-5），尝试拓展为"剪刀石头布蜥蜴斯波克"的复杂版本
+
+2. 强化游戏逻辑梳理：
+   - 鼓励宝贝用文字或画图的方式，再梳理一遍游戏的五步核心思路，加深记忆
+   - 重点检查结果判断的分支逻辑，确保所有输赢和平局情况都覆盖到（共9种组合）
+
+3. 拓展练习方向：
+   - 基础拓展：给游戏添加得分统计（赢一局得1分，先得3分获胜）
+   - 创意拓展：让玩家输入名字，游戏结束后输出"XX同学最终得分：X"，增加互动感
+   - 难度拓展：限制每局出拳时间（可选，结合之前学的时间函数）
+
+❤️【温馨提示】❤️
+本节课是编程综合应用课，融合了头文件、随机数、条件判断、循环等多个知识点，宝贝能快速掌握并完成游戏制作，非常值得肯定！建议家长课后和宝贝一起玩一玩他自制的剪刀石头布游戏，既能检验学习成果，又能提升他的编程成就感～
+
+作业可以用指定网址或离线版DEV-C++完成，记得发班级群打卡！如果宝贝在拓展练习中遇到思路卡顿，鼓励他主动联系老师询问，继续保持这份学习热情呀～
+
+感谢您的配合与支持，期待宝贝下次课带来更多创意满满的编程作品！
+                </div>
+                <div class="copy-hint" onclick="copyContent()">
+                    <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 家校沟通平台 | C++编程进阶版 | 趣味游戏练编程，综合应用提能力</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

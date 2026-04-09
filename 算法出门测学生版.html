@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>算法全阶段出门测</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #2e7d32; /* 深绿色主题 */
+      --primary-light: #e8f5e9; /* 浅绿色背景 */
+      --secondary-color: #388e3c; /* 中等绿色 */
+      --accent-color: #4caf50; /* 亮绿色 */
+      --background-color: #f5fbf5; /* 淡绿色背景 */
+      --surface-color: #ffffff; /* 白色表面 */
+      --text-primary: #1b5e20; /* 深绿文字 */
+      --text-secondary: #4e342e; /* 棕色次要文字 */
+      --border-color: #c8e6c9; /* 浅绿边框 */
+      --success-color: #4caf50; /* 成功绿色 */
+      --warning-color: #ff9800; /* 警告橙色 */
+      --danger-color: #f44336; /* 危险红色 */
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --radius: 10px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .logo i {
+      font-size: 2rem;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: var(--transition);
+      padding: 0.5rem 0.8rem;
+      border-radius: 30px;
+    }
+
+    .nav-links a:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Main Layout */
+    .main-layout {
+      display: flex;
+      gap: 2rem;
+      padding: 2rem 0;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      flex: 0 0 280px;
+      background: var(--surface-color);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      height: fit-content;
+      position: sticky;
+      top: 90px;
+    }
+
+    .sidebar h3 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar h3 i {
+      color: var(--accent-color);
+    }
+
+    .stage-nav {
+      list-style: none;
+    }
+
+    .stage-nav li {
+      margin-bottom: 0.8rem;
+    }
+
+    .stage-nav a {
+      display: block;
+      padding: 0.8rem 1rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      border-radius: var(--radius);
+      transition: var(--transition);
+      font-weight: 500;
+      background: var(--primary-light);
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .stage-nav a:hover {
+      background: var(--accent-color);
+      color: white;
+      transform: translateX(5px);
+    }
+
+    .stage-nav a.active {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    /* Courses Section */
+    .courses {
+      flex: 1;
+      background: var(--surface-color);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+    }
+
+    .courses h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 2.5rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .courses h2 i {
+      color: var(--accent-color);
+    }
+
+    .stage-container {
+      margin-bottom: 3rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .stage-header {
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 1.2rem 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stage-header h3 {
+      font-size: 1.4rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stage-content {
+      padding: 0;
+    }
+
+    .lesson-list {
+      list-style: none;
+    }
+
+    .lesson-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 1.8rem;
+      border-bottom: 1px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    .lesson-item:nth-child(odd) {
+      background-color: var(--primary-light);
+    }
+
+    .lesson-item:nth-child(even) {
+      background-color: var(--surface-color);
+    }
+
+    .lesson-item:hover {
+      background-color: #dcedc8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .lesson-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lesson-number {
+      background: var(--accent-color);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .lesson-actions {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .btn {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.95rem;
+      min-width: auto;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .btn-material {
+      background-color: var(--accent-color);
+      color: white;
+    }
+    .btn-material:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    .btn-video {
+      background-color: var(--danger-color);
+      color: white;
+    }
+    .btn-video:hover {
+      background-color: #d32f2f;
+      transform: translateY(-2px);
+    }
+
+    .btn-code {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+    .btn-code:hover {
+      background-color: #2e7d32;
+      transform: translateY(-2px);
+    }
+
+    .btn-test {
+      background-color: var(--warning-color);
+      color: white;
+    }
+    .btn-test:hover {
+      background-color: #f57c00;
+      transform: translateY(-2px);
+    }
+
+    /* Footer */
+    footer {
+      background: linear-gradient(135deg, var(--primary-color), var(--text-primary));
+      color: white;
+      padding: 3rem 0 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-links a {
+      color: #e8f5e9;
+      text-decoration: none;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1rem;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      text-align: center;
+      color: #c8e6c9;
+      font-size: 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .main-layout {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        position: static;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .lesson-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .lesson-actions {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <i class="fas fa-lightbulb"></i>
+          <span>算法编程出门测试</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="网页主页面.html"><i class="fas fa-book-open"></i> 导航主页</a></li>
+		   <li><a href="算法.html"><i class="fas fa-book"></i> 算法阶段</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+
+  <div class="container">
+    <div class="main-layout">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <h3><i class="fas fa-list-ol"></i> 课程阶段导航</h3>
+        <ul class="stage-nav">
+          <li><a href="#" class="active"><i class="fas fa-seedling"></i> 第1阶段：基础算法</a></li>
+          <li><a href="#"><i class="fas fa-chart-line"></i> 第2阶段：算法进阶</a></li>
+          <li><a href="#"><i class="fas fa-rocket"></i> 第3阶段：高级算法</a></li>
+          <li><a href="#"><i class="fas fa-sitemap"></i> 第4阶段：算法深入</a></li>
+          <li><a href="#"><i class="fas fa-project-diagram"></i> 第5阶段：图论算法</a></li>
+          <li><a href="#"><i class="fas fa-brain"></i> 第6阶段：动态规划</a></li>
+        </ul>
+        
+        <div style="margin-top: 2rem; padding: 1rem; background: #e8f5e9; border-radius: 8px;">
+          <h4 style="color: var(--primary-color); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-info-circle"></i> 学习进度
+          </h4>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+            <div style="flex: 1; height: 8px; background: #c8e6c9; border-radius: 4px;">
+              <div style="width: 65%; height: 100%; background: var(--accent-color); border-radius: 4px;"></div>
+            </div>
+            <span>65%</span>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">继续努力，完成更多课程！</p>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="courses">
+        <h2><i class="fas fa-graduation-cap"></i> 系统化算法课程体系</h2>
+        
+        <!-- Stage 1 -->
+        <div class="stage-container">
+          <div class="stage-header">
+            <h3><i class="fas fa-seedling"></i> 第1阶段：基础算法 (第1-12课)</h3>
+            <span class="badge" style="background: white; color: var(--primary-color); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 600;">12课时</span>
+          </div>
+          <div class="stage-content">
+            <ul class="lesson-list">
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">1</span>
+                  第1课：cody的旅馆
+                </div>
+                <div class="lesson-actions">
+  <!--                <a href="#" class="btn btn-material"><i class="fas fa-file-pdf"></i> 课件</a>
+                  <a href="#" class="btn btn-video"><i class="fas fa-play-circle"></i> 视频</a>
+                  <a href="#" class="btn btn-code"><i class="fas fa-code"></i> 代码平台</a> -->
+                  <a href="https://ks.wjx.com/vm/twBb7dq.aspx# " class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">2</span>
+                  第2课：cody的促销活动
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="https://ks.wjx.com/vm/YDFWG8d.aspx# " class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">3</span>
+                  第3课：maggie的读心术
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="https://ks.wjx.com/vm/Pmffeuu.aspx# " class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">4</span>
+                  第4课：maggie的密室逃脱
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="https://ks.wjx.com/vm/QVo4lVP.aspx# " class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">5</span>
+                  第5课：冒泡排序和选择排序
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="https://ks.wjx.com/vm/Yf1WWxn.aspx# " class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">6</span>
+                  第6课：简单二分查找
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="https://ks.wjx.com/vm/rXOwgAe.aspx# " class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">7</span>
+                  第7课：字符羊肉串
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="https://ks.wjx.com/vm/tBuzmdh.aspx#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">8</span>
+                  第8课：玩转字符串
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="https://ks.wjx.com/vm/PpftxdW.aspx# " class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">9</span>
+                  第9课：字符工具箱
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="https://ks.wjx.com/vm/m1EQORL.aspx# " class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">10</span>
+                  第10课：大数的运算
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="https://ks.wjx.com/vm/meEndRL.aspx# " class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">11</span>
+                  第11课：进制转换
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="https://ks.wjx.com/vm/QinmAVf.aspx#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">12</span>
+                  第12课：阶段复习
+                </div>
+                <div class="lesson-actions">
+    
+                  <a href="https://ks.wjx.com/vm/mFJLwRL.aspx# " class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="stage-container">
+          <div class="stage-header">
+            <h3><i class="fas fa-chart-line"></i> 第2阶段：算法进阶 (第13-24课)</h3>
+            <span class="badge" style="background: white; color: var(--primary-color); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 600;">12课时</span>
+          </div>
+          <div class="stage-content">
+            <ul class="lesson-list">
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">13</span>
+                  第13课：二维数组
+                </div>
+                <div class="lesson-actions">
+  
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">14</span>
+                  第14课：二维数组专项训练
+                </div>
+                <div class="lesson-actions">
+      
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">15</span>
+                  第15课：函数
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">16</span>
+                  第16课：主函数与其他函数
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">17</span>
+                  第17课：递归与斐波那契数列
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">18</span>
+                  第18课：阶段复习
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">19</span>
+                  第19课：递推专项训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">20</span>
+                  第20课：应试技巧与文件读写
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">21</span>
+                  第21课：初识指针
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">22</span>
+                  第22课：结构体
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">23</span>
+                  第23课：结构体专项训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">24</span>
+                  第24课：阶段复习
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="stage-container">
+          <div class="stage-header">
+            <h3><i class="fas fa-rocket"></i> 第3阶段：高级算法 (第25-36课)</h3>
+            <span class="badge" style="background: white; color: var(--primary-color); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 600;">12课时</span>
+          </div>
+          <div class="stage-content">
+            <ul class="lesson-list">
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">25</span>
+                  第25课：复杂度计算与数据范围分析
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">26</span>
+                  第26课：平方与对数
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">27</span>
+                  第27课：时间复杂度优化习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">28</span>
+                  第28课：质数筛法
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">29</span>
+                  第29课：枚举与模拟
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">30</span>
+                  第30课：枚举与模拟习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">31</span>
+                  第31课：枚举与模拟习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">32</span>
+                  第32课：枚举与模拟习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">33</span>
+                  第33课：位运算
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">34</span>
+                  第34课：位运算习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">35</span>
+                  第35课：CSP-J历年第一题专题训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">36</span>
+                  第36课：阶段复习
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Stage 4 -->
+        <div class="stage-container">
+          <div class="stage-header">
+            <h3><i class="fas fa-sitemap"></i> 第4阶段：算法深入 (第37-48课)</h3>
+            <span class="badge" style="background: white; color: var(--primary-color); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 600;">12课时</span>
+          </div>
+          <div class="stage-content">
+            <ul class="lesson-list">
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">37</span>
+                  第37课：分治入门
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">38</span>
+                  第38课：二分答案
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">39</span>
+                  第39课：二分答案习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">40</span>
+                  第40课：快速排序
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">41</span>
+                  第41课：归并排序
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">42</span>
+                  第42课：分治经典题目
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">43</span>
+                  第43课：STL概述
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">44</span>
+                  第44课：线性数据结构
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">45</span>
+                  第45课：波兰表达式
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">46</span>
+                  第46课：非线性数据结构
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">47</span>
+                  第47课：二叉树进阶
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">48</span>
+                  第48课：阶段复习
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Stage 5 -->
+        <div class="stage-container">
+          <div class="stage-header">
+            <h3><i class="fas fa-project-diagram"></i> 第5阶段：图论算法 (第49-60课)</h3>
+            <span class="badge" style="background: white; color: var(--primary-color); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 600;">12课时</span>
+          </div>
+          <div class="stage-content">
+            <ul class="lesson-list">
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">49</span>
+                  第49课：图的存储
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">50</span>
+                  第50课：深度优先搜索（DFS）
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">51</span>
+                  第51课：深度优先搜索应用
+                </div>
+                <div class="lesson-actions">
+
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">52</span>
+                  第52课：深度优先搜索习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-material"><i class="fas fa-file-pdf"></i> 课件</a>
+                  <a href="#" class="btn btn-video"><i class="fas fa-play-circle"></i> 视频</a>
+                  <a href="#" class="btn btn-code"><i class="fas fa-code"></i> 代码平台</a>
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">53</span>
+                  第53课：深度优先搜索习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">54</span>
+                  第54课：广度优先搜索
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">55</span>
+                  第55课：最短路径算法
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">56</span>
+                  第56课：堆与堆排序
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">57</span>
+                  第57课：并查集
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">58</span>
+                  第58课：最小生成树
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">59</span>
+                  第59课：图论算法习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">60</span>
+                  第60课：阶段复习
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Stage 6 -->
+        <div class="stage-container">
+          <div class="stage-header">
+            <h3><i class="fas fa-brain"></i> 第6阶段：动态规划 (第61-72课)</h3>
+            <span class="badge" style="background: white; color: var(--primary-color); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 600;">12课时</span>
+          </div>
+          <div class="stage-content">
+            <ul class="lesson-list">
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">61</span>
+                  第61课：贪心算法
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">62</span>
+                  第62课：贪心算法典型题目类型训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">63</span>
+                  第63课：多阶段决策问题
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">64</span>
+                  第64课：线性动态规划
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">65</span>
+                  第65课：线性动态规划进阶
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">66</span>
+                  第66课：背包四讲1
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">67</span>
+                  第67课：背包四讲2
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">68</span>
+                  第68课：背包问题习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">69</span>
+                  第69课：背包问题习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">70</span>
+                  第70课：区间动态规划
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-material"><i class="fas fa-file-pdf"></i> 课件</a>
+                  <a href="#" class="btn btn-video"><i class="fas fa-play-circle"></i> 视频</a>
+                  <a href="#" class="btn btn-code"><i class="fas fa-code"></i> 代码平台</a>
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">71</span>
+                  第71课：区间动态规划习题强化训练
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+              <li class="lesson-item">
+                <div class="lesson-title">
+                  <span class="lesson-number">72</span>
+                  第72课：阶段复习
+                </div>
+                <div class="lesson-actions">
+                  <a href="#" class="btn btn-test"><i class="fas fa-clipboard-check"></i> 测试</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="http://www.noi.cn" target="_blank"><i class="fas fa-external-link-alt"></i> NOI官网</a>
+          <a href="#" target="_blank"><i class="fas fa-external-link-alt"></i> GESP官网</a>
+          <a href="#" target="_blank"><i class="fas fa-external-link-alt"></i> 电子协会官网</a>
+          <a href="#" target="_blank"><i class="fas fa-book"></i> 学习资料库</a>
+          <a href="#" target="_blank"><i class="fas fa-comments"></i> 社区论坛</a>
+        </div>
+        <div class="copyright">
+          <p>&copy; 2025 算法编程学院 版权所有 | 系统化算法学习平台</p>
+          <p style="margin-top: 0.5rem; font-size: 0.9rem;">培养未来算法工程师的摇篮</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Add interactivity to stage navigation
+    document.querySelectorAll('.stage-nav a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Remove active class from all links
+        document.querySelectorAll('.stage-nav a').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        // Add active class to clicked link
+        this.classList.add('active');
+        
+        // Scroll to corresponding stage
+        const stageIndex = Array.from(this.parentNode.parentNode.children).indexOf(this.parentNode);
+        const stages = document.querySelectorAll('.stage-container');
+        if (stages.length > stageIndex) {
+          stages[stageIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+    
+    // Add hover effect to lesson items
+    document.querySelectorAll('.lesson-item').forEach(item => {
+      item.addEventListener('mouseenter', function() {
+        this.style.boxShadow = '0 6px 12px rgba(0,0,0,0.1)';
+      });
+      
+      item.addEventListener('mouseleave', function() {
+        this.style.boxShadow = 'none';
+      });
+    });
+  </script>
+</body>
+</html>

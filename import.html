@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预科阶段课程重难点知识梳理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --tech-blue: #0d47a1;
+            --tech-blue-dark: #002171;
+            --tech-blue-light: #5472d3;
+            --tech-cyan: #00bcd4;
+            --tech-cyan-light: #4dd0e1;
+            --tech-gray: #263238;
+            --tech-gray-light: #37474f;
+            --tech-gray-lighter: #455a64;
+            --tech-silver: #cfd8dc;
+            --tech-silver-light: #eceff1;
+            --tech-accent: #00b0ff;
+            --tech-accent-dark: #0081cb;
+            --tech-gradient: linear-gradient(135deg, var(--tech-blue), var(--tech-blue-light));
+            --tech-gradient-hover: linear-gradient(135deg, var(--tech-blue-light), var(--tech-cyan));
+            --shadow: 0 4px 20px rgba(13, 71, 161, 0.1);
+            --shadow-hover: 0 8px 30px rgba(0, 188, 212, 0.2);
+            --radius: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            color: var(--tech-silver);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        /* 容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ====== 顶部导航栏 ====== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 188, 212, 0.2);
+            padding: 15px 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--tech-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(90deg, var(--tech-cyan), var(--tech-silver));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--tech-silver);
+            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 6px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #4caf50 100%);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            background: rgba(0, 188, 212, 0.1);
+            color: var(--tech-cyan);
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            color: var(--tech-cyan);
+            border: 1px solid rgba(0, 188, 212, 0.3);
+        }
+
+        /* ====== 主内容区 ====== */
+        main {
+            padding: 120px 0 60px;
+        }
+
+        /* 页头 */
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: rgba(13, 71, 161, 0.1);
+            border-radius: var(--radius);
+            border: 1px solid rgba(0, 188, 212, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--tech-gradient);
+        }
+
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 10px rgba(0, 188, 212, 0.3);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--tech-silver);
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* 课程阶段 */
+        .stage-section {
+            margin-bottom: 60px;
+            background: rgba(19, 30, 65, 0.5);
+            border-radius: var(--radius);
+            border: 1px solid rgba(0, 188, 212, 0.1);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .stage-section:hover {
+            border-color: rgba(0, 188, 212, 0.3);
+            box-shadow: 0 0 30px rgba(0, 188, 212, 0.1);
+        }
+
+        .stage-header {
+            padding: 25px 30px;
+            background: linear-gradient(90deg, rgba(13, 71, 161, 0.3), rgba(0, 188, 212, 0.2));
+            border-bottom: 1px solid rgba(0, 188, 212, 0.1);
+        }
+
+        .stage-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stage-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--tech-gradient);
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .stage-meta {
+            font-size: 1rem;
+            color: var(--tech-cyan);
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        /* 课程列表 */
+        .course-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .course-row {
+            border-bottom: 1px solid rgba(0, 188, 212, 0.1);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .course-row:last-child {
+            border-bottom: none;
+        }
+
+        .course-row:hover {
+            background: linear-gradient(90deg, 
+                rgba(13, 71, 161, 0.1) 0%,
+                rgba(0, 188, 212, 0.05) 50%,
+                rgba(13, 71, 161, 0.1) 100%);
+            transform: translateX(5px);
+        }
+
+        .course-row.important {
+            background: linear-gradient(90deg, 
+                rgba(155, 39, 176, 0.1) 0%,
+                rgba(13, 71, 161, 0.1) 100%);
+            border-left: 3px solid var(--tech-cyan);
+        }
+
+        .course-row.important:hover {
+            background: linear-gradient(90deg, 
+                rgba(155, 39, 176, 0.2) 0%,
+                rgba(13, 71, 161, 0.2) 100%);
+        }
+
+        .course-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--tech-gradient);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .course-row:hover::before {
+            opacity: 1;
+        }
+
+        .course-cell {
+            padding: 20px 30px;
+            vertical-align: middle;
+        }
+
+        .course-number {
+            width: 60px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--tech-cyan);
+        }
+
+        .course-number .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(0, 188, 212, 0.1);
+            border-radius: 50%;
+            border: 1px solid rgba(0, 188, 212, 0.3);
+        }
+
+        .course-name {
+            font-size: 1.1rem;
+            color: var(--tech-silver);
+        }
+
+        .course-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .course-link:hover {
+            color: var(--tech-cyan);
+        }
+
+        .course-actions {
+            width: 200px;
+            text-align: right;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            border: none;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-tech {
+            background: var(--tech-gradient);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-tech::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition);
+        }
+
+        .btn-tech:hover {
+            background: var(--tech-gradient-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 188, 212, 0.3);
+        }
+
+        .btn-tech:hover::before {
+            left: 100%;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--tech-cyan);
+            border: 1px solid var(--tech-cyan);
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 188, 212, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-icon {
+            font-size: 1.1rem;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--tech-gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            border: none;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* 页脚 */
+        footer {
+            background: rgba(13, 71, 161, 0.9);
+            border-top: 1px solid rgba(0, 188, 212, 0.2);
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--tech-silver);
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 188, 212, 0.2);
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            background: rgba(0, 188, 212, 0.2);
+            color: white;
+            transform: translateY(-2px);
+            border-color: var(--tech-cyan);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .course-table {
+                display: block;
+            }
+            
+            .course-row {
+                display: block;
+                padding: 20px;
+            }
+            
+            .course-cell {
+                display: block;
+                padding: 10px 0;
+            }
+            
+            .course-actions {
+                text-align: left;
+                width: 100%;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-link {
+                width: 80%;
+                text-align: center;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .stage-section {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .course-row {
+            animation: fadeInUp 0.4s ease forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航栏 -->
+    <header>
+        <div class="header-container">
+            <a href="网页主页面.html" class="logo">
+                <div class="logo-icon">C++</div>
+                <div class="logo-text">预科课程知识梳理</div>
+            </a>
+            <nav class="nav-links">
+				  <a href="预科.html" class="nav-link active">预科首页</a>
+                <a href="#pre1" class="nav-link active">预科一</a>
+                <a href="#pre2" class="nav-link">预科二</a>
+                <a href="#pre3" class="nav-link">预科三</a>
+                <a href="#pre4" class="nav-link">预科四</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container">
+        <!-- 页头 -->
+        <header class="page-header">
+            <h1 class="page-title">预科阶段课程重难点知识梳理</h1>
+            <p class="page-subtitle">系统整理C++预科阶段51个课程的核心知识点与重难点，助力高效学习与复习</p>
+        </header>
+
+        <!-- 预科一 -->
+        <section id="pre1" class="stage-section">
+            <div class="stage-header">
+                <h2 class="stage-title">
+                    <span class="stage-number">01</span>
+                    <span>预科一（第 1-12 课）</span>
+                </h2>
+                <div class="stage-meta">基础入门 · 编程起点</div>
+            </div>
+            
+            <table class="course-table">
+                <!-- 第1课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">01</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c1.html" class="course-link">初始C++</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c1.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第2课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">02</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c2.html" class="course-link">框架和输出</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c2.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第3课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">03</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c3.html" class="course-link">有趣的字符画</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c3.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第4课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">04</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c4.html" class="course-link">字母代替数</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c4.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第5课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">05</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c5.html" class="course-link">输入和运算</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c5.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第6课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">06</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c6.html" class="course-link">小数和格式化</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c6.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第7课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">07</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c7.html" class="course-link">真假布尔</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c7.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第8课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">08</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">进制变换</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c8_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第9课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">09</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">单数还是双数</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c9_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第10课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">10</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">综合复习</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c10_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第11课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">11</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">逻辑运算与</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c11_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第12课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">12</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">闰年和平年</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c12_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- 预科二 -->
+        <section id="pre2" class="stage-section">
+            <div class="stage-header">
+                <h2 class="stage-title">
+                    <span class="stage-number">02</span>
+                    <span>预科二（第 13-24 课）</span>
+                </h2>
+                <div class="stage-meta">进阶基础 · 数据类型</div>
+            </div>
+            
+            <table class="course-table">
+                <!-- 第13课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">13</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">文件夹的秘密</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c13_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第14课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">14</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">变量和类型</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c14_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第15课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">15</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">加法的运算</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c15_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第16课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">16</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">字符串类型</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c16_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第17课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">17</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c17.html" class="course-link">转换和图形</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c17.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第18课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">18</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c18.html" class="course-link">重量单位的认识</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c18.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第19课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">19</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c19.html" class="course-link">容量的运算</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c19.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第20课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">20</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">判定星期几</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c20_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第21课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">21</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">学校考试了</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c21_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第22课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">22</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">寻找bug</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c22_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第23课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">23</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">运算符号的选择</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c23_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第24课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">24</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">大象喝水</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c24_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- 预科三 -->
+        <section id="pre3" class="stage-section">
+            <div class="stage-header">
+                <h2 class="stage-title">
+                    <span class="stage-number">03</span>
+                    <span>预科三（第 25-36 课）</span>
+                </h2>
+                <div class="stage-meta">循环控制 · 算法基础</div>
+            </div>
+            
+            <table class="course-table">
+                <!-- 第25课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">25</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">因数和倍数</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c25_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第26课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">26</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">随机计算器</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c26_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第27课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">27</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">模拟计算器</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c27_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第28课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">28</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">while循环</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c28_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第29课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">29</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">while循环进阶</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c29_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第30课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">30</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">for循环</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c30_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第31课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">31</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">范围for循环</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c31_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第32课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">32</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">break与continue</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c32_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第33课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">33</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">do-while循环</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c33_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第34课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">34</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">项目综合实战</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c34_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第35课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">35</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">循环进阶</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c35_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第36课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">36</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">循环嵌套</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c36_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- 预科四 -->
+        <section id="pre4" class="stage-section">
+            <div class="stage-header">
+                <h2 class="stage-title">
+                    <span class="stage-number">04</span>
+                    <span>预科四（第 37-51 课）</span>
+                </h2>
+                <div class="stage-meta">综合应用 · 项目实战</div>
+            </div>
+            
+            <table class="course-table">
+                <!-- 第37课 -->
+                <tr class="course-row important">
+                    <td class="course-cell course-number">
+                        <span class="num">37</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c37.html" class="course-link">顺序语句专题</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c37.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第38课 -->
+                <tr class="course-row important">
+                    <td class="course-cell course-number">
+                        <span class="num">38</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c38.html" class="course-link">分支语句专题</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c38.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第39课 -->
+                <tr class="course-row important">
+                    <td class="course-cell course-number">
+                        <span class="num">39</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="homewordpage/c37.html" class="course-link">数的查询</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c39_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第40课 -->
+                <tr class="course-row important">
+                    <td class="course-cell course-number">
+                        <span class="num">40</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">GESP卷1</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c40_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第41课 -->
+                <tr class="course-row important">
+                    <td class="course-cell course-number">
+                        <span class="num">41</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">GESP卷2</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="https://docs.qq.com/pdf/DWHRRanBMeVB0bXN0" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第42课 -->
+                <tr class="course-row important">
+                    <td class="course-cell course-number">
+                        <span class="num">42</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">枚举算法</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c42_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第43课 -->
+                <tr class="course-row important">
+                    <td class="course-cell course-number">
+                        <span class="num">43</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">角谷猜想</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c43_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第44课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">44</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">数组1</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c44_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第45课 -->
+                <tr class="course-row important">
+                    <td class="course-cell course-number">
+                        <span class="num">45</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">数组2</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c45_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第46课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">46</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">进制反转</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c46_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第47课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">47</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">简单排序</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c47_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第48课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">48</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">标记法</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c48_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第49课 -->
+                <tr class="course-row important">
+                    <td class="course-cell course-number">
+                        <span class="num">49</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">桶排序</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c49_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第50课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">50</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">字符数组</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c50_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+                <!-- 第51课 -->
+                <tr class="course-row">
+                    <td class="course-cell course-number">
+                        <span class="num">51</span>
+                    </td>
+                    <td class="course-cell course-name">
+                        <a href="#" class="course-link">字符串</a>
+                    </td>
+                    <td class="course-cell course-actions">
+                        <a href="homewordpage/c51_detail.html" class="btn btn-tech">重难点梳理</a>
+                    </td>
+                </tr>
+            </table>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-links">
+                <a href="https://www.qceit.org.cn" target="_blank" class="footer-link">中国电子协会考级测评中心</a>
+                <a href="https://gesp.ccf.org.cn" target="_blank" class="footer-link">GESP官网</a>
+                <a href="https://www.noi.cn" target="_blank" class="footer-link">NOI官网</a>
+            </div>
+            <div class="copyright">© 2023 预科课程知识梳理 | 助力C++编程学习与竞赛</div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top">↑</button>
+
+    <!-- JavaScript -->
+    <script>
+        // 1. 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.3)';
+            } else {
+                header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // 2. 滚动高亮当前阶段
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.stage-section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.3 && rect.bottom > 0) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 3. 返回顶部按钮
+        const backToTopBtn = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 4. 课程行悬浮效果增强
+        document.querySelectorAll('.course-row').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(8px)';
+                this.style.boxShadow = '0 5px 20px rgba(0, 188, 212, 0.2)';
+            });
+            
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+                this.style.boxShadow = 'none';
+            });
+        });
+
+        // 5. 按钮发光效果
+        document.querySelectorAll('.btn-tech').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 0 20px rgba(0, 188, 212, 0.5)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '';
+            });
+        });
+
+        // 初始化
+        window.dispatchEvent(new Event('scroll'));
+    </script>
+
+</body>
+</html>

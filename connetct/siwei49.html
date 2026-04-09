@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家校沟通平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a148c, #7b1fa2);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        /* 头部导航栏 */
+        header {
+            background: rgba(74, 20, 140, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.8rem;
+            color: #ce93d8;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: #ce93d8;
+        }
+        
+        .back-to-course {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 147, 216, 0.2);
+            color: #ce93d8;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-course:hover {
+            background: rgba(206, 147, 216, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* 主体内容 */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .welcome-banner {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .welcome-banner h1 {
+            color: #4a148c;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈卡片 */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            color: #ab47bc;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-title i {
+            color: #ab47bc;
+        }
+        
+        /* 群反馈微信专用样式 */
+        .wechat-group-feedback {
+            background: #f5f0ff;
+            border: 2px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        /* 私信反馈样式 */
+        .private-feedback {
+            background: #fff8e1;
+            border: 1px dashed #ff9800;
+        }
+        
+        .private-feedback .card-icon {
+            color: #ff9800;
+        }
+        
+        .private-feedback .card-title {
+            color: #e65100;
+        }
+        
+        .private-feedback .content-title {
+            color: #ef6c00;
+        }
+        
+        .private-feedback .content-title i {
+            color: #ff9800;
+        }
+        
+        .copyable-content {
+            background: #f8f9fa;
+            border: 1px dashed #ab47bc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #333;
+        }
+        
+        /* 桶排序思路分析样式 */
+        .bucket-sort-analysis {
+            background: #fff3e0;
+            border: 1px solid #ff9800;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #e65100;
+        }
+        
+        .analysis-step {
+            margin-bottom: 10px;
+        }
+        
+        .analysis-step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #ff9800;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        /* 复制按钮通用样式 */
+        .copy-hint {
+            display: inline-block;
+            background: #ede7f6;
+            color: #4a148c;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #d1c4e9;
+        }
+        
+        .copy-hint:hover {
+            background: #d1c4e9;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定头部导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <i class="fas fa-hotel header-icon"></i>
+                <h1 class="header-title">家校沟通平台</h1>
+            </div>
+            <div class="header-right">
+                <ul class="nav-links">
+                    <li><a href="../网页主页面.html"><i class="fas fa-home"></i> 主站导航</a></li>
+                </ul>
+                <a href="../预科.html" class="back-to-course">
+                    <i class="fas fa-arrow-left"></i> 思维训练
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main>
+        <div class="welcome-banner">
+            <h1>少儿C++编程进阶课</h1>
+            <p>桶排序巧掌握，数据处理更高效！</p>
+        </div>
+        
+        <!-- 群反馈内容（C++---49课 桶排序） -->
+        <section class="feedback-card">
+          <div class="card-header">
+            <i class="fas fa-users card-icon"></i>
+            <h2 class="card-title">群反馈内容（微信直接复制版）</h2>
+          </div>
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-star"></i> 【C++---49课 桶排序】课堂反馈（第四十九课·桶排序专题）</h3>
+            <div class="wechat-group-feedback" id="wechatGroupFeedback">
+【C++---49课 桶排序】
+🌈🌈 本节课重难点来了🌻🌻
+✅  数据的收集和理解，掌握计数的标记，统计方式，表格表示法 📝
+✅  桶排序的认识，知道什么是桶排序，如果表示，类比生活之中的投票 📝
+✅  桶排序的程序代码输出  📝
+
+📚📚 重要的知识点梳理 📚📚
+✅①  桶排序的表示法，桶范围的判断 ✅
+  - 桶的定义：创建足够大的数组作为"桶"来存储数据
+  - 范围确定：根据输入数据的最大值确定桶的大小
+  - 下标映射：将输入数据作为数组下标进行计数
+  - 空间分配：合理分配桶的空间，避免浪费
+
+✅②  输入数值到桶序号之中  ✅
+  - 数值映射：将输入的数值直接作为桶数组的下标
+  - 计数累加：在对应桶位置累加计数（桶[数值]++）
+  - 重复处理：相同数值会累加到同一位置
+  - 数据分布：通过计数反映数据的分布情况
+
+✅③  数值桶的范围内，查找非零的数值运算   ✅
+  - 顺序遍历：从桶的最小索引开始遍历到最大索引
+  - 非零判断：检查桶中每个位置的计数值是否非零
+  - 重复输出：根据计数值重复输出对应的数值
+  - 有序输出：由于按索引顺序遍历，输出自然有序
+
+📖 核心知识点总结 & 易错点梳理 📖
+🔹 桶排序基本概念：
+  - 计数原理：利用数组下标与数值的对应关系进行计数
+  - 空间换时间：通过额外空间换取排序效率
+  - 适用场景：适用于数据范围较小的整数排序
+  - 时间复杂度：O(n+k)，其中n为数据个数，k为数据范围
+
+🔹 桶排序的优缺点：
+  - 优点：简单直观、效率高、稳定排序
+  - 缺点：空间消耗大、仅适用于特定数据类型
+  - 限制：数据范围不能太大，否则空间开销过大
+  - 优化：可以结合其他排序算法处理大数据范围
+
+🔹 生活类比理解：
+  - 投票箱类比：每个候选人一个箱子，得票就往箱里放球
+  - 分类整理：像图书馆按类别分书架，每类一本本放好
+  - 统计调查：统计各年龄段人数，每个年龄一个计数器
+  - 桶装物品：不同尺寸的物品放入对应尺寸的容器
+
+🔹 程序实现要点：
+  - 数组初始化：确保桶数组初始值为0
+  - 范围检查：验证输入数据是否在桶的有效范围内
+  - 计数逻辑：正确实现输入数值到桶的映射
+  - 输出控制：根据计数值正确输出重复元素
+
+🔹 常见易错点：
+  1. 桶大小：桶数组大小设置不当导致越界或浪费
+  2. 初始化：忘记初始化桶数组为0
+  3. 范围验证：没有检查输入数据是否超出桶的范围
+  4. 输出逻辑：重复元素的输出次数控制错误
+
+作业练习网址：https://code.xdf.cn/freecode/editor?type=3&org=code
+            </div>
+            <div class="copy-hint" onclick="copyWechatFeedback()">
+              <i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）
+            </div>
+          </div>
+          
+          <!-- 桶排序思路分析 -->
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-project-diagram"></i> 桶排序排序思路分析</h3>
+            <div class="bucket-sort-analysis">
+              <p class="analysis-step"><span class="step-number">1</span><strong>准备阶段：</strong>根据输入数据的最大值确定桶的大小，创建足够大的数组作为桶，初始化所有桶为0</p>
+              <p class="analysis-step"><span class="step-number">2</span><strong>映射计数：</strong>遍历输入数据，将每个数值作为桶数组的下标，对应位置的计数值加1</p>
+              <p class="analysis-step"><span class="step-number">3</span><strong>遍历输出：</strong>从桶的最小索引开始遍历，对每个非零计数的位置，根据计数值输出对应的数值</p>
+              <p class="analysis-step"><span class="step-number">4</span><strong>结果呈现：</strong>由于按索引顺序遍历，输出结果自然按从小到大的顺序排列</p>
+              <p class="analysis-step"><span class="step-number">5</span><strong>算法特点：</strong>时间复杂度O(n+k)，空间复杂度O(k)，是一种稳定的非比较排序算法</p>
+            </div>
+          </div>
+        </section>
+        
+        <!-- 私信反馈内容（C++---49课 桶排序） -->
+        <section class="feedback-card private-feedback">
+          <div class="card-header">
+            <i class="fas fa-envelope-open-text card-icon"></i>
+            <h2 class="card-title">私信反馈内容（C++---49课 桶排序）</h2>
+          </div>
+          <div class="content-section">
+            <h3 class="content-title"><i class="fas fa-comment-dots"></i> 个性化私信模板（第四十九课·桶排序专题）</h3>
+            <div class="copyable-content" id="copyContent">
+😊【XX同学家长您好！】
+🌟 C++编程第四十九课【桶排序专题】的反馈来啦～
+
+👍 孩子课堂表现亮点 👍
+孩子在本节课中表现非常出色，学习态度积极，上课认真完成代码，具体亮点如下：
+1. 能够准确理解数据收集和统计的原理，掌握了计数标记和表格表示法
+2. 清晰掌握桶排序的基本概念，理解了桶排序的原理和生活类比（如投票箱）
+3. 熟练掌握桶排序的程序实现，能够正确编写桶排序的代码
+4. 在桶范围判断和数值映射方面表现出色，理解了输入数值到桶序号的映射关系
+
+📝 学习提醒与建议 📝
+请重点督促孩子巩固以下核心知识点：
+1. 桶排序的数据映射机制（重中之重）
+   - 牢记核心原理：将输入数值作为数组下标进行计数
+   - 练习建议：让孩子多练习不同数据集的桶排序，理解映射关系
+   - 易错点提醒：注意输入数据范围与桶数组大小的匹配
+
+2. 桶排序的范围判断方法
+   - 核心原则：根据输入数据的最大值合理确定桶的大小
+   - 练习方法：给孩子不同的数据集，让他确定合适的桶大小
+   - 拓展练习：尝试处理边界情况，如空数据集或超大数值
+
+3. 桶排序的输出控制逻辑
+   - 核心思路：理解如何根据计数值正确输出重复元素
+   - 练习建议：让孩子编写代码验证桶排序的正确性
+   - 技巧提升：通过可视化工具展示桶中数据的分布情况
+
+❤️【温馨提示】❤️
+桶排序是一种独特的非比较排序算法，它通过空间换时间的思想实现高效排序。这种算法不仅提高了孩子的数据处理能力，更重要的是培养了他们用创新思维解决问题的能力。孩子目前学习态度很好，课堂上能认真完成代码，对核心概念的掌握比较扎实。建议通过多做桶排序的练习来巩固知识，既能提高编程能力，又能培养严谨的算法思维。
+
+感谢您的配合与支持，期待孩子在后续的学习中取得更大进步！
+            </div>
+            <div class="copy-hint" onclick="copyContent()">
+              <i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）
+            </div>
+          </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 家校沟通平台 | C++编程进阶版 | 桶排序巧掌握，数据处理更高效</p>
+    </footer>
+
+    <script>
+        // 复制群反馈功能
+        function copyWechatFeedback() {
+            const contentElement = document.getElementById('wechatGroupFeedback');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.wechat-group-feedback + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！可直接粘贴到微信群';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制群反馈（直接粘贴微信）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 复制私信模板功能
+        function copyContent() {
+            const contentElement = document.getElementById('copyContent');
+            const content = contentElement.textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const hint = document.querySelector('.copyable-content + .copy-hint');
+                hint.innerHTML = '<i class="fas fa-check"></i> 已复制！替换括号内容后发送';
+                setTimeout(() => {
+                    hint.innerHTML = '<i class="fas fa-copy"></i> 点击复制私信模板（替换括号内容后发送）';
+                }, 3000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                const range = document.createRange();
+                range.selectNode(contentElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                alert('请按 Ctrl+C 复制选中的内容');
+            });
+        }
+        
+        // 卡片悬停效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feedback-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
